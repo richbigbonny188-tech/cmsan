@@ -1,0 +1,76 @@
+<?php
+/* --------------------------------------------------------------
+	combis.lang.inc.php 2021-09-23
+	Gambio GmbH
+	http://www.gambio.de
+	Copyright (c) 2021 Gambio GmbH
+	Released under the GNU General Public License (Version 2)
+	[http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+$t_language_text_section_content_array = [
+    'add_combination'                 => 'Add variant',
+    'add_combis_automatically'        => 'Create variants automatically',
+    'add_combis_manually'             => 'Create variants manually',
+    'calculate_price_from_properties' => 'Calculate price from product variants',
+    'change_allocation'               => 'Change allocation',
+    'combination'                     => 'Combination',
+    'combis_defaults'                 => 'Default values',
+    'combis_generated'                => 'Combis are generated...',
+    'combis_resort'                   => 'Resort combinations',
+    'combi_already_exists'            => 'This combination already exists!',
+    'combi_fix_price'                 => 'Fixed product variant price',
+    'combi_quantity'                  => 'Product variant quantity',
+    'combi_saved'                     => 'Combination saved',
+    'combi_shipping_status'           => 'Product variant shipping status',
+    'default'                         => 'Default (global stock options)',
+    'delete_all_products_combis'      => 'Delete `all` combinations from this product',
+    'delete_combination'              => 'Delete combination',
+    'delete_image'                    => 'Delete image',
+    'delete_selected_combinations'    => 'Delete combinations',
+    'dropdown_mode'                   => 'Dropdown mode',
+    'dropdown_mode_0'                 => 'Default, all values are always selectable',
+    'dropdown_mode_1'                 => 'Any order, only possible values are selectable',
+    'dropdown_mode_2'                 => 'Specified order, only possible values are selectable',
+    'ean'                             => 'EAN',
+    'asin'                            => 'ASIN',
+    'gtin'                            => 'GTIN',
+    'edit_combination'                => 'edit product variant',
+    'fix_price'                       => 'Fix price',
+    'generating_combis'               => 'Generating combis...',
+    'image'                           => 'Image',
+    'no'                              => 'No',
+    'no_check'                        => 'No check',
+    'open'                            => 'Open',
+    'packing_unit'                    => 'P-Unit',
+    'page'                            => 'Page',
+    'please_select_properties'        => 'Select `the` `options` from `which` `variants` of your product will be created',
+    'price'                           => 'Price',
+    'price_type'                      => 'Price type',
+    'price_type_short'                => '-type',
+    'product'                         => 'Product',
+    'products_model'                  => 'Products model',
+    'products_model_short'            => 'Model',
+    'products_quantity'               => 'Products quantity',
+    'products_shipping_status'        => 'Products shipping status',
+    'properties_combis_create'               => 'Create variants',
+    'properties_combis'               => 'Product Variants',
+    'quantity'                        => 'Quantity',
+    'quantity_check'                  => 'Quantity check',
+    'rebuild_properties_index'        => 'Rebuild product variants index...',
+    'replace_products_weight'         => 'Replace products weight',
+    'settings'                        => 'Settings',
+    'shipping_time'                   => 'Shipping time',
+    'show_property_price'             => 'Show product variant price',
+    'show_shipping_status'            => 'Show shipping status',
+    'sort_order'                      => 'Sort order',
+    'value'                           => 'Value',
+    'values'                          => 'Values',
+    'want_to_delete_all_combis'       => 'Do you want to delete the selected combinations?',
+    'want_to_delete_combis'           => 'Do you want to delete this combination?',
+    'weight'                          => 'Weight',
+    'weights_add'                     => 'Weights add',
+    'weight_calculation'              => 'Weight calculation',
+    'yes'                             => 'Yes'
+];
