@@ -1,0 +1,72 @@
+<?php
+/* --------------------------------------------------------------
+	parcelshopfinder.lang.inc.php 2022-08-09
+	Gambio GmbH
+	http://www.gambio.de
+	Copyright (c) 2022 Gambio GmbH
+	Released under the GNU General Public License (Version 2)
+	[http://www.gnu.org/licenses/gpl-2.0.html]
+	--------------------------------------------------------------
+*/
+
+$t_language_text_section_content_array = [
+    'ab_additional_info'                 => 'Additional info',
+    'ab_city'                            => 'City',
+    'ab_country'                         => 'Country',
+    'ab_firstname'                       => 'First name',
+    'ab_house_number'                    => 'House number',
+    'ab_lastname'                        => 'Last name',
+    'ab_postcode'                        => 'Postcode',
+    'ab_postnumber'                      => 'DHL Post Number',
+    'ab_street_address'                  => 'Street',
+    'back_to_search'                     => 'New search',
+    'button_find_parcelshops'            => 'Find Packstation/Post office',
+    'button_to_psf'                      => 'Find Packstation',
+    'cfg_api_key'                        => 'Google API Key',
+    'cfg_label_note_maps_keys'           => 'Maps authentication',
+    'cfg_map_type'                       => 'Map type',
+    'cfg_map_type_dynamic'               => 'dynamic',
+    'cfg_map_type_none'                  => 'none',
+    'cfg_map_type_static'                => 'static',
+    'cfg_maximum_list_entries'           => 'Number of entries (max.)',
+    'cfg_note_maps_keys'                 => 'Please visits this site for instructions on how to obtain the required keys:',
+    'cfg_note_maps_keys_link'            => 'Google Maps API Keys',
+    'cfg_save'                           => 'save',
+    'cfg_url_signature_secret'           => 'URL Signature Secret',
+    'configuration_heading'              => 'DHL Parcel Shops Finder Configuration',
+    'configuration_map_api'              => 'Credentials for map display (optional)',
+    'configuration_resultlist'           => 'Results list',
+    'distance'                           => 'Distance',
+    'error_invalid_postnumber'           => 'The postnumber you entered is not valid.',
+    'filter_both'                        => 'Offices and Packstations',
+    'filter_offices'                     => 'Offices',
+    'filter_packstations'                => 'Packstations',
+    'heading_csa'                        => 'Ship to DHL Packstation, Post Office or Parcel Shop',
+    'heading_parcelshopfinder'           => 'DHL Parcel Shops, Pack Stations and Post Offices',
+    'make_new_ab_entry'                  => 'create',
+    'module_description'                 => 'Allows your customers to easily find Parcel Shops, Pack Stations and Post Offices near their home address.',
+    'module_title'                       => 'DHL Parcel Shops',
+    'near'                               => 'near',
+    'new_ab_entry'                       => 'Create new address book entry',
+    'new_search'                         => 'New search',
+    'no_result'                          => 'Your search did not match any DHL locations.',
+    'note_for_button_to_psf'             => 'Under "Change address" you also have the option to select DHL Pack Stations and post offices',
+    'open_today'                         => 'Open today:',
+    'opening_hours'                      => 'Opening hours',
+    'openinghours_and'                   => ' and ',
+    'openinghours_day_fr'                => 'Fr',
+    'openinghours_day_mo'                => 'Mo',
+    'openinghours_day_sa'                => 'Sa',
+    'openinghours_day_su'                => 'Su',
+    'openinghours_day_th'                => 'Th',
+    'openinghours_day_tu'                => 'Tu',
+    'openinghours_day_we'                => 'We',
+    'parcel_shop_description'            => 'Delivery target',
+    'parcelshopfinder_breadcrumb'        => 'Find DHL Parcel Shops, Pack Stations and Post Offices',
+    'parcelshopfinder_result_breadcrumb' => 'DHL Parcel Shops, Pack Stations and Post Offices near you',
+    'prepare_ab_entry'                   => 'use in address book',
+    'psf_name'                           => 'Delivery to',
+    'search_for'                         => 'Suche nach',
+    'service_point'                      => 'Parcel Shop',
+    'your_search_address'                => 'Your search',
+];
