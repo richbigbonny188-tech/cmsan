@@ -10,7 +10,7 @@
 
 This security audit examined the provided Gambio GX source code archive to identify HTTP-reachable security vulnerabilities with provable exploitation paths.
 
-**Result: 1 Critical + 1 High + 4 Medium Vulnerabilities Identified**
+**Result: 1 Critical + 1 High + 7 Medium + 3 Low Vulnerabilities Identified**
 
 ---
 
@@ -292,6 +292,89 @@ curl -X POST https://target.com/ext/heidelpay/heidelpayGW_push.php \
 **Impact:** High - File disclosure, potential SSRF  
 **Severity:** High (depends on PHP version; PHP 8.0+ has XXE disabled by default)
 
+### 7. Weak Cryptographic Random in sofort.php
+
+**File:** `callback/sofort/sofort.php`  
+**Line:** 509
+
+**[ENTRYPOINT]**
+```php
+$paymentSecret = md5(mt_rand() . microtime());
+```
+
+**Analysis:**  
+The payment secret is generated using `md5()` with `mt_rand()` and `microtime()`. Both `mt_rand()` and `microtime()` are predictable:
+- `mt_rand()` can be predicted after observing ~624 outputs
+- `microtime()` resolution is limited and can be brute-forced
+
+**Exploitation Requirements:** Timing observation of requests  
+**Impact:** Medium - Payment secret prediction enables callback manipulation  
+**Severity:** Medium
+
+### 8. SSL Verification Disabled in Multiple Files
+
+**File:** `callback/sofort/library/sofortLib_http.inc.php`  
+**Lines:** 121-122
+
+```php
+curl_setopt($process, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($process, CURLOPT_SSL_VERIFYPEER, false);
+```
+
+**Also in:**
+- `callback/sofort/library/helper/class.invoice.inc.php:990`
+- `callback/sofort/ressources/scripts/getContent.php:66`
+
+**Analysis:**  
+Disabling SSL certificate verification enables Man-in-the-Middle attacks. An attacker on the network path can intercept and modify API communications.
+
+**Impact:** Medium - Enables MITM attacks on payment API communications  
+**Severity:** Medium
+
+### 9. Information Disclosure via Debug Log
+
+**File:** `callback/postfinance/callback.php`  
+**Line:** 34
+
+```php
+file_put_contents(DIR_FS_CATALOG . 'logfiles/postfinance_debug.txt', print_r($_POST, true));
+```
+
+**Analysis:**  
+When an exception occurs, the entire `$_POST` array is written to a log file. This may contain:
+- Credit card numbers
+- Personal information
+- Payment tokens
+- Session data
+
+The log file is in a potentially web-accessible location.
+
+**Impact:** Medium - Sensitive payment data exposure  
+**Severity:** Medium
+
+### 10. Timing Attack on Hash Comparisons
+
+**Files:**
+- `ext/heidelpay/heidelpayGW_push.php:31`
+- `ext/heidelpay/heidelpayGW_response.php:83`
+
+```php
+if($crit_Secret != $orgHash){
+```
+
+**Also:** `callback/sofort/helperFunctions.php:335`
+```php
+return ($paymentSecretToCheck == $dbPaymentSecret) ? true : false;
+```
+
+**Analysis:**  
+String comparison using `==` or `!=` is timing-vulnerable. An attacker can measure response times to gradually determine the correct hash/secret byte by byte.
+
+Should use `hash_equals()` for constant-time comparison.
+
+**Impact:** Low - Theoretical hash/secret extraction via timing  
+**Severity:** Low
+
 ---
 
 ## ADDITIONAL OBSERVATIONS (Non-Exploitable Without Additional Conditions)
@@ -370,7 +453,7 @@ if (isset($metaData['payment_class'])) {
 
 ## CONCLUSION
 
-The security audit identified **1 Critical**, **1 High**, and **4 Medium** vulnerabilities in the Gambio GX source code:
+The security audit identified **1 Critical**, **1 High**, **7 Medium**, and **3 Low** vulnerabilities in the Gambio GX source code:
 
 ### Critical
 1. **Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
@@ -383,6 +466,14 @@ The security audit identified **1 Critical**, **1 High**, and **4 Medium** vulne
 4. **Session-Based LFI in cloudloader_packages.php** - Requires session control to exploit
 5. **Reflected XSS in sofortOrders.php** - Admin-facing XSS via errorText/successText parameters
 6. **Open Redirect in inc_mailbeez.php** - Redirect via REQUEST_URI manipulation
+7. **Weak Cryptographic Random** in sofort.php - `md5(mt_rand() . microtime())` for payment secret generation
+8. **SSL Verification Disabled** in sofortLib_http.inc.php - CURLOPT_SSL_VERIFYPEER disabled enables MITM attacks
+9. **Information Disclosure** in postfinance/callback.php - Full POST data written to public logfile on exception
+
+### Low
+10. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
+11. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
+12. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
 
 The remaining code analyzed contains appropriate security controls (input validation, SQL escaping, domain whitelisting) that prevent exploitation of common vulnerability classes.
 
