@@ -10,7 +10,7 @@
 
 This security audit examined the provided Gambio GX source code archive to identify HTTP-reachable security vulnerabilities with provable exploitation paths.
 
-**Result: 1 Critical + 1 High + 7 Medium + 3 Low Vulnerabilities Identified**
+**Result: 1 Critical + 1 High + 9 Medium + 3 Low Vulnerabilities Identified**
 
 ---
 
@@ -375,6 +375,55 @@ Should use `hash_equals()` for constant-time comparison.
 **Impact:** Low - Theoretical hash/secret extraction via timing  
 **Severity:** Low
 
+### 11. Session-Based Local File Inclusion in heidelpayGW_gateway.php
+
+**File:** `ext/heidelpay/heidelpayGW_gateway.php`  
+**Lines:** 31-35
+
+```php
+if(isset($_SESSION['hp_tmp_otmod'])){
+    foreach($_SESSION['hp_tmp_otmod'] as $key => $value){
+        if(file_exists(DIR_FS_CATALOG . 'includes/modules/order_total/'.$value)){
+            require_once(DIR_FS_CATALOG . 'includes/modules/order_total/'.$value);
+        }
+    }
+}
+```
+
+**Analysis:**  
+Session variable `hp_tmp_otmod` values are used in a `require_once()` call. If an attacker can manipulate session data (via session fixation, deserialization, or another vulnerability), they could include arbitrary files.
+
+The `file_exists()` check provides partial protection but doesn't prevent path traversal if the session value contains `../`.
+
+**Impact:** Medium - Requires session control for exploitation  
+**Severity:** Medium
+
+### 12. Log File Path Traversal in sofortLib_Logger.inc.php
+
+**File:** `callback/sofort/library/sofortLib_Logger.inc.php`  
+**Lines:** 37-46
+
+```php
+public function log($message, $uri) {
+    if ($this->logRotate($uri)) {
+        $this->fp = fopen($uri, 'w');
+        fclose($this->fp);
+    }
+    
+    $this->fp = fopen($uri, 'a');
+    fwrite($this->fp, '['.date('Y-m-d H:i:s').'] '.$message."\n");
+    fclose($this->fp);
+}
+```
+
+**Analysis:**  
+The `$uri` parameter is used directly in `fopen()` without validation. If any caller passes user-controlled data as the URI, it could write to arbitrary files on the system.
+
+While not directly HTTP-reachable, this is a dangerous pattern.
+
+**Impact:** Low - Requires caller to pass user-controlled data  
+**Severity:** Low (internal function)
+
 ---
 
 ## ADDITIONAL OBSERVATIONS (Non-Exploitable Without Additional Conditions)
@@ -453,7 +502,7 @@ if (isset($metaData['payment_class'])) {
 
 ## CONCLUSION
 
-The security audit identified **1 Critical**, **1 High**, **7 Medium**, and **3 Low** vulnerabilities in the Gambio GX source code:
+The security audit identified **1 Critical**, **1 High**, **9 Medium**, and **4 Low** vulnerabilities in the Gambio GX source code:
 
 ### Critical
 1. **Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
@@ -464,16 +513,19 @@ The security audit identified **1 Critical**, **1 High**, **7 Medium**, and **3 
 ### Medium
 3. **Session-Based LFI in cloudloader_core.php** - Requires session control to exploit
 4. **Session-Based LFI in cloudloader_packages.php** - Requires session control to exploit
-5. **Reflected XSS in sofortOrders.php** - Admin-facing XSS via errorText/successText parameters
-6. **Open Redirect in inc_mailbeez.php** - Redirect via REQUEST_URI manipulation
-7. **Weak Cryptographic Random** in sofort.php - `md5(mt_rand() . microtime())` for payment secret generation
-8. **SSL Verification Disabled** in sofortLib_http.inc.php - CURLOPT_SSL_VERIFYPEER disabled enables MITM attacks
-9. **Information Disclosure** in postfinance/callback.php - Full POST data written to public logfile on exception
+5. **Session-Based LFI in heidelpayGW_gateway.php** - Session variable used in require_once()
+6. **Reflected XSS in sofortOrders.php** - Admin-facing XSS via errorText/successText parameters
+7. **Open Redirect in inc_mailbeez.php** - Redirect via REQUEST_URI manipulation
+8. **Weak Cryptographic Random** in sofort.php - `md5(mt_rand() . microtime())` for payment secret generation
+9. **SSL Verification Disabled** in sofortLib_http.inc.php - CURLOPT_SSL_VERIFYPEER disabled enables MITM attacks
+10. **Information Disclosure** in postfinance/callback.php - Full POST data written to public logfile on exception
+11. **Arbitrary File Write via Logger** in sofortLib_Logger.inc.php - URI parameter not validated in fopen()
 
 ### Low
-10. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
-11. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
-12. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
+12. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
+13. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
+14. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
+15. **Log File Path Traversal** in sofortLib_Logger.inc.php - Path not sanitized in logRotate()
 
 The remaining code analyzed contains appropriate security controls (input validation, SQL escaping, domain whitelisting) that prevent exploitation of common vulnerability classes.
 
