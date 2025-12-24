@@ -16,7 +16,7 @@ and identify ONLY REAL, PROVABLE security vulnerabilities
 that are reachable via HTTP requests.
 
 Speculation is forbidden.
-If a vulnerability cannot be proven with a working PoC,
+If a vulnerability cannot be proven with a working Proof-of-Concept (PoC),
 it MUST be discarded.
 
 ---
@@ -109,12 +109,12 @@ For EACH remaining flow:
 - Explain WHY exploitation is possible
   strictly based on observed code behavior
 
-- Provide a REAL PoC:
+- Provide a REAL PoC (Proof-of-Concept):
   - curl HTTP request
   - exact POST body
   - exact request path
 
-If a PoC cannot be produced → REMOVE the issue.
+If a PoC cannot be produced → discard the issue.
 
 ### PHASE 5 — CHAINING & IMPACT
 
