@@ -1,0 +1,63 @@
+{*
+    Template representing the step 3 of the configuration
+    Parameters:
+        $previous Link to the previous step
+        $next Link to the next step (form submit URL)
+        $method Form submit method
+*}
+
+{load_language_text section="twofactorauth" name="twofactorauth_text"}
+
+{block name="twofactorauth_partials_configuration_steps_step3"}
+    <section>
+        <form action="{$next}" method="{$method}">
+            {block name="twofactorauth_partials_configuration_steps_step3_text"}
+                {$twofactorauth_text.step3_text}
+            {/block}
+
+            {block name="twofactorauth_partials_configuration_steps_step3_input"}
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-2">
+                        <input type="text" class="form-control input-lg text-center" id="token-input" name="token">
+                    </div>
+                </div>
+            {/block}
+
+            {block name="twofactorauth_partials_configuration_steps_step3_buttons"}
+                <div class="row" style="margin-top: 12px">
+                    <div class="col-xs-3">
+                        <a href="{$previous}" class="btn btn-primary"><span class="fa fa-chevron-left"></span> {$twofactorauth_text.back}</a>
+                    </div>
+                    <div class="col-xs-3">
+                        <button id="finalize-button" class="btn btn-primary" disabled>{$twofactorauth_text.finalize} <span class="fa fa-chevron-right"></span></button>
+                    </div>
+                </div>
+            {/block}
+
+            {block name="twofactorauth_partials_configuration_steps_step3_script"}
+                <script>
+                    {literal}
+                        const inputElement = document.getElementById('token-input');
+                        const finalizeButton = document.getElementById('finalize-button');
+
+                        const ALLOWED_LENGTH = 6;
+
+                        function onInput() {
+                            if (inputElement.value.length > ALLOWED_LENGTH) {
+                                inputElement.value = inputElement.value.substring(0, ALLOWED_LENGTH);
+                            }
+
+                            const value = inputElement.value.trim();
+                            const isValid = (value.length === ALLOWED_LENGTH && !isNaN(value));
+
+                            finalizeButton.disabled = !isValid;
+                        }
+
+                        inputElement.focus();
+                        inputElement.addEventListener('input', onInput);
+                    {/literal}
+                </script>
+            {/block}
+        </form>
+    </section>
+{/block}

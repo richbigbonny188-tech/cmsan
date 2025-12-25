@@ -1,0 +1,26 @@
+{extends file="layout.html"}
+
+{block name="content"}
+	<div class="gx-container">
+		<div class="alert alert-danger">
+            {if $displayErrorDetails}
+				<h2>{$title}</h2>
+				<h3>Details</h3>
+				<div class="row">
+                    {foreach $errorInformation as $errorInfo}
+						<div class="col-sm-1">
+                            {$errorInfo.title}
+						</div>
+						<div class="col-sm-11">
+                            {$errorInfo.msg}
+						</div>
+                    {/foreach}
+				</div>
+				<h3>Trace</h3>
+				<pre>{$trace}</pre>
+            {else}
+				<h3 class="text-center">{$title}</h3>
+            {/if}
+		</div>
+	</div>
+{/block}

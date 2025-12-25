@@ -1,0 +1,7 @@
+{block name="product_listing_product_price_rating" append}
+    {if $omnibusPolicyProductListingBadge}
+        <span class="product-rating-hint">{$omnibusPolicyProductListingBadge}</span>
+    {elseif $content_data.omnibusPolicyProductListingBadge}
+        <span class="product-rating-hint">{$content_data.omnibusPolicyProductListingBadge}</span>
+    {/if}
+{/block}
