@@ -1,0 +1,60 @@
+{block name="checkout_confirmation_total"}
+    {load_language_text section="product_condition_notice"}
+
+    {block name="checkout_confirmation_condition_notice_if"}
+        {if $SHOW_CONDITION_NOTICE}
+            {block name="checkout_confirmation_quality"}
+                <fieldset data-gambio-widget="radio_selection" data-radio_selection-selection="div.checkbox" >
+                    {block name="checkout_confirmation_quality_legend"}
+                        <legend>
+                            {$txt.checkout_condition_notice}
+                        </legend>
+                    {/block}
+
+                    {block name="checkout_confirmation_quality_text_if"}
+                        {if $CONDITION_NOTICE_TEXT}
+                            {block name="checkout_confirmation_quality_text"}
+                                <div class="form-group">
+                                    <div class="col-sm-12 indent-sm-1">
+                                        {block name="checkout_confirmation_quality_text_label_if"}
+                                            {if $CONDITION_NOTICE_IS_MANDATORY}
+                                                {block name="checkout_confirmation_quality_text_label"}
+                                                    <label>{$txt.checkout_condition_notice_box_heading}</label>
+                                                {/block}
+                                            {/if}
+                                        {/block}
+
+                                        {block name="checkout_confirmation_quality_text_box"}
+                                            <div class="miscellaneous-container">{$CONDITION_NOTICE_TEXT}</div>
+                                        {/block}
+                                    </div>
+                                </div>
+                            {/block}
+                        {/if}
+                    {/block}
+
+                    {block name="checkout_confirmation_quality_conditions_if"}
+                        {if $CONDITION_NOTICE_IS_MANDATORY}
+                            {block name="checkout_confirmation_quality_conditions"}
+                                <div class="row">
+                                    <div class="col-sm-12 indent-sm-1">
+                                        <div class="checkbox alert">
+                                            {block name="checkout_confirmation_quality_conditions_checkbox"}
+                                                <label>
+                                                    <input type="checkbox" name="condition_notice" id="condition_notice" value="accepted">
+                                                    {$txt.checkout_condition_notice_consent_label}
+                                                </label>
+                                            {/block}
+                                        </div>
+                                    </div>
+                                </div>
+                            {/block}
+                        {/if}
+                    {/block}
+                </fieldset>
+            {/block}
+        {/if}
+    {/block}
+
+    {$smarty.block.parent}
+{/block}

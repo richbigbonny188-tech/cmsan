@@ -1,0 +1,37 @@
+{load_language_text section="pagination" name="pagination"}
+{load_language_text section="general" name="general"}
+
+{block name="pagination"}
+	<div class="panel-pagination text-right">
+		<nav>
+			<ul class="pagination">
+				<li>
+					{if $pager->page() > 2}
+						<a href="{$navigation_url}{$page_param}{$pager->page() - 1}" 
+						   title="{$general.PREVNEXT_TITLE_PREVIOUS_PAGE|escape}">{$pagination.BUTTON_PREVIOUS_PAGE}</a>
+					{elseif $pager->page() == 2}
+						<a href="{$navigation_url}"
+						   title="{$general.PREVNEXT_TITLE_PREVIOUS_PAGE|escape}">{$pagination.BUTTON_PREVIOUS_PAGE}</a>
+					{/if}
+				</li><!-- to avoid spaces
+				{foreach item=page from=$pages}
+					--><li>
+					{if $pager->page() == $page.page}
+						<span class="active">{$page.text}</span>
+					{elseif $page.page != 1}
+						<a href="{$navigation_url}{$page_param}{$page.page}" title="{$page.title|escape}">{$page.text}</a>
+					{else}
+						<a href="{$navigation_url}" title="{$page.title|escape}">{$page.text}</a>
+					{/if}
+				</li><!-- to avoid spaces
+				{/foreach}
+				--><li>
+					{if $pager->page() != $pager->totalPageCount()}
+						<a href="{$navigation_url}{$page_param}{$pager->page() + 1}" 
+						   title="{$general.PREVNEXT_TITLE_NEXT_PAGE|escape}">{$pagination.BUTTON_NEXT_PAGE}</a>
+					{/if}
+				</li>
+			</ul>
+		</nav>
+	</div>
+{/block}

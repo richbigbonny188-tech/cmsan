@@ -1,0 +1,41 @@
+{load_language_text section="clear_cache"}
+{extends file="layout.html"}
+
+{block name="content"}
+    <ul class="list-group mb-4">
+        {block name="cache_items"}
+            {foreach item=action from=$actions}
+                {block name="cache_item"}
+                <li class="list-group-item cache-item py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fa {$action.icon} cache-icon align-self-center"></i>
+                        <div class="cache-item__content">
+                            <strong class="title">{$action.title}</strong>
+                            <p class="description">{$action.description}</p>
+                        </div>
+                        <div class="d-flex ms-auto align-items-center">
+                            {if $action.caches}
+                                <div class="infobox">
+                                    <button class="btn btn-link p-0 btn-infobox"><i class="fa fa-info-circle"></i></button>
+                                    <div class="info">
+                                        {assign var="cacheName" value=($languageCode !== "de") ? ($action.name|lower):$action.name}
+                                        <p class="m-0">{$txt.TEXT_OTHER_CACHES_DELETED|replace:"[cacheName]":$cacheName}</p>
+                                        {foreach item=cache from=$action.caches}
+                                            <span class="badge rounded-pill">{$cache}</span>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                            {/if}
+                            <button data-cache-id="{$action.id}" data-cache-name="{$action.name}" class="btn btn-sm btn-default btn-clear-cache">{$txt.TEXT_EXECUTE}</button>
+                        </div>
+                    </div>
+                </li>
+                {/block}
+            {/foreach}
+        {/block}
+    </ul>
+{/block}
+
+{block name="bottom"}
+    <script src="{$baseUrl}/GambioAdmin/Modules/Cache/ui/assets/scripts/main.js"></script>
+{/block}

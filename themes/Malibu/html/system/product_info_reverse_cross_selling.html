@@ -1,0 +1,12 @@
+{load_language_text section="reverse_cross_selling"}
+
+{if $module_content != ''}
+	{block name="product_info_reverse_cross_selling"}
+		{block name="product_info_reverse_cross_selling_title"}
+			<h3>{$txt.heading_text}</h3>
+		{/block}
+		{block name="product_info_reverse_cross_selling_product_listing"}
+			{$module_content}
+		{/block}
+	{/block}
+{/if}

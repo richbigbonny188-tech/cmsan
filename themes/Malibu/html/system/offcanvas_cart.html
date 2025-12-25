@@ -1,0 +1,14 @@
+{block name="index_outer_wrapper_header_inside_offcanvas_cart"}
+    <div id="offcanvas-cart-overlay"></div>
+    <div id="offcanvas-cart-content">
+
+        <button data-toggle="cart" class="offcanvas-cart-close c-hamburger c-hamburger--htx">
+            <span></span>
+            {$txt.text_menu}
+        </button>
+        <!-- layout_header_cart_dropdown begin -->
+        {include file="get_usermod:{$tpl_path}layout_header_cart_dropdown.html"}
+        <!-- layout_header_cart_dropdown end -->
+
+    </div>
+{/block}

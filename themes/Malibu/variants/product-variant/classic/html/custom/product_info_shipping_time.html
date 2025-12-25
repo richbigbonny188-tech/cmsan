@@ -1,0 +1,32 @@
+{block name="product_info_shipping_time"}
+{if $SHIPPING_NAME || $SHOW_SHIPPING_TIME}
+<div class="product-definition-shipping-time">
+    {literal}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><rect class="cls-1" width="40" height="40"/><path d="M33.28,19h0l-1.87-6H26.5V8H4v17.5H5.81V27.4H4v1.88H9a3.12,3.12,0,0,0,6.12,0H27.31a3.13,3.13,0,0,0,6.13,0H36v-8ZM26.5,14.84H30L31.29,19H26.5ZM12.06,29.9a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,12.06,29.9Zm12.57-2.5h-9.7a3.13,3.13,0,0,0-5.73,0H7.69V25.53H24.63Zm0-8.43v4.68H5.88V9.9H24.63ZM30.38,29.9a1.25,1.25,0,1,1,1.25-1.25A1.25,1.25,0,0,1,30.38,29.9Zm3.75-7.18H32.25v1.87h1.88V27.4h-.89a3.13,3.13,0,0,0-5.73,0h-1V20.84h6.09l1.54,1.31Z"/></g></g></svg>{/literal}
+    <strong>{$txt.text_shippingtime}</strong><br>
+    {if $SHIPPING_IMAGE}
+    {block name="product_info_shipping_time_image"}
+    <span class="img-shipping-time">
+                        <img src="{$SHIPPING_IMAGE}" alt="{$SHIPPING_IMAGE_ALT|escape:'html'}" />
+                    </span>
+    {/block}
+    {/if}
+    {block name="product_info_shipping_time_name"}
+    <span class="products-shipping-time-value">
+                    {$SHIPPING_NAME|escape:'html'}
+                </span>
+    {/block}
+    
+    {block name="product_info_shipping_time_link"}
+    <a class="js-open-modal text-small abroad-shipping-info"{if !$ABROAD_SHIPPING_INFO_LINK_ACTIVE} style="display:none"{/if} data-modal-type="iframe" data-modal-settings='{literal}{{/literal}"title": "{$txt.text_shippingtime}"{literal}}{/literal}' href="{popuplink coID={$smarty.const.SHIPPING_INFOS}}" rel="nofollow">
+        ({$txt.text_abroad_shipping_info})
+    </a>
+    {/block}
+    
+    {if $PRODUCTS_DATE_AVIABLE}
+    {block name="product_info_shipping_time_available"}
+    <br />{$txt.shipping_after_available}
+    {/block}
+    {/if}
+</div>
+{/if}
+{/block}

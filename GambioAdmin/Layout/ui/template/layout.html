@@ -1,0 +1,94 @@
+{block name="admin_layouts_main_layout"}
+    <!DOCTYPE html>
+    <html lang="{$languageCode}">
+    {block name="admin_layouts_main_layout_head"}
+        <head>
+            <!--
+
+            ==============================================================================
+            Shopsoftware by Gambio GmbH (c) 2005-2020 [www.gambio.de]
+            ==============================================================================
+
+            Gambio GmbH offers you highly scalable E-Commerce-Solutions and Services.
+            The Shopsoftware is redistributable under the GNU General Public License
+            (Version 2) [http://www.gnu.org/licenses/gpl-2.0.html]. Based on: E-Commerce
+            Engine Copyright (c) 2006 xt:Commerce, created by Mario Zanier & Guido Winger
+            and licensed under GNU/GPL.
+
+            Information and contribution at http://www.xt-commerce.com
+
+            ==============================================================================
+            Please visit our website: www.gambio.de
+            ==============================================================================
+
+            -->
+            {block name="layout_head"}
+                {block name="layout_head_start"}{/block}
+                <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+                <meta name="viewport"
+                      content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+                <title>{$pageTitle} - Gambio Admin</title>
+                {include file="styles.html"}
+                {* Dynamic Style Assets *}
+                {$dynamic_style_assets nofilter}
+
+                {block name="custom_styles"}{/block}
+                {block name="head"}{/block}
+            {/block}
+        </head>
+    {/block}
+
+    {block name="admin_layouts_main_layout_body"}
+        <body>
+        <div class="gx-admin {$menuVisibility}">
+            <div class="gx-admin-header">
+                {include file="header/index.html"}
+            </div>
+            <div class="gx-admin-menu {$menuVisibility}">
+                {include file="menu/index.html"}
+            </div>
+            <div class="gx-admin-content"{if $engine === 'JSE'}
+                data-gx-namespace="{$baseUrl}/admin/html/assets/javascript/engine"
+                data-jse-namespace="{$baseUrl}/JSEngine/build"
+                    {/if}>
+                {if isset($isLargeLayout) && $isLargeLayout}
+                    {block name="layout_main"}
+                        <section id="gx-main" class="large{if isset($isVuePage) && $isVuePage} gx-vue{/if}">
+                            {block name="content"}{/block}
+                        </section>
+                    {/block}
+                {else}
+                    {block name="layout_main"}
+                        <section id="gx-main"{if isset($isVuePage) && $isVuePage} class="gx-vue"{/if}>
+                            {block name="layout_content_header"}
+                                {include file="content/content_header.html"}
+                            {/block}
+                            {block name="layout_message_stack"}
+                                {include file="content/message_stack.html"}
+                            {/block}
+
+                            {block name="layout_content"}
+                                <section id="gx-content">
+                                    {block name="content"}{/block}
+                                </section>
+                            {/block}
+                        </section>
+                    {/block}
+                {/if}
+            </div>
+            <div class="gx-admin-footer fixed">
+                {include file="footer/index.html"}
+            </div>
+        </div>
+
+        {include file="page_translations.html"}
+        {include file="scripts.html"}
+
+        {block name="bottom"}{/block}
+        {$dynamic_script_assets nofilter}
+        {block name="custom_scripts"}{/block}
+        </body>
+    {/block}
+    </html>
+{/block}

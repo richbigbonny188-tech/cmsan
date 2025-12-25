@@ -1,0 +1,118 @@
+{extends file="layout.html"}
+
+{block name="content"}
+    <div class="haendlerbund-configuration">
+        {if $message}
+            <div class="haendlerbund-message container alert alert-warning">
+                {$txt["message_{$message}"]}
+                {if $messageDetail}
+                    <div class="haendlerbund-messagedetail">
+                        {$messageDetail}
+                    </div>
+                {/if}
+            </div>
+        {/if}
+        <div class="haendlerbund-intro container">
+            <div class="row">
+                <div class="haendlerbund-logo col">
+                    <img src="{$baseUrl}/GXModules/Gambio/Haendlerbund/Admin/Assets/hb-logo.svg">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1>{$pageTitle}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <p>{$txt.intro_text}</p>
+                <p>
+                    {$txt.become_a_member}
+                    <a href="{$affiliate_link}" target="_blank">{$txt.packet_options_for_gambio_merchants}</a>
+                </p>
+            </div>
+        </div>
+        <form action="{$saveUrl}" method="POST" class="container">
+            <div class="form-horizontal">
+                <fieldset>
+                    <legend>{$txt.configuration_general}</legend>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label">{$txt.configuration_status}</label>
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="active" value="1"
+                                       role="switch" {($configuration.active === '1') ? 'checked':''}>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mt-3">
+                    <legend>{$txt.configuration_credentials}</legend>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label">{$txt.configuration_access_token}</label>
+                        <div class="col">
+                            <input type="text" name="accessToken" value="{$configuration.accessToken}" class="form-control"
+                                   {literal}pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"{/literal}>
+                        </div>
+                    </div>
+                    {if $environment === 'development'}
+                        <div class="row mt-1">
+                            <label class="col-sm-4 col-form-label">{$txt.configuration_mode}</label>
+                            <div class="col">
+                                <select name="mode" class="form-select">
+                                    <option value="productive" {($configuration.mode === 'productive') ? 'selected' : ''})>{$txt.configuration_mode_productive}</option>
+                                    <option value="develop" {($configuration.mode === 'develop') ? 'selected' : ''}>{$txt.configuration_mode_develop}</option>
+                                </select>
+                            </div>
+                        </div>
+                    {/if}
+                </fieldset>
+                <fieldset class="mt-3">
+                    <legend>{$txt.configuration_documents}</legend>
+                    {if $configuration.accessToken}
+                        {foreach ['useTos', 'usePrivacy', 'useImprint', 'usePaymentAndShipping', 'useWithdrawal'] as $docFlag}
+                            <div class="row mt-1">
+                                <label class="col-sm-4 col-form-label">{$txt["configuration_{$docFlag}"]}</label>
+                                <div class="col-sm-8">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="{$docFlag}" value="true"
+                                               role="switch" {($configuration[$docFlag] === 'true') ? 'checked':''}>
+                                    </div>
+                                </div>
+                            </div>
+                        {/foreach}
+                    {/if}
+                    <div class="row mt-5">
+                        <div class="col">
+                            {$txt.instructions_text}
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary float-end">{$txt.save_configuration}</button>
+                </div>
+            </div>
+        </form>
+        {if $configuration.accessToken}
+            <form action="{$updateNowUrl}" method="POST" class="container haendlerbund-update-now mt-3 mb-3">
+                <div class="form-horizontal">
+                    <fieldset>
+                        <legend>{$txt.update_now_heading}</legend>
+                        <div class="row mt-3">
+                            <div class="col">
+                                {$txt.update_now_info}
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary float-end">{$txt.update_now}</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </form>
+        {/if}
+    </div>
+{/block}

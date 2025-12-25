@@ -1,0 +1,18 @@
+{block name="admin_layouts_main_partial_layout_styles"}
+    <link rel="shortcut icon" href="{$baseUrl}/admin/html/assets/images/gx-admin/favicon-gambio-de.ico"/>
+    {if !$jsNextDev}
+        <link rel="stylesheet" href="{$baseUrl}/GambioAdmin/build/styles/layout.css">
+    {/if}
+
+    {if $engine === 'JSE'}
+        {block name="layout_head_jse_styles"}
+            <link rel="stylesheet" href="{$baseUrl}/admin/html/assets/styles/admin_small.css">
+        {/block}
+    {elseif $engine === 'GambioAdmin'}
+        {if isset($vuePage) &&!$jsNextDev}
+            {block name="layout_head_admin_styles"}
+                <link rel="stylesheet" href="{$baseUrl}/GambioAdmin/build/styles/{$vuePage}.css">
+            {/block}
+        {/if}
+    {/if}
+{/block}

@@ -1,0 +1,116 @@
+
+
+{block name="index_outer_wrapper_header_inside"}
+    <div class="inside">
+
+    <div class="row">
+
+        {block name="index_outer_wrapper_header_inside_top_search_if"}
+        {if !$hideSearch}
+        {block name="index_outer_wrapper_header_inside_top_search"}{$TOP_SEARCH}{/block}
+        {/if}
+        {/block}
+
+        {block name="index_outer_wrapper_header_inside_header"}
+            {assign var="hideLogo" value={template_setting name="gx-hide-logo-col"}}
+            {assign var="hideSearch" value={template_setting name="gx-hide-search-col"}}
+            {assign var="hideCustom" value={template_setting name="gx-hide-custom-1-col"}}
+            {assign var="hideCart" value={template_setting name="gx-hide-cart-col"}}
+
+            <div class="navbar-header">
+                {if !$hideLogo}
+                {block name="index_outer_wrapper_header_inside_header_logo"}
+                {include file="get_usermod:{$tpl_path}layout_header_logo.html" logo_url=$logo_url logo_link=$logo_link}
+                {/block}
+                {/if}
+                {block name="index_outer_wrapper_header_inside_header_buttons"}
+                {include file="get_usermod:{$tpl_path}layout_header_navbar_buttons.html"}
+                {/block}
+            </div>
+        {/block}
+
+        {block name="index_outer_wrapper_header_inside_custom_content_if"}
+        {if !$hideCustom}
+        {block name="index_outer_wrapper_header_inside_custom_content"}
+        {include file="get_usermod:{$tpl_path}layout_header_custom_content.html" content={content_manager group=4321001}}
+        {/block}
+        {/if}
+        {/block}
+
+        {block name="index_outer_wrapper_header_inside_shopping_cart_if"}
+        {if !$hideCart}
+        {block name="index_outer_wrapper_header_inside_shopping_cart"}
+        {include file="get_usermod:{$tpl_path}layout_header_cart.html"}
+        {/block}
+        {/if}
+        {/block}
+
+    </div>
+
+</div>
+    {include file="get_usermod:{$tpl_path}offcanvas_cart.html"}
+{/block}
+
+{*  ==========================================================================
+index.html
+- append overlay menu (TODO)
+- add categories and secondary-navigation to inside area of header (TODO)
+========================================================================== *}
+
+{*assign var="hideTopbar" value=false*} {* NEW *}
+{assign var="hideLogo" value={template_setting name="gx-hide-logo-col"}}
+{assign var="hideSearch" value={template_setting name="gx-hide-search-col"}}
+{assign var="hideCustom" value={template_setting name="gx-hide-custom-1-col"}}
+{assign var="hideCart" value={template_setting name="gx-hide-cart-col"}}
+{assign var="showTopSearch" value={template_setting name="gx-show-search-top-nav"}}
+{assign var="offcanvasCart" value=true}
+
+
+{block name="index_outer_wrapper_header"}
+    {$smarty.block.parent}
+    <button id="meco-overlay-menu-toggle" data-toggle="menu" class="c-hamburger c-hamburger--htx visible-xs-block">
+        <span></span> {$txt.text_menu}
+    </button>
+    <div id="meco-overlay-menu">
+        {block name="index_outer_wrapper_header_inside_top_search_if"}
+            {assign var="hideSearch" value={template_setting name="gx-hide-search-col"}}
+            {if !$hideSearch}
+                <div class="meco-overlay-menu-search">
+                    {block name="index_outer_wrapper_header_inside_top_search"}{$TOP_SEARCH|replace:"navbar-search":""|replace:"input-group":""}{/block}
+                </div>
+            {/if}
+        {/block}
+        {block name="index_outer_wrapper_header_categories_top_if"}
+            {block name="layout_header_categories"}
+                <div id="categories">
+                    <div class="navbar-collapse collapse">
+                        {block name="layout_header_categories_nav"}
+                            <nav class="navbar-default navbar-categories" data-gambio-widget="menu">
+                                {if $CATEGORIES_TOP}
+                                    {block name="index_outer_wrapper_header_categories_top"}
+                                        {$CATEGORIES_TOP=$CATEGORIES_TOP|replace:"###CONTENT_TOP###":$CONTENT_TOP}
+                                        {$CATEGORIES_TOP}
+                                    {/block}
+                                {else}
+                                    {block name="index_content_top"}{$CONTENT_TOP}{/block}
+                                {/if}
+                            </nav>
+                        {/block}
+                    </div>
+                </div>
+            {/block}
+        {/block}
+    </div>
+{/block}
+
+
+{*  ==========================================================================
+   layout_header.html
+    ========================================================================== *}
+
+{block name="index_outer_wrapper_header_top_navigation"}
+    {assign var="hideTopbar" value={template_setting name="gx-hide-topbar"}}
+    {if !$hideTopbar}
+        {include file="get_usermod:{$tpl_path}layout_topbar_secondary_navigation.html"}
+    {/if}
+{/block}

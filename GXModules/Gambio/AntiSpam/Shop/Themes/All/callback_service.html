@@ -1,0 +1,9 @@
+{block name="callback_service_buttons_submit"}
+    {$smarty.block.parent}
+    {block name="hidden_anti_spam"}
+        {* contains the real "Secret Anti Spam Token" *}
+        <input type="hidden" id="c747fd04ba117510f399b5f43ba8155087c19523" name="c747fd04ba117510f399b5f43ba8155087c19523" value="{$secret_token_anti_spam}">
+        {* contains a fake token that will be replaced, via javascript, with the real "Secret Anti Spam Token" *}
+        <input type="hidden" id="ae6b85682663ab4570bd10c67b83d21fe77cdf97" name="ae6b85682663ab4570bd10c67b83d21fe77cdf97" value="{$fake_hash}">
+    {/block}
+{/block}

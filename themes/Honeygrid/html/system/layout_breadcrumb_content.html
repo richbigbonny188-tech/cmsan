@@ -1,0 +1,21 @@
+{block name="layout_breadcrumb_content"}
+	{if $is_active}
+		<script type="application/ld+json">{$breadcrumb_ldjson}</script>
+	{/if}
+    {block name="layout_breadcrumb_content_norichsnippets"}
+		<div id="breadcrumb_navi">
+            {foreach from=$breadcrumb_array item=value_array name=crumbs}
+				<span class="breadcrumbEntry">
+						{if $value_array.link}
+							<a href="{$value_array.link}" class="headerNavigation">
+								<span>{$value_array.title}</span>
+							</a>
+						{else}
+							<span>{$value_array.title}</span>
+                        {/if}
+					</span>
+                {if $smarty.foreach.crumbs.last}{else}<span class="breadcrumbSeparator">{$breadcrumb_separator}</span>{/if}
+            {/foreach}
+		</div>
+    {/block}
+{/block}

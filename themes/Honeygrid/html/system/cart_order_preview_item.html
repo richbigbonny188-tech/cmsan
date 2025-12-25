@@ -1,0 +1,330 @@
+{load_language_text section="account_history_info" name="history"}
+{load_language_text section="order_details"}
+{load_language_text section="general" name="general"}
+{load_language_text section="buttons" name="button"}
+
+{block name="cart_order_preview_item"}
+	{block name="cart_order_preview_item_thead_if"}
+		{if $p_qty_value >= 0}
+			{if $is_tablehead && $is_tablehead === true}
+				{block name="cart_order_preview_item_thead"}
+					<tr class="item">
+						<th></th>
+						<th>{$txt.text_article}</th>
+						<th>{$txt.text_qty}</th>
+						<th class="text-right">{if $is_wishlist === false}{$txt.text_total}{/if}</th>
+					</tr>
+				{/block}
+			{else}
+				{block name="cart_order_preview_item_row"}
+					<tr class="item">
+						{block name="cart_order_preview_item_image"}
+							<td class="image">
+								{block name="cart_order_preview_item_image_link_open_if"}
+									{if $p_url}
+										<a href="{$p_url}" title="{$p_name|strip_tags}{$stock_mark}">
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_image_tag_if"}
+									{if $image_src}
+										{block name="cart_order_preview_item_image_tag"}
+											<img src="{$image_src}"{if $image_alt} alt="{$image_alt}{$stock_mark}"{/if}{if $image_title} title="{$image_title}{$stock_mark}"{/if} class="img-responsive" />
+										{/block}
+									{else}
+										{block name="cart_order_preview_item_no_image_figure"}
+											<figure class="image no-image">
+												<div title="{$p_name_full}" class="product-hover-main-image product-image">
+													<div class="fa fa-picture-o"></div>
+												</div>
+											</figure>
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_image_link_close_if"}
+									{if $p_url}
+										</a>
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_image_loader"}
+									<div class="loader"></div>
+								{/block}
+							</td>
+						{/block}
+						{block name="cart_order_preview_item_product"}
+							<td class="product">
+								{block name="cart_order_preview_item_product_link_open_if"}
+									{if $p_url}
+										<a class="product-title {if 'ENABLE_JS_HYPHENATION'|gm_get_conf == 'true'}hyphenate{/if}" href="{$p_url}" title="{$p_name|strip_tags}{$stock_mark}">
+									{else}
+										<span class="product-title {if 'ENABLE_JS_HYPHENATION'|gm_get_conf == 'true'}hyphenate{/if}">
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_name"}
+									{$p_name}
+									{if $stock_mark == $out_of_stock_mark}
+										<span class="markProductOutOfStock">{$stock_mark}</span>
+									{else}
+										{$stock_mark}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_link_close_if"}
+									{if $p_url}
+										</a>
+									{else}
+										</span>
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_is_out_of_stock"}
+									{if $content_data.allow_checkout && $p_is_out_of_stock}
+										<div class="alert alert-danger">{$general.GM_ORDER_STOCK_CHECKER_OUT_OF_STOCK_CAN_CHECKOUT}</div>
+									{elseif $p_is_out_of_stock}
+										<div class="alert alert-danger">{$general.GM_ORDER_STOCK_CHECKER_OUT_OF_STOCK_CANT_CHECKOUT}</div>
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_model_if"}
+									{if $p_model && $show_p_model == 'true'}
+										<br />
+										{block name="cart_order_preview_item_product_model"}
+											{$p_model}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_weight_if"}
+									{if $p_weight && $p_weight != '0'}
+										<br />
+										{block name="cart_order_preview_item_product_weight"}
+											{$p_weight}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_shipping_time_if"}
+									{if $p_shipping_time}
+										<br />
+										{block name="cart_order_preview_item_product_shipping_time"}
+											{$p_shipping_time|escape:'html'}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_price_single_if"}
+									{if $p_price_single && $is_wishlist !== true}
+										<br />
+										{block name="cart_order_preview_item_product_price_single"}
+											{$txt.text_single}: {$p_price_single}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_price_vpe_if"}
+									{if $p_price_vpe && $is_wishlist !== true}
+										<br />
+										{block name="cart_order_preview_item_product_price_vpe"}
+											{$p_price_vpe}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_attributes_if"}
+									{if $p_attributes}
+										<br />
+										{block name="cart_order_preview_item_product_attributes"}
+											{$p_attributes}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_properties_if"}
+									{if $p_properties}
+										<br />
+										{block name="cart_order_preview_item_product_properties"}
+											{$p_properties}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_tpl_properties_if"}
+									{if $tpl_modifiers}
+										<br />
+										{block name="cart_order_preview_item_product_tpl_properties"}
+											{$tpl_modifiers}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_checkout_info_if"}
+									{if $p_checkout_info}
+										<br />
+										{block name="cart_order_preview_item_product_checkout_info"}
+											{$p_checkout_info}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_wishlist_if"}
+									{if $is_wishlist === true}
+										{block name="cart_order_preview_item_product_wishlist"}
+											<br />
+											{block name="cart_order_preview_item_product_wishlist_price_single"}
+												{$p_price_single}
+											{/block}
+
+											{block name="cart_order_preview_item_product_wishlist_price_vpe_if"}
+												{if $p_price_vpe}
+													<br />
+													{block name="cart_order_preview_item_product_wishlist_price_vpe"}
+														{$p_price_vpe}
+													{/block}
+												{/if}
+											{/block}
+
+											{block name="cart_order_preview_item_product_wishlist_shopping_info_if"}
+												{if $p_shipping_info}
+													<br />
+													{block name="cart_order_preview_item_product_wishlist_shopping_info"}
+														{$p_shipping_info}
+													{/block}
+												{/if}
+											{/block}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_details_link_if"}
+									{if $p_details_url && $p_details_text}
+										<br />
+										{block name="cart_order_preview_item_product_details_link"}
+											<a href="{$p_details_url}" target="_blank" title="{$p_details_text}" class="lightbox_iframe">
+												{$p_details_text}
+											</a>
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_product_error"}
+									<div id="error-product-{$p_error_id}" class="error-msg alert alert-danger"></div>
+								{/block}
+
+								{block name="cart_order_preview_item_product_loader"}
+									<div class="loader"></div>
+								{/block}
+							</td>
+						{/block}
+						{block name="cart_order_preview_item_quantity"}
+							<td class="qty">
+								{block name="cart_order_preview_item_quantity_unit_if"}
+									{if !$p_qty && $p_unit}
+										{block name="cart_order_preview_item_quantity_unit"}
+											{$p_unit}:<br />
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_quantity_value_if"}
+									{if $is_confirmation === false && $p_qty_name && $p_qty_value}
+										{block name="cart_order_preview_item_quantity_value"}
+											<input type="text" name="{$p_qty_name}" value="{$p_qty_value}" data-oldValue="{$p_qty_value}" size="2" class="form-control" />
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_qty_if"}
+									{if $p_qty}
+										{block name="cart_order_preview_item_qty"}
+											{$p_qty}
+										{/block}
+										{block name="cart_order_preview_item_unit_if"}
+											{if $p_unit}
+												{block name="cart_order_preview_item_unit"}
+													&nbsp;{$p_unit}
+												{/block}
+											{/if}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_is_confirmation_if"}
+									{if $is_confirmation === false}
+										{block name="cart_order_preview_item_hidden_name_value_if"}
+											{if $p_hidden_name && $p_hidden_value}
+												{block name="cart_order_preview_item_hidden_name_value"}
+													<input type="hidden" name="{$p_hidden_name}" id="{$p_hidden_name}" value="{$p_hidden_value}" />
+												{/block}
+											{/if}
+										{/block}
+										{block name="cart_order_preview_item_hidden_qty_name_value_if"}
+											{if $p_hidden_qty_name && $p_hidden_qty_value}
+												{block name="cart_order_preview_item_hidden_qty_name_value"}
+													<input type="hidden" name="{$p_hidden_qty_name}" id="{$p_hidden_qty_name}" value="{$p_hidden_qty_value}" />
+												{/block}
+											{/if}
+										{/block}
+									{/if}
+								{/block}
+
+                                {block name="cart_order_preview_item_is_wishlist_if"}
+                                    {if $is_wishlist === true}
+                                    <input type="hidden" name="{$p_hidden_cart_delete_name}"  value="{$p_hidden_value}" />
+                                        {if $is_wishlist === true && ($content_data.allow_checkout || !$p_is_out_of_stock)}
+                                            {block name="cart_order_preview_item_is_wishlist"}
+                                                <a href="{page_url}#" title="{$button.add_to_cart}" class="button-to-cart">
+                                                    <span class="fa fa-plus"></span>
+                                                </a>
+                                            {/block}
+                                        {/if}
+                                    {/if}
+                                {/block}
+								{block name="cart_order_preview_item_button_refresh_if"}
+									{if $is_confirmation === false}
+										{block name="cart_order_preview_item_button_refresh"}
+											<a href="{page_url}#" title="{$button.update}" class="button-refresh">
+												<span class="fa fa-refresh"></span>
+											</a>
+											&nbsp;
+										{/block}
+									{/if}
+								{/block}
+								{block name="cart_order_preview_item_is_checkout_if"}
+									{if !$is_checkout}
+										{block name="cart_order_preview_item_is_checkout"}
+											<a href="{page_url}#" rel="{$module_data.PRODUCTS_ID_EXTENDED}" title="{$button.delete}" class="button-delete">
+												<span class="fa fa-times"></span>
+											</a>
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_loader_spinner"}
+									<div class="loader spinner"></div>
+								{/block}
+							</td>
+						{/block}
+						{block name="cart_order_preview_item_final_price"}
+							<td class="text-right">
+								{block name="cart_order_preview_item_final_price_if"}
+									{if $is_wishlist == false && $p_price_final != ''}
+										{block name="cart_order_preview_item_final_price_value"}
+											{$p_price_final}
+										{/block}
+									{/if}
+								{/block}
+
+								{block name="cart_order_preview_item_final_price_loader"}
+									<div class="loader"></div>
+								{/block}
+							</td>
+						{/block}
+					</tr>
+				{/block}
+			{/if}
+		{/if}
+	{/block}
+{/block}

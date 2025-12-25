@@ -1,0 +1,59 @@
+{block name="module_checkout_payment_transport_if"}
+	{$smarty.block.parent}
+    {load_language_text section="product_condition_notice"}
+
+    {block name="checkout_payment_quality_if"}
+        {if $SHOW_WARRANTY_NOTICE}
+            {block name="checkout_payment_quality"}
+                <fieldset data-gambio-widget="radio_selection" data-radio_selection-selection="div.checkbox" >
+                    {block name="checkout_payment_quality_legend"}
+                        <legend>
+                            {$txt.checkout_warranty_notice}
+                        </legend>
+                    {/block}
+
+                    {block name="checkout_payment_quality_text_if"}
+                        {if $WARRANTY_NOTICE_TEXT}
+                            {block name="checkout_payment_quality_text"}
+                                <div class="form-group">
+                                    <div class="col-sm-12 indent-sm-1">
+                                        {block name="checkout_payment_quality_text_label_if"}
+                                            {if $WARRANTY_NOTICE_IS_MANDATORY}
+                                                {block name="checkout_payment_quality_text_label"}
+                                                    <label>{$txt.checkout_warranty_notice_box_heading}</label>
+                                                {/block}
+                                            {/if}
+                                        {/block}
+
+                                        {block name="checkout_payment_quality_text_box"}
+                                            <div class="miscellaneous-container">{$WARRANTY_NOTICE_TEXT}</div>
+                                        {/block}
+                                    </div>
+                                </div>
+                            {/block}
+                        {/if}
+                    {/block}
+
+                    {block name="checkout_payment_quality_warranty_if"}
+                        {if $WARRANTY_NOTICE_IS_MANDATORY}
+                            {block name="checkout_payment_quality_warranty"}
+                                <div class="row">
+                                    <div class="col-sm-12 indent-sm-1">
+                                        <div class="checkbox alert">
+                                            {block name="checkout_payment_quality_warranty_checkbox"}
+                                                <label>
+                                                    <input type="checkbox" name="warranty_notice" id="warranty_notice" value="accepted">
+                                                    {$txt.checkout_warranty_notice_consent_label}
+                                                </label>
+                                            {/block}
+                                        </div>
+                                    </div>
+                                </div>
+                            {/block}
+                        {/if}
+                    {/block}
+                </fieldset>
+            {/block}
+        {/if}
+    {/block}
+{/block}

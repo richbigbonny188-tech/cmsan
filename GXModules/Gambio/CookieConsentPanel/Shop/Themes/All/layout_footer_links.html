@@ -1,0 +1,8 @@
+{block name="layout_footer_links_list" append}
+    {load_language_text section="cookie_consent_panel" name="txt"}
+    {if cookie_consent_panel_is_installed()}
+<ul class="nav">
+    <li><a href="javascript:;" trigger-cookie-consent-panel>{$txt.label_cpc_footer_link_text}</a></li>
+</ul>
+    {/if}
+{/block}

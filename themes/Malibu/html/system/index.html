@@ -1,0 +1,106 @@
+{load_language_text section="index"}
+
+{block name="index_head"}{$HEAD}{/block}
+
+{if $smarty.const.SHOP_OFFLINE}
+	{block name="index_shop_offline"}{html_shop_offline}{/block}
+{else}
+
+	{block name="index_popup_notification"}{$POPUP_NOTIFICATION}{/block}
+
+	{block name="index_outer_wrapper"}
+		<div id="outer-wrapper" {if $TOPBAR && $TOPBAR !=''}class="topbar-active"{/if}>
+			{block name="index_outer_wrapper_header"}
+				<header id="header" class="navbar">
+					{include file="get_usermod:{$tpl_path}layout_header.html"}
+				</header>
+				<button id="meco-overlay-menu-toggle" data-toggle="menu" class="c-hamburger c-hamburger--htx visible-xs-block">
+					<span></span> {$txt.text_menu}
+				</button>
+				<div id="meco-overlay-menu">
+					{block name="index_outer_wrapper_header_inside_top_search_if"}
+						{assign var="showSearchTopNav" value={template_setting name="gx-show-search-top-nav"}}
+						{assign var="hideSearch" value={template_setting name="gx-hide-search-col"}}
+						{if (!$hideSearch || $showSearchTopNav)}
+							<div class="meco-overlay-menu-search">
+								{block name="index_outer_wrapper_header_inside_top_search"}{$TOP_SEARCH|replace:"navbar-search":""|replace:"input-group":""}{/block}
+							</div>
+						{/if}
+					{/block}
+				</div>
+			{/block}
+
+			{block name="index_outer_wrapper_imageslider"}
+				{include file="get_usermod:{$tpl_path}slider.html" slider=$IMGSLIDER}
+			{/block}
+
+			{block name="index_inner_wrapper"}
+				<div id="wrapper">
+					<div class="row">
+
+						{block name="index_inner_wrapper_main"}
+							<div id="main">
+								<div class="main-inside">
+									{block name="index_inner_wrapper_main_breadcrumb"}
+										{include file="get_usermod:{$tpl_path}layout_breadcrumb.html" breadcrumb=$navtrail}
+									{/block}
+
+									{block name="index_inner_wrapper_main_banner"}
+										<div id="shop-top-banner">
+											{if $BANNER_HTML}
+												{$BANNER_HTML}
+											{elseif $BANNER_IMAGE}
+												<a href="{$BANNER_LINK}" onclick="window.open(this.href); return false;"><img src="{$BANNER_IMAGE}" alt="{$BANNER_ALT}"/></a>
+											{/if}
+										</div>
+									{/block}
+
+									{block name="index_inner_wrapper_main_content"}{$main_content}{/block}
+								</div>
+							</div>
+						{/block}
+
+                        {* category/filter/manufacturers/products_new/specials pages all use the same layout *}
+                        {assign var="CURRENT_PAGE_IS_LISTING_PAGE" value=(isset($smarty.get.cat)
+                                                                        || isset($smarty.get.filter_id)
+                                                                        || isset($smarty.get.manufacturers_id)
+                                                                        || $SCRIPT_NAME=="/products_new.php"
+                                                                        || $SCRIPT_NAME=="/specials.php")}
+                        {assign var="IS_FILTERING" value=$smarty.session.coo_filter_manager->is_active()}
+                        {assign var="HIDE_MENUBOXES" value={template_setting name="gx-product-listing-full-width"} && ($CURRENT_PAGE_IS_LISTING_PAGE || $IS_FILTERING)}
+                        {if $HIDE_MENUBOXES}
+							{block name="index_inner_wrapper_left"}{/block}
+						{else}
+							{block name="index_inner_wrapper_left"}
+								{include file="get_usermod:{$tpl_path}sidebar.html"}
+							{/block}
+						{/if}
+
+						{block name="index_inner_wrapper_right"}
+							<aside id="right">
+								{block name="index_inner_wrapper_right_content"}
+									{menuboxes first=101 last=200 exclude="content"}
+								{/block}
+							</aside>
+						{/block}
+
+					</div>
+				</div>
+			{/block}
+
+			{block name="index_inner_wrapper_footer"}
+				{include file="get_usermod:{$tpl_path}layout_footer.html"}
+			{/block}
+
+			{block name="index_inner_wrapper_trusted_shops_if"}
+				{if $TRUSTED_SHOPS_REVIEW_STICKER|strpos:"variant: 'skyscraper_horizontal'" !== false}
+					{block name="index_inner_wrapper_trusted_shops"}{$TRUSTED_SHOPS_REVIEW_STICKER}{/block}
+				{/if}
+			{/block}
+
+		</div>
+	{/block}
+
+{/if}
+
+{block name="index_bottom"}{$BOTTOM}{/block}

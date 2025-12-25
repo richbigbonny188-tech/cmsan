@@ -1,0 +1,15 @@
+{*  ==========================================================================
+product_info_product_description.html
+========================================================================== *}
+
+{block name="product_info_product_description_tab_panels_rating_body_content"}
+<div class="product-info-rating-heading">
+    <div class="average">
+        {$AGGREGATE_REVIEW_DATA.averageRating|number_format:1:",":""}
+    </div>
+    {include file="get_usermod:{$tpl_path}rating_stars.html" rating_rounded=$AGGREGATE_REVIEW_DATA.averageRating rating_count=$AGGREGATE_REVIEW_DATA.count }
+</div>
+<div id="product-ratings" class="product-info-rating">
+    {$MODULE_products_reviews}
+</div>
+{/block}

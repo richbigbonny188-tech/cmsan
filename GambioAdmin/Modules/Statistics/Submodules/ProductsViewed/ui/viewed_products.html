@@ -1,0 +1,91 @@
+{extends file="layout.html"}
+{load_language_text section="stats_products_viewed" name="productsViewed"}
+{load_language_text section="stats_products_purchased" name="productsPurchased"}
+{load_language_text section="customer" name="pagination"}
+
+{block name="layout_content_header_container"}
+    <div class="content-header not-scrollable">
+        {block name="layout_content_header_title"}
+            <h2 class="content-title">{$productsViewed.HEADING_TITLE}</h2>
+        {/block}
+
+        {block name="layout_content_navigation"}
+            <div class="content-navigation" style="align-self: normal;">
+                <div class="nav-item">
+                    <a href="{{$baseUrl}}/admin/statistics/products/purchased">{$productsPurchased.TAB_TITLE}</a>
+                </div>
+                <div class="nav-item no-link">
+                    <a href="#" class="pe-none">{$productsViewed.TAB_TITLE}</a>
+                </div>
+            </div>
+        {/block}
+    </div>
+{/block}
+
+{block name="content"}
+    <div class="table-container">
+        <div class="table--header">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{$productsViewed.TABLE_HEADING_PRODUCTS}</th>
+                    <th>{$productsViewed.TABLE_HEADING_VIEWED}</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <table class="table table--content">
+            <tbody>
+            {if $products|count > 0}
+                {foreach item=product from=$products}
+                <tr>
+                    <td><a href="{$baseUrl}/admin/categories.php?pID={$product.id}&action=new_product" class="fw-bold">{$product.name}</a> <span class="text-muted fs-6">({$product.language})</span></td>
+                    <td>{$product.views}</td>
+                </tr>
+                {/foreach}
+            {else}
+                <tr>
+                    <td colspan="2">
+                        <div class="text-center py-1">{$productsViewed.TEXT_NO_RESULT}.</div>
+                    </td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+
+        <div class="table--footer">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="pagination d-flex align-items-center justify-content-end ms-auto">
+                    <span>{$_meta.pagination.from} {$adminGeneral.pagination_to} {$_meta.pagination.to} ({$adminGeneral.pagination_from} {$_meta.pagination.totalItems} {$pageTitle|lower})</span>
+                    {assign var="hasPrevPage" value=$_meta.pagination.page>1}
+                    <a href="?page={$_meta.pagination.page - 1}" title="Vorherige Seite" class="btn btn-sm btn-default settings-btn{if !$hasPrevPage} disabled{/if}" role="button">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <span>{$adminGeneral.pagination_page}</span>
+                    <div class="d-inline-block mx-2">
+                        <form action="{$baseUrl}/admin/statistics/products/viewed" method="get">
+                            <select
+                                name="page"
+                                onchange="this.form.submit();"
+                                class="form-select form-select-sm"
+                                {if $products|count <= 0}disabled="disabled"{/if}
+                            >
+                                {for $i = 1; $i <= $_meta.pagination.maxPage; $i++}
+                                <option{if $i === $_meta.pagination.page} selected{/if}>{$i}</option>
+                                {/for}
+                            </select>
+                        </form>
+                    </div>
+                    <span class="ms-0">
+                            {$adminGeneral.pagination_from} <strong>{$_meta.pagination.maxPage}</strong>
+                        </span>
+                    {assign var="hasNextPage" value=!($_meta.pagination.page+1 > $_meta.pagination.maxPage)}
+                    <a href="?page={$_meta.pagination.page + 1}" title="Nächste Seite" class="btn btn-sm btn-default settings-btn{if !$hasNextPage} disabled{/if}" role="button">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

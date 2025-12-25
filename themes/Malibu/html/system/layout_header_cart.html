@@ -1,0 +1,40 @@
+{load_language_text section="box_cart"}
+
+{block name="layout_header_cart"}
+	<nav id="cart-container" class="navbar-cart" data-gambio-widget="menu cart_dropdown" data-menu-switch-element-position="false">
+		{block name="layout_header_cart_list"}
+			<ul class="cart-container-inner">
+				{block name="layout_header_cart_list_item"}
+					<li>
+						<a href="{'shopping_cart.php'|xtc_href_link}" class="dropdown-toggle">
+							{block name="layout_header_cart_basket"}
+								<img src="{$theme_path}images/svgs/basket.svg" alt="" class="gx-cart-basket svg--inject">
+								<span class="cart">
+									{$txt.heading_cart}<br />
+									<span class="products">
+										{block name="layout_header_cart_basket_total"}{$TOTAL}{/block}
+									</span>
+								</span>
+							{/block}
+							{block name="layout_header_cart_products_count"}
+								{if $showProductsCount == 'true'}
+									<span class="cart-products-count{if $PRODUCTS == 0} hidden{/if}">
+										{$PRODUCTS}
+									</span>
+								{else}
+									<span class="cart-products-count{if $productsCount == 0} hidden{elseif $productsCount > 99} over99{/if}">
+										{$productsCount}
+									</span>
+								{/if}
+							{/block}
+						</a>
+
+						{block name="layout_header_cart_dropdown_wrapper"}
+							{include file="get_usermod:{$tpl_path}layout_header_cart_dropdown.html"}
+						{/block}
+					</li>
+				{/block}
+			</ul>
+		{/block}
+	</nav>
+{/block}

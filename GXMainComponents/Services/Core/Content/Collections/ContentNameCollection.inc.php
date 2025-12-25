@@ -1,0 +1,32 @@
+<?php
+
+/* --------------------------------------------------------------
+   ContentNameCollection.inc.php 2019-04-12
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2019 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+/**
+ * Class ContentNameCollection
+ *
+ * This class represents a collection of localized content names
+ *
+ * @category   System
+ * @package    Content
+ */
+class ContentNameCollection extends AbstractLocalizedContentAttributeCollection
+{
+    /**
+     * Return the valid item type
+     *
+     * @return string
+     */
+    protected function _getValidType(): string
+    {
+        return ContentName::class;
+    }
+}
