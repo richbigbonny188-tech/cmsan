@@ -1,0 +1,163 @@
+{* --------------------------------------------------------------
+	internetmarke_form_single_v2.html 2018-11-06
+	Gambio GmbH
+	http://www.gambio.de
+	Copyright (c) 2015 Gambio GmbH
+	Released under the GNU General Public License (Version 2)
+	[http://www.gnu.org/licenses/gpl-2.0.html]
+	--------------------------------------------------------------
+*}
+
+<div class="gx-container" id="inetmarke_single_container">
+	<form id="inetmarke_single_form" action="#" method="POST" class="container">
+		<input type="hidden" name="orders_id" value="{$orders_id}">
+		<div class="col-md-5">
+			<fieldset class="form-horizontal receiver_data">
+				<div class="heading row">##receiver_data</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_firstname</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[firstname]" value="{$receiver.firstname}" maxlength="35"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_lastname</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[lastname]" value="{$receiver.lastname}" maxlength="35"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_company</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[company]" value="{$receiver.company}" maxlength="50"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_additional</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[additional]" value="{$receiver.additional}" maxlength="50"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_street</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[street]" value="{$receiver.street}" maxlength="50"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_houseno</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[houseno]" value="{$receiver.houseno}" maxlength="10"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_zip</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[zip]" value="{$receiver.zip}" maxlength="10"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_city</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="receiver[city]" value="{$receiver.city}" maxlength="35"></div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-5">##label_receiver_country</label>
+					<div class="col-md-7">
+						<select class="form-control" name="receiver[country]">
+							{foreach from=$countries item=country}
+							<option value="{$country.iso3}" {($receiver.country_iso2 == $country.iso2) ? 'selected="selected"' : ''}>
+								{$country.name}
+							</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			
+			<fieldset class="form-horizontal walletinfo">
+				<div class="heading row">##wallet</div>
+				<div class="form-group">
+					<label class="col-md-5">##your_wallet_balance</label>
+					<div class="col-md-7">
+						<span class="{if $walletBalanceValue >= $minProductPrice}balance-ok{else}balance-low{/if}">{$walletBalance}</span> – <a href="{$wallet_url}" target="_blank">##wallet</a>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+
+		<div class="col-md-7 container-liquid">
+			<fieldset class="form-horizontal col-md-10">
+				<div class="heading row">##voucher_data</div>
+				<div class="form-group">
+					<label class="col-md-5">##product</label>
+					<div class="col-md-7">
+						<select name="productCode" class="previewOption form-control">
+							{foreach $productList as $productId => $product}
+							<option
+								value="{$product->extendedIdentifier->externIdentifier.0->id}"
+								class="dest_{$product->extendedIdentifier->destination} {if ($prefs.productcode == $product->extendedIdentifier->externIdentifier.0->id)}preferred{/if}"
+								{($prefs.productcode == $product->extendedIdentifier->externIdentifier.0->id) ? 'selected="selected"' : ''}
+								{if $respectLowWalletBalance && ($product->priceDefinition->price->calculatedGrossPrice->value > $walletBalanceValue)}disabled{/if}
+							>
+								{$product->extendedIdentifier->externIdentifier.0->name}
+								{$product->extendedIdentifier->destination}
+								{if is_array($contractProducts[$productId]) && $contractProducts[$productId]['price']}
+									<strong>{$contractProducts[$productId]['price']/100|string_format:"%.2f"}
+								{else}
+									<strong>{$product->priceDefinition->price->calculatedGrossPrice->value|string_format:"%.2f"}
+								{/if}
+								{$product->priceDefinition->price->calculatedGrossPrice->currency}</strong>
+							</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-5">##voucher_layout</label>
+					<div class="col-md-7">
+						<select name="voucherLayout" class="previewOption form-control">
+							<option value="FrankingZone" {($prefs.voucherlayout == 'FrankingZone') ? 'selected="selected"' : ''}>
+								##voucher_layout_frankingzone
+							</option>
+							<option value="AddressZone" {($prefs.voucherlayout == 'AddressZone') ? 'selected="selected"' : ''}>
+								##voucher_layout_addresszone
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-5">##page_format</label>
+					<div class="col-md-7">
+						<select name="pageFormatID" class="form-control">
+							{foreach from=$pageFormats item=pageFormat}
+							<option value="{$pageFormat->id}" {($prefs.pageformatid == $pageFormat->id) ? 'selected="selected"' : ''}>
+								{$pageFormat->name}
+								{$pageFormat->pageLayout->orientation}
+								(<span class="pagegrid">{$pageFormat->pageLayout->labelCount->labelX} x {$pageFormat->pageLayout->labelCount->labelY}</span> ##labels)
+							</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+				<div class="form-group hidden">
+					<label class="col-md-5">##position_page</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="position_page" value="1"></div>
+				</div>
+				<div class="form-group pagepos">
+					<label class="col-md-5">##position_labelx</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="position_labelx" value="1"></div>
+				</div>
+				<div class="form-group pagepos">
+					<label class="col-md-5">##position_labely</label>
+					<div class="col-md-7"><input class="form-control" type="text" name="position_labely" value="1"></div>
+				</div>
+			</fieldset>
+			<fieldset class="pagepos col-md-2">
+				<div class="heading">##position_on_page</div>
+				<div id="pagepos_widget"></div>
+			</fieldset>
+			<div class="col-md-12 inetmarke_preview_span">
+				<div id="inetmarke_preview_area">
+					<div id="inetmarke_preview"></div>
+					<div class="sender_line">{$sender.company} - {$sender.firstname} {$sender.lastname} - {$sender.street} {$sender.houseno} - {$sender.zip} {$sender.city}</div>
+					<div class="receiver_block">
+						<span id="receiver_firstname">{$receiver.firstname}</span> <span id="receiver_lastname">{$receiver.lastname}</span><br>
+						<span id="receiver_company">{$receiver.company}</span>
+						<span id="receiver_additional">{$receiver.additional}</span>
+						<span id="receiver_street">{$receiver.street}</span> <span id="receiver_houseno">{$receiver.houseno}</span><br>
+						<span id="receiver_zip">{$receiver.zip}</span> <span id="receiver_city">{$receiver.city}</span><br>
+						<span id="receiver_country">{$receiver.country}</span><br>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>
+
