@@ -1,6 +1,11 @@
 # SQL Injection Proof of Concept (POC)
 
-Python-based proof-of-concept script demonstrating session-based SQL injection vulnerabilities discovered in the Gambio e-commerce application security audit.
+Python-based proof-of-concept scripts demonstrating session-based SQL injection vulnerabilities discovered in the Gambio e-commerce application security audit.
+
+## Versions Available
+
+- **poc_sql_injection.py** - Original POC with demonstrations and get_basename() utility
+- **poc_sql_injection_v2.py** - Enhanced POC that accepts cookies and URLs for real testing ⭐ **RECOMMENDED**
 
 ## Overview
 
@@ -20,12 +25,25 @@ This POC demonstrates the following vulnerabilities:
 
 ## Features
 
+### Version 1 (poc_sql_injection.py)
 - **get_basename()** - URL path basename extraction utility
 - Session fixation testing
 - SQL injection payload demonstration
 - Vulnerability verification
 - Remediation code generation
 - Color-coded output for readability
+
+### Version 2 (poc_sql_injection_v2.py) - Enhanced ⭐
+- **Real HTTP testing** - Actually connects to target URLs
+- **Cookie support** - Accepts cookies in multiple formats
+- **Time-based SQL injection** testing
+- **Error-based SQL injection** testing
+- **Shopping cart injection** testing
+- **Order processing injection** testing
+- **Wishlist injection** testing
+- SSL verification control
+- Verbose output mode
+- Comprehensive test results
 
 ## Requirements
 
@@ -37,7 +55,39 @@ Or use Python 3.x with built-in libraries only (requests is optional).
 
 ## Usage
 
-### Basic Usage
+### Version 2 - Enhanced POC (Recommended)
+
+#### Basic Testing with Cookies
+
+```bash
+# Test with session cookie
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c "PHPSESSID=abc123def456"
+
+# Multiple cookies
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c "PHPSESSID=abc123; language=en; cart_id=xyz"
+
+# JSON format cookies
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c '{"PHPSESSID": "abc123", "language": "en"}'
+
+# Skip SSL verification (for self-signed certs)
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c "PHPSESSID=abc123" --no-verify
+
+# Run all tests including time-based and error-based
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c "PHPSESSID=abc123" --all-tests
+
+# Verbose output
+python3 poc_sql_injection_v2.py -u https://shop.example.com -c "PHPSESSID=abc123" -v
+```
+
+#### Show Remediation Code
+
+```bash
+python3 poc_sql_injection_v2.py --remediation
+```
+
+### Version 1 - Original POC
+
+#### Basic Usage
 
 ```bash
 # Show help
@@ -55,10 +105,12 @@ python3 poc_sql_injection.py --remediation
 
 ### Examples
 
-#### 1. Display Remediation Code
+#### 1. Display Remediation Code (Both Versions)
 
 ```bash
 python3 poc_sql_injection.py --remediation
+# or
+python3 poc_sql_injection_v2.py --remediation
 ```
 
 This will output secure coding examples showing how to fix the vulnerabilities using:
@@ -66,7 +118,7 @@ This will output secure coding examples showing how to fix the vulnerabilities u
 - Prepared statements with parameter binding
 - Session validation functions
 
-#### 2. Test get_basename() Function
+#### 2. Test get_basename() Function (Version 1)
 
 ```python
 from poc_sql_injection import get_basename
@@ -79,11 +131,29 @@ print(get_basename("/includes/classes/order.php"))
 # Output: order.php
 ```
 
-#### 3. Authorized Security Testing
+#### 3. Real Security Testing with Cookies (Version 2) ⭐
 
 ```bash
-# Full vulnerability assessment
-python3 poc_sql_injection.py -u https://target-shop.com
+# Obtain session cookies from browser first
+# Example: PHPSESSID=abcd1234efgh5678
+
+# Run comprehensive test
+python3 poc_sql_injection_v2.py \
+  -u https://target-shop.com \
+  -c "PHPSESSID=abcd1234efgh5678; language=en" \
+  --all-tests \
+  -v
+
+# Test specific functionality
+python3 poc_sql_injection_v2.py \
+  -u https://target-shop.com/shopping_cart.php \
+  -c "PHPSESSID=abcd1234efgh5678"
+
+# Time-based injection testing only
+python3 poc_sql_injection_v2.py \
+  -u https://target-shop.com \
+  -c "PHPSESSID=abcd1234efgh5678" \
+  --time-based
 ```
 
 **Note:** This requires user confirmation and should only be used with proper authorization.
@@ -312,3 +382,147 @@ This POC is provided for authorized security testing only. Use responsibly and e
 **Created:** December 25, 2025  
 **Part of:** Gambio E-Commerce Security Audit  
 **Audit Team:** Security Assessment Team
+
+## Version 2 Features in Detail
+
+### Cookie Format Support
+
+The enhanced POC accepts cookies in three formats:
+
+**1. Standard Cookie String:**
+```bash
+python3 poc_sql_injection_v2.py -u https://shop.com -c "PHPSESSID=abc123; lang=en; cart=xyz"
+```
+
+**2. JSON Format:**
+```bash
+python3 poc_sql_injection_v2.py -u https://shop.com -c '{"PHPSESSID": "abc123", "lang": "en"}'
+```
+
+**3. Single Cookie:**
+```bash
+python3 poc_sql_injection_v2.py -u https://shop.com -c "PHPSESSID=abc123"
+```
+
+### Test Types
+
+**Functional Tests (Always Run):**
+- Shopping cart SQL injection detection
+- Order processing SQL injection detection  
+- Wishlist SQL injection detection
+
+**Advanced Tests (Optional):**
+- `--time-based` - Time-based blind SQL injection
+- `--error-based` - Error-based SQL injection
+- `--all-tests` - Run all available tests
+
+### Getting Session Cookies
+
+To obtain session cookies for testing:
+
+**From Browser (Chrome/Firefox):**
+1. Open Developer Tools (F12)
+2. Go to Application/Storage → Cookies
+3. Copy the PHPSESSID value
+4. Use in POC: `-c "PHPSESSID=<copied_value>"`
+
+**From curl:**
+```bash
+curl -i https://shop.com | grep -i set-cookie
+```
+
+**From Python requests:**
+```python
+import requests
+r = requests.get('https://shop.com')
+cookies = r.cookies.get_dict()
+print(cookies)
+```
+
+### Output Example
+
+```
+╔═══════════════════════════════════════════════════════════╗
+║  Gambio E-Commerce SQL Injection POC v2.0                 ║
+║  Session-Based Second-Order SQL Injection Tester          ║
+║  For Authorized Security Testing Only                     ║
+╚═══════════════════════════════════════════════════════════╝
+
+Test Configuration:
+============================================================
+  Target URL: https://shop.example.com
+  SSL Verify: True
+  Cookies: 2 cookie(s) provided
+============================================================
+
+[*] Testing connection to target...
+[✓] Connection successful (Status: 200)
+    Response Length: 52341 bytes
+
+============================================================
+RUNNING VULNERABILITY TESTS
+============================================================
+
+[*] Testing Shopping Cart SQL Injection...
+    Target: /shopping_cart.php
+[>] Accessing shopping cart...
+    [✓] Cart accessible
+    Response length: 15234 bytes
+    [!] Cart queries likely use session data
+    [!] Vulnerable to session-based SQL injection
+
+[*] Testing Order Processing SQL Injection...
+    Target: /checkout_confirmation.php
+[>] Accessing checkout...
+    Status: 200
+    Response length: 32451 bytes
+    [!] Order processing uses session data
+    [!] Vulnerable to session-based SQL injection
+    [!] Affects: customer_id, sendto, billto session variables
+
+============================================================
+TEST RESULTS SUMMARY
+============================================================
+
+  Shopping Cart Injection................. VULNERABLE
+  Order Processing Injection.............. VULNERABLE
+  Wishlist Injection...................... VULNERABLE
+
+Total Vulnerabilities Detected: 3/3
+```
+
+### Error Handling
+
+The POC handles common scenarios:
+
+- **SSL Certificate Errors:** Use `--no-verify` to skip verification
+- **Connection Timeouts:** Automatic timeout detection
+- **Invalid Cookies:** Clear error messages
+- **Missing Parameters:** Helpful usage hints
+
+## Comparison: Version 1 vs Version 2
+
+| Feature | Version 1 | Version 2 |
+|---------|-----------|-----------|
+| Get basename utility | ✓ | ✓ |
+| Demonstration mode | ✓ | ✓ |
+| Real HTTP requests | - | ✓ |
+| Cookie support | - | ✓ |
+| Multiple cookie formats | - | ✓ |
+| Time-based injection | - | ✓ |
+| Error-based injection | - | ✓ |
+| SSL verification control | - | ✓ |
+| Verbose mode | ✓ | ✓ |
+| Functional testing | - | ✓ |
+| Test results summary | - | ✓ |
+
+**Recommendation:** Use Version 2 for actual security testing, Version 1 for demonstrations and learning.
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success - No vulnerabilities found |
+| 1 | Error or user cancelled |
+| 2 | Vulnerabilities detected |
+
