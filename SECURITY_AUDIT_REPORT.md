@@ -10,7 +10,7 @@
 
 This security audit examined the provided Gambio GX source code archive to identify HTTP-reachable security vulnerabilities with provable exploitation paths.
 
-**Result: 1 Critical + 1 High + 11 Medium + 5 Low Vulnerabilities Identified**
+**Result: 1 Critical + 1 High + 15 Medium + 5 Low Vulnerabilities Identified**
 
 ---
 
@@ -494,6 +494,72 @@ The PHP session ID is exposed in JavaScript. Combined with XSS, this enables:
 **Impact:** Low - Requires XSS to exploit, but enables session theft  
 **Severity:** Low
 
+### 16. SQL Injection via Column Name in helperFunctions.php
+
+**File:** `callback/sofort/helperFunctions.php`  
+**Line:** 112
+
+```php
+$query = 'SELECT '.HelperFunctions::escapeSql($field).' FROM sofort_orders_notification WHERE sofort_orders_id = "'.HelperFunctions::escapeSql($sofortOrdersId).'" ORDER BY date_time DESC LIMIT 1';
+```
+
+**Analysis:**  
+The `$field` parameter is used directly in the SELECT clause. While `escapeSql()` escapes string values, it doesn't protect against SQL injection when used for column/table names. An attacker could inject:
+- `*` to select all columns
+- Subqueries: `(SELECT password FROM admin_users)` 
+- UNION-based injection
+
+**Impact:** Medium - Database information disclosure  
+**Severity:** Medium
+
+### 17. SQL Injection via Language Directory in sofortOrderShopTools.php
+
+**File:** `callback/sofort/ressources/scripts/sofortOrderShopTools.php`  
+**Line:** 222
+
+```php
+$language_id_query = shopDbQuery("SELECT languages_id FROM ".TABLE_LANGUAGES." WHERE directory = '".$order->info['language']."' LIMIT 1");
+```
+
+**Analysis:**  
+The `$order->info['language']` value from order data is used directly in SQL without escaping. If an attacker can manipulate order language data, they can inject SQL.
+
+**Impact:** Medium - SQL injection via order manipulation  
+**Severity:** Medium
+
+### 18. SQL Injection via Session Language in sofortOrderShopTools.php
+
+**File:** `callback/sofort/ressources/scripts/sofortOrderShopTools.php`  
+**Line:** 182
+
+```php
+$orders_status_query = shopDbQuery("select orders_status_id, orders_status_name from ".TABLE_ORDERS_STATUS." where language_id = '".$lang."'");
+```
+
+**Analysis:**  
+The `$lang` variable comes from `$_SESSION['languages_id']` (line 178). While session data is typically trusted, session fixation or manipulation attacks could exploit this.
+
+**Impact:** Medium - SQL injection via session manipulation  
+**Severity:** Medium
+
+### 19. SQL Injection via Orders Product ID in sofortOrderSynchronisation.php
+
+**File:** `callback/sofort/ressources/scripts/sofortOrderSynchronisation.php`  
+**Lines:** 463, 465
+
+```php
+$query = "DELETE FROM ".TABLE_ORDERS_PRODUCTS." WHERE orders_products_id = '".$ordersProductsId."'";
+shopDbQuery($query);
+$query = "DELETE FROM ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." WHERE orders_products_id = '".$ordersProductsId."'";
+shopDbQuery($query);
+```
+
+**Analysis:**  
+The `$ordersProductsId` parameter is used directly in DELETE queries without proper escaping or type casting. If this value comes from user input, it enables SQL injection.
+
+**Impact:** Medium - Data deletion via SQL injection  
+**Severity:** Medium
+
 ---
 
 ## ADDITIONAL OBSERVATIONS (Non-Exploitable Without Additional Conditions)
@@ -572,7 +638,7 @@ if (isset($metaData['payment_class'])) {
 
 ## CONCLUSION
 
-The security audit identified **1 Critical**, **1 High**, **11 Medium**, and **5 Low** vulnerabilities in the Gambio GX source code:
+The security audit identified **1 Critical**, **1 High**, **15 Medium**, and **5 Low** vulnerabilities in the Gambio GX source code:
 
 ### Critical
 1. **Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
@@ -592,13 +658,17 @@ The security audit identified **1 Critical**, **1 High**, **11 Medium**, and **5
 11. **Arbitrary File Write via Logger** in sofortLib_Logger.inc.php - URI parameter not validated in fopen()
 12. **CSRF Token Exposure** in cloudloader_core.php/packages.php - Tokens exposed in JavaScript global variables
 13. **HTTP Parameter Pollution** in sofortReturn.php - User input directly concatenated to URL parameters
+14. **SQL Injection via Column Name** in helperFunctions.php - `$field` parameter used in SELECT without proper validation
+15. **SQL Injection via Language Directory** in sofortOrderShopTools.php - Order language data in SQL query
+16. **SQL Injection via Session Language** in sofortOrderShopTools.php - Session language_id in SQL query
+17. **SQL Injection via Product ID** in sofortOrderSynchronisation.php - Unescaped ordersProductsId in DELETE
 
 ### Low
-14. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
-15. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
-16. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
-17. **Log File Path Traversal** in sofortLib_Logger.inc.php - Path not sanitized in logRotate()
-18. **Session ID Exposure** in cloudloader_core.php/packages.php - Session ID exposed in JavaScript
+18. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
+19. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
+20. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
+21. **Log File Path Traversal** in sofortLib_Logger.inc.php - Path not sanitized in logRotate()
+22. **Session ID Exposure** in cloudloader_core.php/packages.php - Session ID exposed in JavaScript
 
 The remaining code analyzed contains appropriate security controls (input validation, SQL escaping, domain whitelisting) that prevent exploitation of common vulnerability classes.
 
