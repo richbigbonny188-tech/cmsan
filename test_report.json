@@ -1,0 +1,1891 @@
+{
+  "audit_metadata": {
+    "target": ".",
+    "timestamp": "2025-12-25T18:27:31.381Z",
+    "framework_version": "1.0.0"
+  },
+  "statistics": {
+    "total_entrypoints": 127,
+    "total_dataflows": 211,
+    "flows_eliminated": 83,
+    "vulnerabilities_found": 9
+  },
+  "entrypoints": [
+    {
+      "file_path": "address_book_process.php",
+      "handler": "address_book_process.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "delete",
+        "edit"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "products_new.php",
+      "handler": "products_new.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "page"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "logoff.php",
+      "handler": "logoff.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "password_double_opt.php",
+      "handler": "password_double_opt.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "dynamic_theme_style.css.php",
+      "handler": "dynamic_theme_style.css.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "renew_cache",
+        "style_name",
+        "theme"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gambio_hub_callback.php",
+      "handler": "gambio_hub_callback.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_payment_address.php",
+      "handler": "checkout_payment_address.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "popup_content.php",
+      "handler": "popup_content.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "coID",
+        "gm_boosted_content",
+        "lightbox_mode"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "customThemeJavaScriptCacheControl.php",
+      "handler": "customThemeJavaScriptCacheControl.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "directory",
+        "script"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gm_account_delete.php",
+      "handler": "gm_account_delete.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "advanced_search_result.php",
+      "handler": "advanced_search_result.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "categories_id",
+        "customer_country_id",
+        "customer_zone_id",
+        "fallback",
+        "filter_categories_id",
+        "filter_fv_id",
+        "filter_price_max",
+        "filter_price_min",
+        "filter_url",
+        "fl_unavailable",
+        "inc_subcat",
+        "keywords",
+        "listing_count",
+        "listing_sort",
+        "manufacturers_id",
+        "page",
+        "pfrom",
+        "pto",
+        "value_conjunction",
+        "view_mode"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_ipayment.php",
+      "handler": "checkout_ipayment.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REQUEST_METHOD",
+        "REQUEST_URI",
+        "action",
+        "back_button",
+        "ret_errormsg",
+        "ret_param_checksum",
+        "ret_status",
+        "ret_url_checksum"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "popup_coupon_help.php",
+      "handler": "popup_coupon_help.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "cID"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gm_price_offer.php",
+      "handler": "gm_price_offer.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "id",
+        "products_id",
+        "properties_values_ids"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "download.php",
+      "handler": "download.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "id",
+        "order"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "product_reviews_write.php",
+      "handler": "product_reviews_write.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gambio_store.php",
+      "handler": "gambio_store.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "auto_updater_admin_check",
+        "do"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "specials.php",
+      "handler": "specials.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "page"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop-bewertungen.php",
+      "handler": "shop-bewertungen.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop-reviews.php",
+      "handler": "shop-reviews.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "ekomi_send_mails.php",
+      "handler": "ekomi_send_mails.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "token"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "account_edit.php",
+      "handler": "account_edit.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "yatego.php",
+      "handler": "yatego.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "action",
+        "mode"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "config.php",
+      "handler": "config.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Admin",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "api_v3.php",
+      "handler": "api_v3.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "mailhive.php",
+      "handler": "mailhive.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Admin",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "advanced_search.php",
+      "handler": "advanced_search.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "filter_fv_id",
+        "value_conjunction"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "create_account.php",
+      "handler": "create_account.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "checkout_started"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "api-it-recht-kanzlei.php",
+      "handler": "api-it-recht-kanzlei.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REMOTE_ADDR",
+        "REQUEST_METHOD"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Trusts proxy headers"
+    },
+    {
+      "file_path": "print_order.php",
+      "handler": "print_order.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "oID"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "popup_image.php",
+      "handler": "popup_image.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "imgID",
+        "pID"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "account_history_info.php",
+      "handler": "account_history_info.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "order_id"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gv_redeem.php",
+      "handler": "gv_redeem.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "gv_no"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "newsletter.php",
+      "handler": "newsletter.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "refhny.php",
+      "handler": "refhny.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "release_info.php",
+      "handler": "release_info.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_success.php",
+      "handler": "checkout_success.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "product_info.php",
+      "handler": "product_info.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "action",
+        "cID",
+        "combi_id",
+        "info",
+        "products_id"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "popup_search_help.php",
+      "handler": "popup_search_help.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shopping_cart.php",
+      "handler": "shopping_cart.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "remove_disabled_products"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "ipayment_htrigger.php",
+      "handler": "ipayment_htrigger.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REMOTE_ADDR",
+        "REQUEST_METHOD",
+        "trx_paymenttyp"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Trusts proxy headers"
+    },
+    {
+      "file_path": "print_product_info.php",
+      "handler": "print_product_info.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "products_id"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "iloxx_track.php",
+      "handler": "iloxx_track.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REQUEST_URI",
+        "iloxxorderprice",
+        "iloxxstatusdate",
+        "iloxxstatusid",
+        "iloxxtrackid",
+        "key",
+        "order_id"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "withdrawal.php",
+      "handler": "withdrawal.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_shipping.php",
+      "handler": "checkout_shipping.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "magnaCallback.php",
+      "handler": "magnaCallback.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "HTTP_REFERER",
+        "HTTP_USER_AGENT",
+        "MLDEBUG",
+        "REQUEST_TIME",
+        "SCRIPT_FILENAME",
+        "SCRIPT_NAME",
+        "arguments",
+        "argv",
+        "function",
+        "includes",
+        "language",
+        "passphrase"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_payone_addresscheck.php",
+      "handler": "checkout_payone_addresscheck.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "wish_list.php",
+      "handler": "wish_list.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "info_message",
+        "remove_disabled_products"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "address_book.php",
+      "handler": "address_book.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "account.php",
+      "handler": "account.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "action",
+        "gm_content"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "error.php",
+      "handler": "error.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "HTTP_ACCEPT_LANGUAGE",
+        "code"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "version_info.php",
+      "handler": "version_info.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "shop_key"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "api.php",
+      "handler": "api.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REQUEST_URI"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gm_javascript.js.php",
+      "handler": "gm_javascript.js.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "globals",
+        "page",
+        "section"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "payone_txstatus.php",
+      "handler": "payone_txstatus.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REMOTE_ADDR",
+        "REQUEST_METHOD"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Trusts proxy headers"
+    },
+    {
+      "file_path": "checkout_process.php",
+      "handler": "checkout_process.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop.php",
+      "handler": "shop.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "product_reviews.php",
+      "handler": "product_reviews.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "products_id"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "magnalister_compatibility_check.php",
+      "handler": "magnalister_compatibility_check.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "HTTP_ACCEPT_LANGUAGE"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "trusted_shops_cron.php",
+      "handler": "trusted_shops_cron.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "key"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_confirmation.php",
+      "handler": "checkout_confirmation.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "login.php",
+      "handler": "login.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "login_admin"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "findologic_config.inc.php",
+      "handler": "findologic_config.inc.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "autocomplete.php",
+      "handler": "autocomplete.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "login_admin.php",
+      "handler": "login_admin.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "2fa_token",
+        "cemail",
+        "check_2fa",
+        "cid",
+        "confirm_2fa",
+        "cpassword",
+        "email_address",
+        "err",
+        "password",
+        "repair",
+        "rm"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "ec_proxy.php",
+      "handler": "ec_proxy.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "HTTP_USER_AGENT"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Trusts proxy headers"
+    },
+    {
+      "file_path": "account_password.php",
+      "handler": "account_password.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_shipping_address.php",
+      "handler": "checkout_shipping_address.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "create_guest_account.php",
+      "handler": "create_guest_account.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "checkout_started"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "account_history.php",
+      "handler": "account_history.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "page"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "findologic_export.php",
+      "handler": "findologic_export.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "debug",
+        "lang",
+        "limit",
+        "shop",
+        "start"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "request_port.php",
+      "handler": "request_port.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "BUYproducts_id",
+        "action",
+        "combis_id",
+        "module",
+        "need_qty",
+        "products_id",
+        "properties_values_ids"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop-bewertungen-schreiben.php",
+      "handler": "shop-bewertungen-schreiben.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "index.php",
+      "handler": "index.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "REQUEST_URI",
+        "cat",
+        "customer_country_id",
+        "customer_zone_id",
+        "feature_categories_id",
+        "filter_fv_id",
+        "filter_id",
+        "filter_price_max",
+        "filter_price_min",
+        "gm_boosted_category",
+        "listing_count",
+        "listing_sort",
+        "manufacturers_id",
+        "page",
+        "sort",
+        "value_conjunction",
+        "view_mode"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "display_vvcodes.php",
+      "handler": "display_vvcodes.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop-reviews-write.php",
+      "handler": "shop-reviews-write.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "shop_content.php",
+      "handler": "shop_content.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [
+        "email",
+        "message_body",
+        "name",
+        "privacy_accepted",
+        "subject"
+      ],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "redirect.php",
+      "handler": "redirect.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "gv_send.php",
+      "handler": "gv_send.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_payment.php",
+      "handler": "checkout_payment.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "checkout_payone_cr.php",
+      "handler": "checkout_payone_cr.php",
+      "transport": "HTTP",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "callback/postfinance/callback.php",
+      "handler": "callback.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/swixpostfinancecheckout/callback.php",
+      "handler": "callback.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/sofortInstallIdeal.php",
+      "handler": "sofortInstallIdeal.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/helperFunctions.php",
+      "handler": "helperFunctions.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/callback.php",
+      "handler": "callback.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [
+        "action",
+        "paymentSecret"
+      ],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/sofortInstall.php",
+      "handler": "sofortInstall.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/sofort.php",
+      "handler": "sofort.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [
+        "error_codes",
+        "payment_error"
+      ],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/confirmInvoice.php",
+      "handler": "confirmInvoice.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_confirm_sr.inc.php",
+      "handler": "sofortLib_confirm_sr.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_classic_notification.inc.php",
+      "handler": "sofortLib_classic_notification.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_cancel_sr.inc.php",
+      "handler": "sofortLib_cancel_sr.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_refund.inc.php",
+      "handler": "sofortLib_refund.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_transaction_data.inc.php",
+      "handler": "sofortLib_transaction_data.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_http.inc.php",
+      "handler": "sofortLib_http.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_ideal_banks.inc.php",
+      "handler": "sofortLib_ideal_banks.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_edit_sr.inc.php",
+      "handler": "sofortLib_edit_sr.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_notification.inc.php",
+      "handler": "sofortLib_notification.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_debit.inc.php",
+      "handler": "sofortLib_debit.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_sofortueberweisung_classic.php",
+      "handler": "sofortLib_sofortueberweisung_classic.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_abstract.inc.php",
+      "handler": "sofortLib_abstract.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_ideal_classic.php",
+      "handler": "sofortLib_ideal_classic.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib.php",
+      "handler": "sofortLib.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_multipay.inc.php",
+      "handler": "sofortLib_multipay.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/sofortLib_Logger.inc.php",
+      "handler": "sofortLib_Logger.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/xml_to_array.php",
+      "handler": "xml_to_array.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/array_to_xml.php",
+      "handler": "array_to_xml.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/array_to_xml_exception.php",
+      "handler": "array_to_xml_exception.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/pnag_article.php",
+      "handler": "pnag_article.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/class.abstract_document.inc.php",
+      "handler": "class.abstract_document.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/xml_to_array_node.php",
+      "handler": "xml_to_array_node.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/class.invoice.inc.php",
+      "handler": "class.invoice.inc.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/xml_to_array_exception.php",
+      "handler": "xml_to_array_exception.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/builder.php",
+      "handler": "builder.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/pnag_customer.php",
+      "handler": "pnag_customer.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/elements/sofort_html_tag.php",
+      "handler": "sofort_html_tag.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/elements/sofort_element.php",
+      "handler": "sofort_element.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/elements/sofort_text.php",
+      "handler": "sofort_text.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "callback/sofort/library/helper/elements/sofort_tag.php",
+      "handler": "sofort_tag.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "ext/it_recht/itrk_content.php",
+      "handler": "itrk_content.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "ext/heidelpay/heidelpayGW_push.php",
+      "handler": "heidelpayGW_push.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [
+        "REMOTE_ADDR"
+      ],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "ext/heidelpay/heidelpayGW_gateway.php",
+      "handler": "heidelpayGW_gateway.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [
+        "HTTPS"
+      ],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "ext/heidelpay/heidelpayGW_response.php",
+      "handler": "heidelpayGW_response.php",
+      "transport": "Callback",
+      "methods": [
+        "POST"
+      ],
+      "parameters": [
+        "ACCOUNT_BANK",
+        "ACCOUNT_BIC",
+        "ACCOUNT_BRAND",
+        "ACCOUNT_EXPIRY_MONTH",
+        "ACCOUNT_EXPIRY_YEAR",
+        "ACCOUNT_HOLDER",
+        "ACCOUNT_IBAN",
+        "ACCOUNT_IDENTIFICATION",
+        "ACCOUNT_NUMBER",
+        "CONTACT_EMAIL",
+        "CRITERION_BILLSAFE_ACCOUNTNUMBER",
+        "CRITERION_BILLSAFE_AMOUNT",
+        "CRITERION_BILLSAFE_BANKCODE",
+        "CRITERION_BILLSAFE_BANKNAME",
+        "CRITERION_BILLSAFE_BIC",
+        "CRITERION_BILLSAFE_CURRENCY",
+        "CRITERION_BILLSAFE_IBAN",
+        "CRITERION_BILLSAFE_LEGALNOTE",
+        "CRITERION_BILLSAFE_NOTE",
+        "CRITERION_BILLSAFE_PERIOD",
+        "CRITERION_BILLSAFE_RECIPIENT",
+        "CRITERION_BILLSAFE_REFERENCE",
+        "CRITERION_DBONRG",
+        "CRITERION_PAYMETHOD",
+        "CRITERION_SECRET",
+        "CRITERION_SESSIONID",
+        "CRITERION_USER_ID",
+        "HTTP_REFERER",
+        "IDENTIFICATION_CREDITOR_ID",
+        "IDENTIFICATION_SHORTID",
+        "IDENTIFICATION_TRANSACTIONID",
+        "IDENTIFICATION_UNIQUEID",
+        "PAYMENT_CODE",
+        "PROCESSING_RESULT",
+        "PROCESSING_RETURN",
+        "PROCESSING_RETURN_CODE",
+        "PROCESSING_STATUS_CODE",
+        "REMOTE_ADDR",
+        "SERVER_NAME",
+        "TRANSACTION_CHANNEL",
+        "cancel",
+        "comments",
+        "conditions",
+        "hpdd_sepa",
+        "payment",
+        "withdrawal"
+      ],
+      "authentication": "External-Service",
+      "trust_assumption": "Trusts callback data"
+    },
+    {
+      "file_path": "trusted_shops_cron.php",
+      "handler": "trusted_shops_cron.php",
+      "transport": "Cron/Worker",
+      "methods": [
+        "CLI"
+      ],
+      "parameters": [
+        "key"
+      ],
+      "authentication": "Internal",
+      "trust_assumption": "Trusts internal triggers"
+    },
+    {
+      "file_path": "api_v3.php",
+      "handler": "api_v3.php",
+      "transport": "API/AJAX",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "parameters": [],
+      "authentication": "Unknown",
+      "trust_assumption": "Standard web input"
+    },
+    {
+      "file_path": "api-it-recht-kanzlei.php",
+      "handler": "api-it-recht-kanzlei.php",
+      "transport": "API/AJAX",
+      "methods": [
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ],
+      "parameters": [
+        "REMOTE_ADDR",
+        "REQUEST_METHOD"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Trusts proxy headers"
+    },
+    {
+      "file_path": "api.php",
+      "handler": "api.php",
+      "transport": "API/AJAX",
+      "methods": [
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ],
+      "parameters": [
+        "REQUEST_URI"
+      ],
+      "authentication": "Authenticated",
+      "trust_assumption": "Standard web input"
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "id": "VULN-001",
+      "class": "Path Traversal / Arbitrary File Write",
+      "severity": "High",
+      "affected_entrypoints": [
+        "dynamic_theme_style.css.php"
+      ],
+      "parameter": "theme",
+      "exploitation_condition": "Parameter 'theme' is used in file_get_contents without path validation, allowing arbitrary file operations",
+      "observable_impact": "Arbitrary file read/write/delete, code execution via file upload",
+      "proof_evidence": "File creation confirmation, file contents in response, or error messages",
+      "chain": [
+        "[dynamic_theme_style.css.php] Upload malicious PHP file",
+        "File stored in accessible location",
+        "[magnaCallback.php] Include uploaded file for code execution"
+      ]
+    },
+    {
+      "id": "VULN-002",
+      "class": "Cross-Site Scripting (XSS)",
+      "severity": "Medium",
+      "affected_entrypoints": [
+        "customThemeJavaScriptCacheControl.php"
+      ],
+      "parameter": "script",
+      "exploitation_condition": "Parameter 'script' is output to header without HTML encoding, allowing script injection",
+      "observable_impact": "Arbitrary JavaScript execution in victim browsers, session hijacking",
+      "proof_evidence": "Alert box execution, modified DOM, or injected script in page source",
+      "chain": [
+        "[customThemeJavaScriptCacheControl.php] XSS allows session token theft",
+        "Stolen session authenticates SQL injection",
+        "[login_admin.php] SQL injection extracts sensitive data"
+      ]
+    },
+    {
+      "id": "VULN-003",
+      "class": "SQL Injection",
+      "severity": "High",
+      "affected_entrypoints": [
+        "magnaCallback.php"
+      ],
+      "parameter": "arguments",
+      "exploitation_condition": "Parameter 'arguments' is passed to execute without proper SQL escaping or parameterized queries",
+      "observable_impact": "Database query modification, data extraction, authentication bypass",
+      "proof_evidence": "SQL error messages, time-based delays, or extracted data in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-004",
+      "class": "SQL Injection",
+      "severity": "High",
+      "affected_entrypoints": [
+        "magnaCallback.php"
+      ],
+      "parameter": "function",
+      "exploitation_condition": "Parameter 'function' is passed to execute without proper SQL escaping or parameterized queries",
+      "observable_impact": "Database query modification, data extraction, authentication bypass",
+      "proof_evidence": "SQL error messages, time-based delays, or extracted data in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-005",
+      "class": "SQL Injection",
+      "severity": "High",
+      "affected_entrypoints": [
+        "magnaCallback.php"
+      ],
+      "parameter": "includes",
+      "exploitation_condition": "Parameter 'includes' is passed to execute without proper SQL escaping or parameterized queries",
+      "observable_impact": "Database query modification, data extraction, authentication bypass",
+      "proof_evidence": "SQL error messages, time-based delays, or extracted data in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-006",
+      "class": "Local/Remote File Inclusion",
+      "severity": "High",
+      "affected_entrypoints": [
+        "magnaCallback.php"
+      ],
+      "parameter": "language",
+      "exploitation_condition": "Parameter 'language' is used in include_once without path validation, allowing file inclusion",
+      "observable_impact": "Arbitrary code execution, sensitive file disclosure",
+      "proof_evidence": "PHP error disclosure, included file content in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-007",
+      "class": "SQL Injection",
+      "severity": "High",
+      "affected_entrypoints": [
+        "login_admin.php"
+      ],
+      "parameter": "email_address",
+      "exploitation_condition": "Parameter 'email_address' is passed to mysqli_query without proper SQL escaping or parameterized queries",
+      "observable_impact": "Database query modification, data extraction, authentication bypass",
+      "proof_evidence": "SQL error messages, time-based delays, or extracted data in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-008",
+      "class": "SQL Injection",
+      "severity": "High",
+      "affected_entrypoints": [
+        "login_admin.php"
+      ],
+      "parameter": "password",
+      "exploitation_condition": "Parameter 'password' is passed to mysqli_query without proper SQL escaping or parameterized queries",
+      "observable_impact": "Database query modification, data extraction, authentication bypass",
+      "proof_evidence": "SQL error messages, time-based delays, or extracted data in response",
+      "chain": null
+    },
+    {
+      "id": "VULN-009",
+      "class": "Cross-Site Scripting (XSS)",
+      "severity": "Medium",
+      "affected_entrypoints": [
+        "index.php"
+      ],
+      "parameter": "gm_boosted_category",
+      "exploitation_condition": "Parameter 'gm_boosted_category' is output to header without HTML encoding, allowing script injection",
+      "observable_impact": "Arbitrary JavaScript execution in victim browsers, session hijacking",
+      "proof_evidence": "Alert box execution, modified DOM, or injected script in page source",
+      "chain": null
+    }
+  ]
+}

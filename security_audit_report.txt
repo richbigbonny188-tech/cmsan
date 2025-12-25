@@ -1,0 +1,275 @@
+================================================================================
+WHITE-BOX SECURITY AUDIT REPORT
+================================================================================
+Target: .
+Date: 2025-12-25
+================================================================================
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+Total Entrypoints Analyzed: 127
+Total Data Flows Traced: 211
+Safe Flows Eliminated: 83
+Vulnerabilities Found: 9
+
+================================================================================
+VULNERABILITY SUMMARY BY SEVERITY
+================================================================================
+High: 7
+Medium: 2
+
+================================================================================
+DETAILED FINDINGS
+================================================================================
+
+--------------------------------------------------------------------------------
+[VULN-001] Path Traversal / Arbitrary File Write
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - dynamic_theme_style.css.php
+
+Vulnerable Parameter: theme
+Source: $theme from HTTP
+Sink: file_get_contents (FS)
+
+Exploitation Condition:
+  Parameter 'theme' is used in file_get_contents without path validation, allowing arbitrary file operations
+
+Observable Impact:
+  Arbitrary file read/write/delete, code execution via file upload
+
+Proof Evidence Required:
+  File creation confirmation, file contents in response, or error messages
+
+Vulnerability Chain:
+  → [dynamic_theme_style.css.php] Upload malicious PHP file
+  → File stored in accessible location
+  → [magnaCallback.php] Include uploaded file for code execution
+
+Why This Matters:
+  This vulnerability allows an attacker to arbitrary file read/write/delete, code execution via file upload
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-003] SQL Injection
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - magnaCallback.php
+
+Vulnerable Parameter: arguments
+Source: $arguments from HTTP
+Sink: execute (DB)
+
+Transformations Applied:
+  - filtering: array_key_exists at line 859
+
+Exploitation Condition:
+  Parameter 'arguments' is passed to execute without proper SQL escaping or parameterized queries
+
+Observable Impact:
+  Database query modification, data extraction, authentication bypass
+
+Proof Evidence Required:
+  SQL error messages, time-based delays, or extracted data in response
+
+Why This Matters:
+  This vulnerability allows an attacker to database query modification, data extraction, authentication bypass
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-004] SQL Injection
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - magnaCallback.php
+
+Vulnerable Parameter: function
+Source: $function from HTTP
+Sink: execute (DB)
+
+Transformations Applied:
+  - filtering: ctype_ at line 93
+  - filtering: ctype_ at line 94
+  - filtering: array_key_exists at line 714
+  - filtering: array_key_exists at line 857
+
+Exploitation Condition:
+  Parameter 'function' is passed to execute without proper SQL escaping or parameterized queries
+
+Observable Impact:
+  Database query modification, data extraction, authentication bypass
+
+Proof Evidence Required:
+  SQL error messages, time-based delays, or extracted data in response
+
+Why This Matters:
+  This vulnerability allows an attacker to database query modification, data extraction, authentication bypass
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-005] SQL Injection
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - magnaCallback.php
+
+Vulnerable Parameter: includes
+Source: $includes from HTTP
+Sink: execute (DB)
+
+Transformations Applied:
+  - filtering: array_key_exists at line 862
+
+Exploitation Condition:
+  Parameter 'includes' is passed to execute without proper SQL escaping or parameterized queries
+
+Observable Impact:
+  Database query modification, data extraction, authentication bypass
+
+Proof Evidence Required:
+  SQL error messages, time-based delays, or extracted data in response
+
+Why This Matters:
+  This vulnerability allows an attacker to database query modification, data extraction, authentication bypass
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-006] Local/Remote File Inclusion
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - magnaCallback.php
+
+Vulnerable Parameter: language
+Source: $language from HTTP
+Sink: include_once (INCLUDE)
+
+Exploitation Condition:
+  Parameter 'language' is used in include_once without path validation, allowing file inclusion
+
+Observable Impact:
+  Arbitrary code execution, sensitive file disclosure
+
+Proof Evidence Required:
+  PHP error disclosure, included file content in response
+
+Why This Matters:
+  This vulnerability allows an attacker to arbitrary code execution, sensitive file disclosure
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-007] SQL Injection
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - login_admin.php
+
+Vulnerable Parameter: email_address
+Source: $email_address from HTTP
+Sink: mysqli_query (DB)
+
+Exploitation Condition:
+  Parameter 'email_address' is passed to mysqli_query without proper SQL escaping or parameterized queries
+
+Observable Impact:
+  Database query modification, data extraction, authentication bypass
+
+Proof Evidence Required:
+  SQL error messages, time-based delays, or extracted data in response
+
+Why This Matters:
+  This vulnerability allows an attacker to database query modification, data extraction, authentication bypass
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-008] SQL Injection
+Severity: High
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - login_admin.php
+
+Vulnerable Parameter: password
+Source: $password from HTTP
+Sink: mysqli_query (DB)
+
+Exploitation Condition:
+  Parameter 'password' is passed to mysqli_query without proper SQL escaping or parameterized queries
+
+Observable Impact:
+  Database query modification, data extraction, authentication bypass
+
+Proof Evidence Required:
+  SQL error messages, time-based delays, or extracted data in response
+
+Why This Matters:
+  This vulnerability allows an attacker to database query modification, data extraction, authentication bypass
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-002] Cross-Site Scripting (XSS)
+Severity: Medium
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - customThemeJavaScriptCacheControl.php
+
+Vulnerable Parameter: script
+Source: $script from HTTP
+Sink: header (RESPONSE)
+
+Exploitation Condition:
+  Parameter 'script' is output to header without HTML encoding, allowing script injection
+
+Observable Impact:
+  Arbitrary JavaScript execution in victim browsers, session hijacking
+
+Proof Evidence Required:
+  Alert box execution, modified DOM, or injected script in page source
+
+Vulnerability Chain:
+  → [customThemeJavaScriptCacheControl.php] XSS allows session token theft
+  → Stolen session authenticates SQL injection
+  → [login_admin.php] SQL injection extracts sensitive data
+
+Why This Matters:
+  This vulnerability allows an attacker to arbitrary javascript execution in victim browsers, session hijacking
+  through the HTTP transport mechanism.
+
+--------------------------------------------------------------------------------
+[VULN-009] Cross-Site Scripting (XSS)
+Severity: Medium
+--------------------------------------------------------------------------------
+
+Affected Entrypoint(s):
+  - index.php
+
+Vulnerable Parameter: gm_boosted_category
+Source: $gm_boosted_category from HTTP
+Sink: header (RESPONSE)
+
+Exploitation Condition:
+  Parameter 'gm_boosted_category' is output to header without HTML encoding, allowing script injection
+
+Observable Impact:
+  Arbitrary JavaScript execution in victim browsers, session hijacking
+
+Proof Evidence Required:
+  Alert box execution, modified DOM, or injected script in page source
+
+Why This Matters:
+  This vulnerability allows an attacker to arbitrary javascript execution in victim browsers, session hijacking
+  through the HTTP transport mechanism.
+
+================================================================================
+END OF REPORT
+================================================================================

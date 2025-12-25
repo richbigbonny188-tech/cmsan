@@ -1,0 +1,274 @@
+{
+  "framework_config": {
+    "name": "White-Box Security Audit Framework",
+    "version": "1.0.0",
+    "description": "Comprehensive security audit framework following strict 5-phase methodology"
+  },
+  "audit_rules": {
+    "no_speculation": true,
+    "no_generic_advice": true,
+    "no_mass_exploitation": true,
+    "exhaustive_analysis": true,
+    "proof_required": true
+  },
+  "analysis_phases": {
+    "phase1_entrypoint_mapping": {
+      "enabled": true,
+      "categories": [
+        "HTTP/HTTPS endpoints",
+        "Application routing",
+        "Callbacks and webhooks",
+        "File-triggered paths",
+        "API and AJAX handlers",
+        "Cron and worker endpoints"
+      ]
+    },
+    "phase2_data_flow_trace": {
+      "enabled": true,
+      "track_transformations": true,
+      "track_sinks": true
+    },
+    "phase3_control_elimination": {
+      "enabled": true,
+      "document_eliminations": true
+    },
+    "phase4_exploitability": {
+      "enabled": true,
+      "require_proof": true,
+      "assess_severity": true
+    },
+    "phase5_chaining": {
+      "enabled": true,
+      "only_provable_chains": true
+    }
+  },
+  "dangerous_sinks": {
+    "database": [
+      "mysql_query",
+      "mysqli_query",
+      "pg_query",
+      "execute",
+      "query",
+      "prepare",
+      "exec",
+      "db_query",
+      "xtc_db_query"
+    ],
+    "filesystem": [
+      "file_put_contents",
+      "fwrite",
+      "fopen",
+      "move_uploaded_file",
+      "copy",
+      "rename",
+      "unlink",
+      "file_get_contents"
+    ],
+    "code_execution": [
+      "eval",
+      "create_function",
+      "assert",
+      "exec",
+      "shell_exec",
+      "system",
+      "passthru",
+      "popen",
+      "proc_open",
+      "pcntl_exec"
+    ],
+    "file_inclusion": [
+      "include",
+      "require",
+      "include_once",
+      "require_once"
+    ],
+    "output": [
+      "echo",
+      "print",
+      "printf",
+      "header",
+      "setcookie"
+    ],
+    "deserialization": [
+      "unserialize",
+      "yaml_parse"
+    ],
+    "ldap": [
+      "ldap_search",
+      "ldap_list"
+    ],
+    "xml": [
+      "simplexml_load_string",
+      "DOMDocument::loadXML"
+    ]
+  },
+  "sanitization_functions": {
+    "type_cast": [
+      "intval",
+      "floatval",
+      "boolval",
+      "(int)",
+      "(float)",
+      "(bool)"
+    ],
+    "encoding": [
+      "htmlspecialchars",
+      "htmlentities",
+      "urlencode",
+      "rawurlencode",
+      "json_encode",
+      "base64_encode"
+    ],
+    "filtering": [
+      "filter_var",
+      "filter_input",
+      "preg_match",
+      "in_array",
+      "array_key_exists",
+      "is_numeric",
+      "ctype_digit",
+      "ctype_alpha",
+      "ctype_alnum"
+    ],
+    "escaping": [
+      "mysql_real_escape_string",
+      "mysqli_real_escape_string",
+      "pg_escape_string",
+      "addslashes",
+      "quotemeta"
+    ]
+  },
+  "severity_criteria": {
+    "critical": {
+      "description": "Remote code execution, full system compromise",
+      "sink_types": ["COMMAND", "EVAL"]
+    },
+    "high": {
+      "description": "Data breach, authentication bypass, significant access",
+      "sink_types": ["DB", "INCLUDE", "DESERIALIZATION"],
+      "conditions": ["unauthenticated_access"]
+    },
+    "medium": {
+      "description": "Limited impact requiring authentication",
+      "sink_types": ["FS", "RESPONSE"],
+      "conditions": ["authenticated_only"]
+    },
+    "low": {
+      "description": "Minor information disclosure, limited impact",
+      "conditions": ["limited_scope"]
+    }
+  },
+  "entrypoint_patterns": {
+    "http_entrypoints": {
+      "pattern": "*.php",
+      "location": "root"
+    },
+    "controllers": {
+      "patterns": [
+        "GXMainComponents/Controllers/**/*.php",
+        "GambioAdmin/Modules/**/*.php",
+        "GambioApi/Modules/**/*.php"
+      ]
+    },
+    "callbacks": {
+      "directories": ["callback", "ext"]
+    },
+    "api": {
+      "patterns": ["api*.php", "ajax*.php", "*_api.php"]
+    },
+    "cron": {
+      "patterns": ["*cron*.php", "*worker*.php"]
+    }
+  },
+  "parameter_sources": {
+    "http": ["$_GET", "$_POST", "$_REQUEST"],
+    "cookies": ["$_COOKIE"],
+    "server": ["$_SERVER"],
+    "files": ["$_FILES"],
+    "session": ["$_SESSION"]
+  },
+  "vulnerability_classes": {
+    "SQL_INJECTION": {
+      "sink_type": "DB",
+      "description": "SQL Injection",
+      "impact": "Database query modification, data extraction, authentication bypass",
+      "proof": "SQL error messages, time-based delays, or extracted data in response"
+    },
+    "XSS": {
+      "sink_type": "RESPONSE",
+      "description": "Cross-Site Scripting",
+      "impact": "Arbitrary JavaScript execution in victim browsers, session hijacking",
+      "proof": "Alert box execution, modified DOM, or injected script in page source"
+    },
+    "RCE": {
+      "sink_type": "COMMAND",
+      "description": "Remote Code Execution",
+      "impact": "Arbitrary command execution on server, full system compromise",
+      "proof": "Command output in response, reverse shell connection, or file creation"
+    },
+    "LFI_RFI": {
+      "sink_type": "INCLUDE",
+      "description": "Local/Remote File Inclusion",
+      "impact": "Arbitrary code execution, sensitive file disclosure",
+      "proof": "PHP error disclosure, included file content in response"
+    },
+    "PATH_TRAVERSAL": {
+      "sink_type": "FS",
+      "description": "Path Traversal / Arbitrary File Operations",
+      "impact": "Arbitrary file read/write/delete, code execution via file upload",
+      "proof": "File creation confirmation, file contents in response, or error messages"
+    },
+    "CODE_INJECTION": {
+      "sink_type": "EVAL",
+      "description": "Code Injection",
+      "impact": "Arbitrary PHP code execution, full system compromise",
+      "proof": "Executed code output, phpinfo() display, or system information"
+    },
+    "DESERIALIZATION": {
+      "sink_type": "DESERIALIZATION",
+      "description": "Insecure Deserialization",
+      "impact": "Arbitrary object instantiation, potential code execution",
+      "proof": "Object instantiation evidence, unexpected behavior, or error messages"
+    },
+    "LDAP_INJECTION": {
+      "sink_type": "LDAP",
+      "description": "LDAP Injection",
+      "impact": "LDAP query modification, unauthorized access",
+      "proof": "Modified LDAP results, unauthorized access confirmation"
+    },
+    "XXE": {
+      "sink_type": "XML",
+      "description": "XML External Entity (XXE)",
+      "impact": "Server-side request forgery, local file disclosure",
+      "proof": "External entity content in response, SSRF confirmation, or file disclosure"
+    }
+  },
+  "chaining_patterns": {
+    "xss_to_sqli": {
+      "description": "XSS allows session theft, enabling authenticated SQL injection",
+      "requires": ["XSS", "SQL_INJECTION"]
+    },
+    "file_upload_to_rce": {
+      "description": "File upload combined with file inclusion for code execution",
+      "requires": ["PATH_TRAVERSAL", "LFI_RFI"]
+    },
+    "sqli_to_rce": {
+      "description": "SQL injection enables file write, leading to code execution",
+      "requires": ["SQL_INJECTION", "LFI_RFI"]
+    }
+  },
+  "output_formats": {
+    "json": {
+      "enabled": true,
+      "filename": "security_audit_report.json"
+    },
+    "text": {
+      "enabled": true,
+      "filename": "security_audit_report.txt"
+    },
+    "html": {
+      "enabled": false,
+      "filename": "security_audit_report.html"
+    }
+  }
+}
