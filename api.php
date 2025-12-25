@@ -223,7 +223,16 @@ function setRateLimitHeader(Request $request, Response $response)
         touch($cacheFilePath);
         $sessions = [];
     } else {
-        $sessions = unserialize(file_get_contents($cacheFilePath));
+        // SECURITY FIX: Use JSON instead of unserialize to prevent object injection
+        $cacheContent = file_get_contents($cacheFilePath);
+        $sessions = json_decode($cacheContent, true);
+        // Fallback for backwards compatibility with old serialized format
+        if ($sessions === null && !empty($cacheContent)) {
+            $sessions = unserialize($cacheContent, ['allowed_classes' => false]);
+        }
+        if (!is_array($sessions)) {
+            $sessions = [];
+        }
     }
     
     // Clear expired sessions.
@@ -258,7 +267,8 @@ function setRateLimitHeader(Request $request, Response $response)
     $response = $response->withHeader('X-Rate-Limit-Remaining', $sessions[$identifier]['remaining']);
     $response = $response->withHeader('X-Rate-Limit-Reset', $sessions[$identifier]['reset']);
     
-    file_put_contents($cacheFilePath, serialize($sessions));
+    // SECURITY FIX: Use JSON instead of serialize
+    file_put_contents($cacheFilePath, json_encode($sessions));
     
     return $response;
 }

@@ -326,7 +326,8 @@ class GMJanolaw_ORIGIN
 			file_put_contents($cache_file, serialize($version_info));
 		}
 
-		$version_info = unserialize(file_get_contents($cache_file));
+		// SECURITY FIX: Use allowed_classes => false to prevent PHP Object Injection
+		$version_info = unserialize(file_get_contents($cache_file), ['allowed_classes' => false]);
 
 		return $version_info;
 	}

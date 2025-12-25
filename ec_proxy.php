@@ -35,16 +35,42 @@ function getClientIp() {
 $query = $_GET;
 
 // parses the google path to extract the version query param
-$gPath       = $query['prx'];
+$gPath       = $query['prx'] ?? '';
 $parsedGPath = parse_url($gPath);
+
+// SECURITY FIX: Validate path to prevent SSRF attacks
+// Only allow legitimate Google Analytics paths
+$allowedPathPrefixes = ['/collect', '/r/collect', '/g/collect', '/j/collect', '/analytics.js', '/gtag/js'];
+$path = $parsedGPath['path'] ?? '';
+
+// Ensure path starts with / and doesn't contain directory traversal
+$pathIsValid = false;
+if (strpos($path, '/') === 0 && strpos($path, '..') === false) {
+    foreach ($allowedPathPrefixes as $allowed) {
+        if (strpos($path, $allowed) === 0) {
+            $pathIsValid = true;
+            break;
+        }
+    }
+}
+
+if (!$pathIsValid) {
+    header('HTTP/1.1 400 Bad Request');
+    header('Content-Type: text/plain');
+    echo 'Invalid path';
+    exit;
+}
+
 if (array_key_exists('query', $parsedGPath)) {
     $querySegments = explode('=', $parsedGPath['query']);
-    $query         = array_merge([$querySegments[0] => $querySegments[1]], $query);
+    if (count($querySegments) >= 2) {
+        $query = array_merge([$querySegments[0] => $querySegments[1]], $query);
+    }
 }
 unset($query['prx']);
 
 // creates the final google analytics url
-$gUrl = 'https://www.google-analytics.com' . $parsedGPath['path'];
+$gUrl = 'https://www.google-analytics.com' . $path;
 
 // try to fetch the client ip
 $clientIp = getClientIp();
