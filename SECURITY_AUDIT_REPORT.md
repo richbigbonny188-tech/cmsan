@@ -3,13 +3,16 @@
 **Audit Date:** 2025-12-25  
 **Target Application:** Gambio GX4 (Version ~4.9.x)  
 **Audit Type:** White-box security analysis  
-**Focus:** Server-side critical vulnerabilities (RCE, LFI/RFI, Object Injection, File Writes)
+**Focus:** Server-side critical vulnerabilities (RCE, LFI/RFI, Object Injection, File Writes)  
+**Status:** ✅ VULNERABILITY FIXED
 
 ---
 
 ## Executive Summary
 
-This security audit identified **one confirmed critical vulnerability** in the Gambio GX4 CMS that could lead to Remote Code Execution (RCE) through PHP Object Injection. The vulnerability exists in `magnaCallback.php` and requires authentication via a passphrase stored in the database.
+This security audit identified **one confirmed critical vulnerability** in the Gambio GX4 CMS that could lead to Remote Code Execution (RCE) through PHP Object Injection. The vulnerability existed in `magnaCallback.php` and required authentication via a passphrase stored in the database.
+
+**STATUS: The vulnerability has been fixed** by adding `['allowed_classes' => false]` parameter to `unserialize()` calls.
 
 ---
 
@@ -147,7 +150,8 @@ eval("\$address = \"$fmt\";");
 #### CVE Class: CWE-502 (Deserialization of Untrusted Data)
 
 **File:** `magnaCallback.php`  
-**Lines:** 859, 862
+**Lines:** 859, 862 (original), 861, 865 (after fix)  
+**Status:** ✅ **FIXED**
 
 **Vulnerability Details:**
 - **Type:** PHP Object Injection / Insecure Deserialization
@@ -155,7 +159,7 @@ eval("\$address = \"$fmt\";");
 - **Authentication Required:** Yes (passphrase in database)
 - **Attack Vector:** Network (HTTP POST)
 
-**Exact Trigger Condition:**
+**Exact Trigger Condition (Before Fix):**
 1. Attacker knows the magnalister passphrase (stored in `magnalister_config` table)
 2. Attacker sends POST request to `/magnaCallback.php` with:
    - `passphrase=<known_passphrase>`
@@ -164,7 +168,7 @@ eval("\$address = \"$fmt\";");
    OR
    - `includes=<serialized_malicious_object>`
 
-**Observable Effect:**
+**Observable Effect (Before Fix):**
 - Arbitrary file write via `DataCache::__destruct()` gadget chain
 - Potential Remote Code Execution by writing PHP code to webroot
 - Data exfiltration via controlled object properties
@@ -175,7 +179,7 @@ eval("\$address = \"$fmt\";");
 3. HTTP POST request to `/magnaCallback.php`
 4. File created in cache directory or arbitrary location
 
-**Proof of Concept (Conceptual):**
+**Proof of Concept (Conceptual - No Longer Works After Fix):**
 ```php
 // Malicious payload structure (simplified)
 $payload = 'O:9:"DataCache":2:{s:37:"' . "\0" . 'DataCache' . "\0" . 'fileNamesOfPersistentCachesToUpdate";a:1:{i:0;s:20:"../../shell.php";}s:24:"' . "\0" . 'DataCache' . "\0" . 'persistentDataCache";a:1:{s:20:"../../shell.php";s:30:"<?php system($_GET[\'cmd\']); ?>";}}';
@@ -186,51 +190,51 @@ $payload = 'O:9:"DataCache":2:{s:37:"' . "\0" . 'DataCache' . "\0" . 'fileNamesO
 
 ---
 
-## REMEDIATION RECOMMENDATIONS
+## REMEDIATION APPLIED
 
-### For magnaCallback.php (CRITICAL):
+### For magnaCallback.php (CRITICAL) - ✅ FIXED
 
-**Option 1 - Safest (Recommended):**
-Replace `unserialize()` with `json_decode()`:
-```php
-$arguments = array_key_exists('arguments', $_POST) ? json_decode($_POST['arguments'], true) : array();
-$includes = array_key_exists('includes', $_POST) ? json_decode($_POST['includes'], true) : array();
-```
-
-**Option 2 - If serialization is required:**
+**Fix Applied (Option 2):**
 Use `unserialize()` with allowed_classes restriction (PHP 7.0+):
 ```php
+// Security fix: Use unserialize with allowed_classes=false to prevent PHP Object Injection
 $arguments = array_key_exists('arguments', $_POST) 
     ? unserialize($_POST['arguments'], ['allowed_classes' => false]) 
     : array();
+
+// Security fix: Use unserialize with allowed_classes=false to prevent PHP Object Injection  
 $includes = array_key_exists('includes', $_POST) 
     ? unserialize($_POST['includes'], ['allowed_classes' => false]) 
     : array();
 ```
 
+This ensures only arrays and primitive types can be deserialized, preventing object injection attacks.
+
 ---
 
 ## FINDINGS SUMMARY
 
-| Vulnerability | File | Severity | Exploitable | Auth Required |
-|--------------|------|----------|-------------|---------------|
-| PHP Object Injection | magnaCallback.php:859,862 | CRITICAL | YES | Passphrase |
-| eval() with DB data | xtc_address_format.inc.php:101 | N/A | NO (requires DB access) | Admin |
-| Language file include | gambio_updater/index.php:75 | N/A | NO (basename protected) | N/A |
+| Vulnerability | File | Severity | Exploitable | Status |
+|--------------|------|----------|-------------|--------|
+| PHP Object Injection | magnaCallback.php:859,862 | CRITICAL | Was exploitable | ✅ **FIXED** |
+| eval() with DB data | xtc_address_format.inc.php:101 | N/A | NO (requires DB access) | Protected |
+| Language file include | gambio_updater/index.php:75 | N/A | NO (basename protected) | Protected |
 
 ---
 
 ## CONCLUSION
 
-**One exploitable server-side vulnerability was proven:**
+**One exploitable server-side vulnerability was proven and has been fixed:**
 
-The PHP Object Injection vulnerability in `magnaCallback.php` at lines 859 and 862 is a confirmed critical vulnerability. While it requires knowledge of the magnalister passphrase stored in the database, this passphrase could be:
+The PHP Object Injection vulnerability in `magnaCallback.php` at lines 859 and 862 was a confirmed critical vulnerability. While it required knowledge of the magnalister passphrase stored in the database, this passphrase could be:
 1. Obtained through SQL injection elsewhere in the application
 2. Leaked through misconfiguration
 3. Brute-forced if weak
 4. Obtained through social engineering
 
-The vulnerability allows for arbitrary file write and potential Remote Code Execution through PHP Object Injection gadget chains present in the application's codebase.
+The vulnerability allowed for arbitrary file write and potential Remote Code Execution through PHP Object Injection gadget chains present in the application's codebase.
+
+**The vulnerability has now been remediated** by adding the `['allowed_classes' => false]` parameter to all `unserialize()` calls in `magnaCallback.php`.
 
 All other potential vulnerabilities analyzed have proper controls in place that neutralize exploitation paths.
 
