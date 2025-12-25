@@ -1,0 +1,52 @@
+{*
+    Template representing the configuration view
+    Parameters:
+        $step Current step
+        $message Message from message stack (optional)
+        $method Form submit method (optional)
+        $previous Link to the previous step (optional)
+        $next Link to the next step (optional)
+        $secret Secret for QR code (required for step 2, otherwise optional)
+        $issuer Issuer QR code (required for step 2, otherwise optional)
+        $user User name QR code (required for step 2, otherwise optional)
+*}
+
+{load_language_text section="twofactorauth" name="twofactorauth_text"}
+
+{block name="twofactorauth_message"}
+    {include file="get_usermod:{$alert_message_template_path}" message=$message type="danger"}
+{/block}
+
+{block name="twofactorauth_configuration"}
+    {block name="twofactorauth_configuration_heading"}
+        {include file="get_usermod:GXModules/Gambio/TwoFactorAuth/Shop/Html/partials/heading.html"}
+    {/block}
+
+    {block name="twofactorauth_configuration_content"}
+        {if $step == 1}
+            {include
+                file="get_usermod:GXModules/Gambio/TwoFactorAuth/Shop/Html/partials/configuration-steps/step1.html"
+                next=$next
+            }
+        {/if}
+
+        {if $step == 2}
+            {include
+                file="get_usermod:GXModules/Gambio/TwoFactorAuth/Shop/Html/partials/configuration-steps/step2.html"
+                next=$next
+                secret=$secret
+                issuer=$issuer
+                user=$user
+            }
+        {/if}
+
+        {if $step == 3}
+            {include
+                file="get_usermod:GXModules/Gambio/TwoFactorAuth/Shop/Html/partials/configuration-steps/step3.html"
+                previous = $previous
+                next=$next
+                method=$method
+            }
+        {/if}
+    {/block}
+{/block}

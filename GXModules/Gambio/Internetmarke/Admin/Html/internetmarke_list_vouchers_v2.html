@@ -1,0 +1,24 @@
+<div class="inetmarke_vouchers">
+	<h1>##vouchers</h1>
+
+	<div class="vouchers container">
+		{foreach from=$vouchers item=voucher}
+		<div class="col-md-6">
+			<div class="voucher container-fluid">
+				<div class="col-md-4">##shop_order_id</div>
+				<div class="col-md-8">{$voucher->shopOrderId}</div>
+				<div class="col-md-4">##voucher_id</div>
+				<div class="col-md-8">{$voucher->voucherId}</div>
+				{if $voucher->trackId}
+				<div class="col-md-4">##track_id</div>
+				<div class="col-md-8">{$voucher->trackId}</div>
+				{/if}
+				<div class="col-md-4">##voucher_create_time</div>
+				<div class="col-md-8">{$voucher->create_time}</div>
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-8"><a class="btn iframedl" href="{$voucher->link}" target="_blank">##voucher_link</a></div>
+			</div>
+		</div>
+		{/foreach}
+	</div>
+</div>
