@@ -1,0 +1,30 @@
+{load_language_text section="afterbuy"}
+
+{block name="afterbuy_info"}
+    <div class="grid">
+        <div class="span6">{$txt.order_info_success}:</div>
+        <div class="span6">
+            {if $afterbuy_success}
+                <span>{$txt.order_info_success_yes}</span>
+            {else}
+                {$txt.order_info_success_no}
+            {/if}
+        </div>
+    </div>
+    <div class="grid">
+        <div class="span6">{$txt.order_info_id}:</div>
+        <div class="span6">{$afterbuy_id}</div>
+    </div>
+    {if $afterbuy_export_time}
+        <div class="grid">
+            <div class="span6">{$txt.datetime}</div>
+            <div class="span6">{$afterbuy_export_time}</div>
+        </div>
+    {/if}
+    {if $afterbuy_order_id}
+        <div class="grid">
+            <div class="span6">{$txt.afterbuy_order_id}:</div>
+            <div class="span6">{$afterbuy_order_id}</div>
+        </div>
+    {/if}
+{/block}

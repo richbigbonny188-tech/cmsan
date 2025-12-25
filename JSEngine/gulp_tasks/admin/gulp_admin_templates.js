@@ -1,0 +1,60 @@
+/* --------------------------------------------------------------
+ gulp_admin_templates.js 2016-09-23
+ Gambio GmbH
+ http://www.gambio.de
+ Copyright (c) 2016 Gambio GmbH
+ Released under the GNU General Public License (Version 2)
+ [http://www.gnu.org/licenses/gpl-2.0.html]
+ --------------------------------------------------------------
+ */
+
+'use strict';
+
+/**
+ * Gulp Admin Templates Task
+ *
+ * This task will clear the cache/smarty directory and upload any changed template files. It is
+ * used in cooperation with the watch task to remove the template cache whenever there are changes
+ * in the "/admin/html/content" directory.
+ *
+ * It will also remove the FTP files if there is an active FTP connection.
+ *
+ * @param {Gulp} gulp Gulp Instance
+ * @param {Object} $ Contains the automatically loaded gulp plugins.
+ *
+ * @return {Function} Returns the gulp task definition.
+ */
+module.exports = function(gulp, $) {
+	const fs = require('vinyl-fs');
+	const del = require('del');
+	const ftp = require('../ftp');
+	
+	function task() {
+		try {
+			// Remove the templates locally. 
+			del.sync('./src/cache/smarty/*.php');
+			$.util.log('Refresh Template Cache: Removed template cache locally.');
+			
+			if (global.ftpConn !== undefined) {
+				// Upload the templates to the server.
+				gulp.src('../admin/html/content/**/*.html')
+					.pipe($.changedInPlace())
+					.pipe(ftp.upload('../admin/html/content'));
+				
+				// Remove the templates from the FTP server (if connected).	
+				global.ftpConn.rmdir(global.ftpConn.config.dest + '/src/cache/smarty', function() {
+					fs.src(['./src/cache/smarty'], {buffer: false})
+						.pipe(global.ftpConn.dest(global.ftpConn.config.dest + '/src'));
+					$.util.log('Refresh Template Cache: Removed template cache on FTP server.')
+				});
+			}
+		} catch (e) {
+			$.util.log($.util.colors.red('Refresh Template Cache Error: ', e))
+		}
+	}
+	
+	task.__description = 'Will remove the cache files in "cache/smarty" and upload the changed templates '
+		+ '(ftp-config.json is required).';
+	
+	return task;
+};

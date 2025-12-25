@@ -1,0 +1,14 @@
+{if $twofactorauth_data.is_installed}
+    {block name="account_options_password"}
+		{$smarty.block.parent}
+        {load_language_text section="twofactorauth" name="twofactorauth_text"}
+        
+        {block name="twofactorauth_account_configuration_listitem"}
+            <li>
+                <a href="{$twofactorauth_data.configuration_url}">
+                    {$twofactorauth_text.configure}
+                </a>
+            </li>
+        {/block}
+    {/block}
+{/if}

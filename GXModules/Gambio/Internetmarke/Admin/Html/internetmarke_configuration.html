@@ -1,0 +1,352 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{function textInputFormGroup labeltext='label' inputname='unnamed_input' value='' maxlength='30'}
+	<div class="form-group">
+		<label class="control-label col-xs-3">{$labeltext}</label>
+		<div class="col-xs-9">
+			<input
+					class="form-control"
+					type="text"
+					name="{$inputname}"
+					value="{$value}"
+					maxlength="{$maxlength}"
+			>
+		</div>
+	</div>
+{/function}
+
+{block name="content"}
+	{load_language_text section="internetmarke"}
+	<div class="breakpoint-small">
+		<form
+				action="{$content.form_action}"
+				method="POST"
+				class="form-configuration"
+				id="inetmarke_config"
+				data-gxmodules-namespace="{$base_url}/GXModules/Gambio/Internetmarke/Build/Admin/Javascript"
+				data-gxmodules-controller="inetmarke_config_controller"
+		>
+			<div class="form-horizontal">
+				<fieldset>
+					<legend>{$txt.credentials}</legend>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="config_onec4a_email">{$txt.onec4a_email}</label>
+						<div class="col-xs-9">
+							<input class="form-control"
+								   type="text"
+								   id="config_onec4a_email"
+								   name="configuration[onec4a_email]"
+								   value="{$content.configuration.onec4a_email}"
+								   placeholder="johndoe@example.com"
+							>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="config_onec4a_password">{$txt.onec4a_password}</label>
+						<div class="col-xs-8">
+							<input class="form-control"
+								   type="text"
+								   id="config_onec4a_password"
+								   name="configuration[onec4a_password]"
+								   value="{$content.configuration.onec4a_password}"
+							>
+						</div>
+						<div class="col-xs-1">
+						<span class="text-right" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">
+							{$txt.note_credentials_are_optional}
+						</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="">{$txt.terms_of_service}</label>
+						<div class="col-xs-1">
+							<input
+									type="checkbox"
+									value="1"
+									name="configuration[tos_accepted]"
+									id="tos_accepted"
+									data-single_checkbox
+									{if $content.configuration.tos_accepted == '1'}checked{/if}
+							>
+						</div>
+						<div class="col-xs-8">
+							<label for="tos_accepted">
+								{$txt.tos_read_and_accepted} <a href="{$content.toslink}">PDF</a>
+							</label>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>{$txt.sender}</legend>
+					{textInputFormGroup
+					labeltext=$txt.sender_company
+					inputname='configuration[sender_company]'
+					value=$content.configuration.sender_company
+					maxlength='50'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_firstname
+					inputname='configuration[sender_firstname]'
+					value=$content.configuration.sender_firstname
+					maxlength='35'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_lastname
+					inputname='configuration[sender_lastname]'
+					value=$content.configuration.sender_lastname
+					maxlength='35'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_street
+					inputname='configuration[sender_street]'
+					value=$content.configuration.sender_street
+					maxlength='50'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_houseno
+					inputname='configuration[sender_houseno]'
+					value=$content.configuration.sender_houseno
+					maxlength='10'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_zip
+					inputname='configuration[sender_zip]'
+					value=$content.configuration.sender_zip
+					maxlength='10'
+					}
+					{textInputFormGroup
+					labeltext=$txt.sender_city
+					inputname='configuration[sender_city]'
+					value=$content.configuration.sender_city
+					maxlength='35'
+					}
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="sender_country">{$txt.sender_country}</label>
+						<div class="col-xs-9">
+							<select name="configuration[sender_country]" class="form-control" id="sender_country">
+								{foreach from=$content.countries item=country}
+									<option value="{$country.iso3}" {($country.iso3 == $content.configuration.sender_country) ? 'selected="selected"' : ''}>
+										{$country.name} ({$country.iso2}/{$country.iso3})
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>{$txt.preferences}</legend>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="prefs_productcode">{$txt.product}</label>
+						<div class="col-xs-9">
+							<select id="prefs_productcode" name="configuration[prefs_productcode]" class="form-control">
+								{foreach from=$content.products item=product}
+									<option value="{$product->extendedIdentifier->externIdentifier.0->id}" {($content.configuration.prefs_productcode == $product->extendedIdentifier->externIdentifier.0->id) ? 'selected="selected"' : ''}>
+										{$product->extendedIdentifier->externIdentifier.0->name}
+										{$product->extendedIdentifier->destination}
+										<strong>{$product->priceDefinition->price->calculatedGrossPrice->value|string_format:"%.2f"}
+											{$product->priceDefinition->price->calculatedGrossPrice->currency}</strong>
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="voucher_layout">{$txt.voucher_layout}</label>
+						<div class="col-xs-9">
+							<select name="configuration[prefs_voucherlayout]" id="voucher_layout" class="form-control">
+								<option value="FrankingZone" {($content.configuration.prefs_voucherlayout == 'FrankingZone') ? 'selected="selected"' : ''}>
+									{$txt.voucher_layout_frankingzone}
+								</option>
+								<option value="AddressZone" {($content.configuration.prefs_voucherlayout == 'AddressZone') ? 'selected="selected"' : ''}>
+									{$txt.voucher_layout_addresszone}
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="pageformat">{$txt.page_format}</label>
+						<div class="col-xs-9">
+							<select name="configuration[prefs_pageformat]" id="pageformat" class="form-control">
+								{foreach from=$content.pageformats item=pageFormat}
+									<option value="{$pageFormat->id}" {($content.configuration.prefs_pageformat == $pageFormat->id) ? 'selected="selected"' : ''}>
+										{$pageFormat->name}
+										{$pageFormat->pageLayout->orientation}
+										(<span class="pagegrid">{$pageFormat->pageLayout->labelCount->labelX} x {$pageFormat->pageLayout->labelCount->labelY}</span> {$txt.labels})
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="parcelservice_id">{$txt.parcelservice_id}</label>
+						<div class="col-xs-9">
+							<select name="configuration[parcelservice_id]" id="parcelservice_id" class="form-control">
+								<option value="0" {if $content.configuration.parcelservice_id == 0}selected="selected"{/if}>{$txt.parcelservice_none}</option>
+								{foreach from=$content.parcel_services item=parcel_service}
+									<option value="{$parcel_service->getId()}" {if $parcel_service->getId() == $content.configuration.parcelservice_id}selected="selected"{/if}>{$parcel_service->getName()}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3" for="order_status_after_label">{$txt.order_status_after_label}</label>
+						<div class="col-xs-9">
+							<select name="configuration[order_status_after_label]" id="order_status_after_label" class="form-control">
+								<option value="-1" {if $content.configuration.order_status_after_label == '0'}selected="selected"{/if}>{$txt.do_not_change}</option>
+								{foreach from=$content.orders_statuses item=orders_status}
+									<option value="{$orders_status->orders_status_id}" {if $orders_status->orders_status_id == $content.configuration.order_status_after_label}selected="selected"{/if}>
+										{$orders_status->orders_status_name}
+									</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3">{$txt.notify_customer}</label>
+						<div class="col-xs-9" data-gx-widget="switcher">
+							<input type="hidden" name="configuration[notify_customer]" value="0">
+							<input type="checkbox" name="configuration[notify_customer]" value="1" class="form-control" {if $content.configuration.notify_customer == true}checked{/if}>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3">{$txt.low_wallet_balance}</label>
+						<div class="col-xs-9" data-gx-widget="switcher">
+							<input type="hidden" name="configuration[low_wallet_balance]" value="0">
+							<input type="checkbox" name="configuration[low_wallet_balance]" value="1" class="form-control" {if $content.configuration.low_wallet_balance == true}checked{/if}>
+							<span class="fa-pull-right" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">
+								{$txt.low_wallet_balance_tooltip}
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-xs-3">{$txt.show_contract_products_only}</label>
+						<div class="col-xs-9" data-gx-widget="switcher">
+							<input type="hidden" name="configuration[show_contract_products_only]" value="0">
+							<input type="checkbox" name="configuration[show_contract_products_only]" value="1" class="form-control" {if $content.configuration.show_contract_products_only == true}checked{/if}>
+							<span class="fa-pull-right" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">
+								{$txt.show_contract_products_only_tooltip}
+							</span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>{$txt.image}</legend>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							<div class="imgcat" data-catid="0">kein Motiv</div>
+							{foreach from=$content.imageCategories item=imageCategory key=catid}
+								<div class="imgcat" data-catid="{$catid}">{$imageCategory.name|strtr:'_':' '}</div>
+							{/foreach}
+						</div>
+						<div class="col-xs-9">
+							{foreach from=$content.imageCategories item=imageCategory key=catid}
+								<div class="imglist" id="imglist_{$catid}">
+									{foreach from=$imageCategory.images item=image key=imgid}
+										<span>
+											<input
+													type="radio"
+													name="configuration[prefs_imageid]"
+													value="{$image->imageID}"
+													id="imageid_{$catid}_{$imgid}"
+													{if $content.configuration.prefs_imageid == $image->imageID}checked="checked"{/if}
+													data-catid="{$catid}">
+											<label for="imageid_{$catid}_{$imgid}">
+												<img class="stampthumb" src="{$image->links->linkThumbnail}">
+											</label>
+										</span>
+									{/foreach}
+								</div>
+							{/foreach}
+							<div class="imglist" id="imglist_0">
+								<span>
+									<input
+											type="radio"
+											name="configuration[prefs_imageid]"
+											value="-1"
+											id="imageid_00_00"
+											{if $content.configuration.prefs_imageid == -1}checked="checked"{/if}
+											data-catid="0">
+									<label for="imageid_00_00">
+										<img class="stampthumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAADTUlEQVR4nO3aP0sjURSG8dgYEBRBUbFQSQTFRm3VSrFVC8VKsVZsFNtdtlBsd1lQ/ACKhWKlSAgBxU7BSrGNpIoEEkKCMMzZSmFmbswfF+57krd4Ks2QO7+Zk+QmIVccYTiFbD8BRhDoCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwIEHmF+Yk1BT6LNzSLM8vTzUd6/nlScItzZ7jLS0vWl+jKpDXVFLa2ls9J3FyaqKmY42Nj3qO09nVIW+ZtPU1qgJxxZHDowPPiQw1heTw6KCqY+zt7waOcX5xZn1tKkFccWRyasJzMtvaW+U1lazosQ+P96pGlQoQ0/yfX5gr+7jie0HdqFIB4op57JycHn/5mJ+/fqgbVWpATFd7T293yavdNKpW11asr6NuQD5Osv+KN53kavEQUwHiiiPbO1sBlHgi5vkfzaNKHUgun5X+gT7PyY4ORiSXz4or+keVOhBXHLm6vgzcAds7W1J8L8jwyJDqUaUSxBVHVtdWAihLy4vqR5VakLdMWjq7OgIA2keVWhBXHDk5PS6JoXVUqQZxJbgj/NHV9aX159aQIOcXZwGM6GDE+vNqSJBcPivRwYjxDql2RxgtlSAbm+slX0Oq2RFGTB1IPBH78h1WpTvCqKkCMX1a7x/oM26rlNsRRk0ViGlUxRMxflK3kWnbZGNz/fPvt3c3dfEBUQVIuY3Fj0rdQbaff92BmPavTCe6Ujjk4EHKjapK/n97Z8v6OuoC5C2Tlp7e7qqveP8dFW5plofHe+vrUQ9iGlW3dzcVQfp3hMfGR6X4XrC+JrUgpr2qr0aVP9OO8N7+rvV1qQSpdVT5m5mdDoyuWn8j3NAgpm8AKxlV/l5TycD37DOz09bXpwrENKq+8y7pz9/fqnaEoUBML8bDI0PffjH+zm+EGxrkf40qf6afCKHuCEOBMILARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYBEELIKARRCwCAIWQcAiCFgEAYsgYP0DMbSSWvrZoEoAAAAASUVORK5CYII=">
+									</label>
+								</span>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-group">
+					<div class="col-xs-2 col-xs-offset-10 text-right">
+						<button class="btn btn-primary">{$txt.save_settings}</button>
+					</div>
+				</div>
+			</div> {* form-horizontal *}
+		</form>
+	</div> {* breakpoint *}
+
+<!-- products cache -->
+<div class="breakpoint-large">
+	<form action="{$content.form_action_prodfavorites}" method="POST" class="" id="inetmarke_prodlist">
+		<fieldset>
+			<legend>{$txt.products_cache}</legend>
+		</fieldset>
+		<table class="table table-striped">
+			<tr>
+				<th>{$txt.ppl_favorite}</th>
+				<th>{$txt.ppl_product_name}</th>
+				<th>ID</th>
+				<th>{$txt.first_ppl_version}</th>
+				<th>{$txt.last_ppl_version}</th>
+				<th>{$txt.actual_ppl_version}</th>
+				<th>{$txt.ppl_product_valid_from}</th>
+				<th>{$txt.ppl_product_release}</th>
+				<th>{$txt.ppl_price}</th>
+			</tr>
+            {foreach $content.products as $productId => $product}
+				<tr>
+					<td>
+						<input type="checkbox" name="favorites[]" value="{$productId}" {if $productId|in_array:$content.configuration.favorites}checked{/if}>
+					</td>
+					<td>{$product->extendedIdentifier->name} ({$product->extendedIdentifier->destination})</td>
+					<td>{$productId}</td>
+					<td>{$product->extendedIdentifier->externIdentifier[0]->firstPPLVersion}</td>
+					<td>{$product->extendedIdentifier->externIdentifier[0]->lastPPLVersion}</td>
+					<td>{$product->extendedIdentifier->externIdentifier[0]->actualPPLVersion}</td>
+					<td>{$product->extendedIdentifier->validFrom}</td>
+					<td>{if $product->extendedIdentifier|property_exists:'release'}{$product->extendedIdentifier->release}{else}-{/if}</td>
+					<td>
+                        {$product->priceDefinition->price->calculatedGrossPrice->value|number_format:2}
+						/
+                        {if is_array($content.contractProducts[$productId])}
+                            {if $content.contractProducts[$productId].price}
+								<strong>{$content.contractProducts[$productId].price/100|number_format:2}</strong>
+                            {else}
+                                {$product->priceDefinition->price->calculatedGrossPrice->value|number_format:2}
+                            {/if}
+                        {else}
+                            {$txt.not_available}
+                        {/if}
+					</td>
+				</tr>
+            {/foreach}
+		</table>
+		<div class="form-group">
+			<div class="col-xs-2 col-xs-offset-10">
+				<button class="btn">{$txt.save_favorites}</button>
+			</div>
+		</div>
+	</form>
+	<br><br>
+	<form action="{$content.form_action_prodcache}" method="POST" class="" id="inetmarke_prodcache">
+		<div class="form-group">
+			<div class="col-xs-2 col-xs-offset-10">
+				<button class="btn">{$txt.clear_cache}</button>
+			</div>
+		</div>
+	</form>
+
+	<div class="row">
+		<div class="col-xs-2 col-xs-offset-10">{$txt.ppl_date}: {$content.ppl_date}</div>
+	</div>
+</div>
+{/block}
