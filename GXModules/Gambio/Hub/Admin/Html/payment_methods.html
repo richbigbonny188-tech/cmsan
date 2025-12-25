@@ -1,0 +1,9 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+	<div id="payment-methods-iframe-container" class="hub-iframe-container"
+		 data-target="{$content.payment_methods_iframe_source_url}" data-autostart>
+	</div>
+
+	{include file="get_usermod:Gambio/Hub/Admin/Html/account_modal.html"}
+{/block}

@@ -1,0 +1,28 @@
+<?php
+/* -----------------------------------------------------------------------------------------
+   xtc_get_products_name.inc.php 2022-08-04
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2022 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   -----------------------------------------------------------------------------------------
+   based on: 
+   (c) 2000-2001 The Exchange Project  (earlier name of osCommerce)
+   (c) 2002-2003 osCommerce(general.php,v 1.225 2003/05/29); www.oscommerce.com 
+   (c) 2003	 nextcommerce (xtc_get_products_name.inc.php,v 1.3 2003/08/13); www.nextcommerce.org
+
+   Released under the GNU General Public License 
+   ---------------------------------------------------------------------------------------*/
+   
+  function xtc_get_products_name($product_id, $language = '') {
+
+    if (empty($language)) $language = $_SESSION['languages_id'];
+
+    $product_query = "select products_name from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . (int)$product_id . "' and language_id = '" . (int)$language . "'";
+    $product_query  = xtc_db_query($product_query);
+    $product = xtc_db_fetch_array($product_query,true);
+
+    return $product['products_name'] ?? null;
+  }
+ ?>

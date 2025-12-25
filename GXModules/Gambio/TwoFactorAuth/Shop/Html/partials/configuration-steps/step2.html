@@ -1,0 +1,58 @@
+{*
+    Template representing the step 2 of the configuration
+    Parameters:
+        $next Link to the next step
+        $secret Secret
+        $issuer Issuer
+        $user User name
+*}
+
+{load_language_text section="twofactorauth" name="twofactorauth_text"}
+
+{block name="twofactorauth_partials_configuration_steps_step2"}
+    <section>
+        {block name="twofactorauth_partials_configuration_steps_step2_text"}
+            {$twofactorauth_text.step2_text}
+        {/block}
+
+        {block name="twofactorauth_partials_configuration_steps_step2_qr_code"}
+            <div id="qr-code-container"></div>
+        {/block}
+
+        {block name="twofactorauth_partials_configuration_steps_step2_buttons"}
+            <div>
+                <a href="{$next}" class="btn btn-primary">{$twofactorauth_text.continue} <span class="fa fa-chevron-right"></span></a>
+            </div>
+        {/block}
+
+        {block name="twofactorauth_partials_configuration_steps_step2_script"}
+			{assign var="qrCodeForeground" value={template_setting name="gx-qr-code-color"}}
+			{assign var="qrCodeBackground" value={template_setting name="gx-qr-code-bg-color"}}
+            
+            <script src="GXModules/Gambio/TwoFactorAuth/Shop/Themes/All/Javascript/Global/Vendor/QRious.js"></script>
+            <script data-secret="{$secret}" 
+                    data-issuer="{$issuer}" 
+                    data-user="{$user}" 
+                    data-foreground="{$qrCodeForeground}" 
+                    data-background="{$qrCodeBackground}">
+                {literal}
+                    const {secret, issuer, user, foreground, background} = document.currentScript.dataset;
+                    const otpUrl = `otpauth://totp/${user}?secret=${secret}&issuer=${encodeURI(issuer)}`;
+                    const containerElement = document.getElementById('qr-code-container');
+                    const qrCodeElement = document.createElement('img');
+                    const qrCode = new QRious({
+                        value: otpUrl,
+                        background: background,
+                        foreground: foreground,
+                        size: 300,
+                        padding: 12
+                    });
+
+                    qrCodeElement.title = secret;
+                    qrCodeElement.src = qrCode.toDataURL();
+                    containerElement.appendChild(qrCodeElement);
+                {/literal}
+            </script>
+        {/block}
+    </section>
+{/block}
