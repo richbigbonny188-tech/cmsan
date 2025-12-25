@@ -1,0 +1,72 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+{load_language_text section="klarna_settlements"}
+
+{block name="content"}
+	{block name="klarnasettlements_date_interval"}
+		<form class="form-inline ks-interval breakpoint-large" action="" method="GET" id="form_klarnasettlements">
+			<input type="hidden" name="do" value="KlarnaHubSettlements">
+			<input type="hidden" name="offset" value="0">
+			<div class="form-group">
+				<label for="klarnasettlements_start_date">{$txt.start_date}</label>
+				<input
+						id="klarnasettlements_start_date"
+						name="start_date"
+						type="text"
+						class="form-control"
+						value="{$content.start_date}"
+						placeholder="####-##-##"
+						data-gx-widget="datetimepicker"
+						data-datetimepicker-lang="de"
+						data-datetimepicker-format="Y-m-d"
+						data-datetimepicker-day-of-week-start="1"
+						data-datetimepicker-timepicker="false"
+						onchange="this.form.submit()"
+				>
+				<label for="klarnasettlements_start_date">{$txt.end_date}</label>
+				<input
+						id="klarnasettlements_end_date"
+						name="end_date"
+						type="text"
+						class="form-control"
+						value="{$content.end_date}"
+						placeholder="####-##-##"
+						data-gx-widget="datetimepicker"
+						data-datetimepicker-lang="de"
+						data-datetimepicker-format="Y-m-d"
+						data-datetimepicker-day-of-week-start="1"
+						data-datetimepicker-timepicker="false"
+						onchange="this.form.submit()"
+				>
+			</div>
+		</form>
+	{/block}
+
+	{function ks_pagination id=ks_pagination}
+		{if count($content.pages) > 1}
+			<form class="form-inline ks-pagination breakpoint-large" action="" method="GET" id="{$ks_pagination}">
+				<input type="hidden" name="do" value="KlarnaHubSettlements">
+				<input type="hidden" name="start_date" value="{$content.start_date}">
+				<input type="hidden" name="end_date" value="{$content.end_date}">
+				<div class="form-group">
+					<button class="btn btn-default" name="offset" value="0"><span class="glyphicon glyphicon-backward"></span></button>
+					<button class="btn btn-default" name="offset" value="{$content.prevpage}" {if $content.prevpage === false}disabled{/if}><span class="glyphicon glyphicon-chevron-left"></span></button>
+					<select name="skip_to_offset" class="form-control" onchange="this.form.submit()">
+						{foreach from=$content.pages item=page}
+							<option value="{$page.offset}" {if $content.offset == $page.offset}selected{/if}>
+								{$page.page}&nbsp;{$txt.pages_of}&nbsp;{$content.maxpage}
+							</option>
+						{/foreach}
+					</select>
+					<button class="btn btn-default" name="offset" value="{$content.nextpage}" {if $content.nextpage === false}disabled{/if}><span class="glyphicon glyphicon-chevron-right"></span></button>
+					<button class="btn btn-default" name="offset" value="{$content.lastpage}"><span class="glyphicon glyphicon-forward"></button>
+				</div>
+			</form>
+		{/if}
+	{/function}
+
+	{block name="klarna_settlements_hub_output"}
+		%hub_output%
+	{/block}
+
+	{ks_pagination id="form_klarnasettlements_pagination_bottom"}
+{/block}
