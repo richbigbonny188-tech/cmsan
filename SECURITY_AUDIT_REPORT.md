@@ -10,7 +10,7 @@
 
 This security audit examined the provided Gambio GX source code archive to identify HTTP-reachable security vulnerabilities with provable exploitation paths.
 
-**Result: 1 Critical + 1 High + 9 Medium + 3 Low Vulnerabilities Identified**
+**Result: 1 Critical + 1 High + 11 Medium + 5 Low Vulnerabilities Identified**
 
 ---
 
@@ -424,6 +424,76 @@ While not directly HTTP-reachable, this is a dangerous pattern.
 **Impact:** Low - Requires caller to pass user-controlled data  
 **Severity:** Low (internal function)
 
+### 13. CSRF Token Exposure in JavaScript
+
+**File:** `ext/mailhive/cloudbeez/cloudloader_core.php`  
+**Lines:** 131-134
+
+```php
+window.cloudloader_mode = '<?php echo $cloudloader_mode ?>';
+window.securityToken = '<?php echo(isset($_SESSION['securityToken']) ? $_SESSION['securityToken'] : '-1') ?>';
+window.securityToken_name = '<?php echo(isset($_SESSION['CSRFName']) ? $_SESSION['CSRFName'] : 'none') ?>';
+window.securityToken_value = '<?php echo(isset($_SESSION['CSRFToken']) ? $_SESSION['CSRFToken'] : '-1') ?>';
+```
+
+**Also in:** `ext/mailhive/cloudbeez/cloudloader_packages.php:127-129`
+
+**Analysis:**  
+CSRF tokens are exposed directly in JavaScript global variables (`window.securityToken`, etc.). While this pattern is sometimes used intentionally for AJAX requests, exposing tokens in JavaScript makes them accessible to:
+- Any XSS attack on the page
+- Browser extensions with page access
+- Debugging tools
+
+If combined with XSS, this enables CSRF attacks by stealing the token.
+
+**Impact:** Medium - CSRF token exposure enables token theft  
+**Severity:** Medium
+
+### 14. HTTP Parameter Pollution in sofortReturn.php
+
+**File:** `callback/sofort/ressources/scripts/sofortReturn.php`  
+**Lines:** 25-32
+
+```php
+$params .= 'holder='.strip_tags($_GET['holder']);
+$params .= '&account_number='.strip_tags($_GET['account_number']);
+$params .= '&iban='.strip_tags($_GET['iban']);
+$params .= '&bank_code='.strip_tags($_GET['bank_code']);
+$params .= '&bic='.strip_tags($_GET['bic']);
+$params .= '&amount='.strip_tags($_GET['amount']);
+$params .= '&reason_1='.strip_tags($_GET['reason_1']);
+$params .= '&reason_2='.strip_tags($_GET['reason_2']);
+```
+
+**Analysis:**  
+User-controlled GET parameters are directly concatenated into a URL parameter string with only `strip_tags()` sanitization. This enables:
+1. URL encoding bypass attacks
+2. Parameter injection via special characters
+3. HTTP header injection if passed to certain functions
+
+**Impact:** Medium - Parameter manipulation in checkout process  
+**Severity:** Medium
+
+### 15. Session ID Exposure in JavaScript
+
+**File:** `ext/mailhive/cloudbeez/cloudloader_core.php`  
+**Lines:** 138-139
+
+```php
+window.session_name = '<?php echo xtc_session_name(); ?>';
+window.session_value = '<?php echo xtc_session_id(); ?>';
+```
+
+**Also in:** `ext/mailhive/cloudbeez/cloudloader_packages.php:135`
+
+**Analysis:**  
+The PHP session ID is exposed in JavaScript. Combined with XSS, this enables:
+- Session hijacking
+- Session fixation attacks
+
+**Impact:** Low - Requires XSS to exploit, but enables session theft  
+**Severity:** Low
+
 ---
 
 ## ADDITIONAL OBSERVATIONS (Non-Exploitable Without Additional Conditions)
@@ -502,7 +572,7 @@ if (isset($metaData['payment_class'])) {
 
 ## CONCLUSION
 
-The security audit identified **1 Critical**, **1 High**, **9 Medium**, and **4 Low** vulnerabilities in the Gambio GX source code:
+The security audit identified **1 Critical**, **1 High**, **11 Medium**, and **5 Low** vulnerabilities in the Gambio GX source code:
 
 ### Critical
 1. **Local File Inclusion in swixpostfinancecheckout callback** - Can lead to Remote Code Execution if an attacker can control transaction metadata or inject files to known paths.
@@ -520,12 +590,15 @@ The security audit identified **1 Critical**, **1 High**, **9 Medium**, and **4 
 9. **SSL Verification Disabled** in sofortLib_http.inc.php - CURLOPT_SSL_VERIFYPEER disabled enables MITM attacks
 10. **Information Disclosure** in postfinance/callback.php - Full POST data written to public logfile on exception
 11. **Arbitrary File Write via Logger** in sofortLib_Logger.inc.php - URI parameter not validated in fopen()
+12. **CSRF Token Exposure** in cloudloader_core.php/packages.php - Tokens exposed in JavaScript global variables
+13. **HTTP Parameter Pollution** in sofortReturn.php - User input directly concatenated to URL parameters
 
 ### Low
-12. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
-13. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
-14. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
-15. **Log File Path Traversal** in sofortLib_Logger.inc.php - Path not sanitized in logRotate()
+14. **Timing Attack on Hash Comparison** in heidelpayGW_push.php/response.php - Using `!=` instead of `hash_equals()`
+15. **Timing Attack on Secret Comparison** in helperFunctions.php - Using `==` for paymentSecret comparison
+16. **Error Reporting Suppressed** in heidelpayGW_push.php/response.php - `error_reporting(0)` hides potential issues
+17. **Log File Path Traversal** in sofortLib_Logger.inc.php - Path not sanitized in logRotate()
+18. **Session ID Exposure** in cloudloader_core.php/packages.php - Session ID exposed in JavaScript
 
 The remaining code analyzed contains appropriate security controls (input validation, SQL escaping, domain whitelisting) that prevent exploitation of common vulnerability classes.
 
