@@ -10,14 +10,14 @@ Scope: customer-facing endpoints where request parameters influence database que
 - `findologic_export.php`
 
 ## Phase 2 — Parameter Trace
-- `download.php`: GET `id`, `order`, session `customer_id` → cast to int in setters → used in query `orders_products_download_id = <int>` and `orders_id = <int>` (DownloadProcess `prepare_data`, lines ~60–79). DB effect: select & decrement download counter.
-- `print_order.php`: GET `oID` → assigned to `$this->order_id` → query `SELECT customers_id FROM orders WHERE orders_id = <int>` (PrintOrderThemeContentView `prepare_data`, line ~85). DB effect: read-only fetch of order and totals.
+- `download.php`: GET `id`, `order`, session `customer_id` → cast to int via setter validation (`set_validation_rules`, ints enforced) → used in query `orders_products_download_id = <int>` and `orders_id = <int>` inside `DownloadProcess::proceed` (lines ~60–79). DB effect: select & decrement download counter.
+- `print_order.php`: GET `oID` (passed into setter that enforces int in `set_validation_rules`) → query `SELECT customers_id FROM orders WHERE orders_id = <int>` (PrintOrderThemeContentView `prepare_data`, line ~85). DB effect: read-only fetch of order and totals.
 - `product_info.php`: GET `products_id` → cast to int → query `SELECT categories_id FROM products_to_categories WHERE products_id = <int>`. DB effect: read-only lookup.
 - `advanced_search_result.php`: GET parameters (`keywords`, `pfrom`, `pto`, `categories_id`, etc.) sanitized via `htmlspecialchars_wrapper` and numeric casts before passing to listing controller setters.
 - `findologic_export.php`: GET `shop` escaped with `xtc_db_input` in query `SELECT key FROM gx_configurations WHERE value=':shopkey'` (lines ~32–35); `start`/`limit`/`debug` cast to int before use.
 
 ## Phase 3 — Control / Validation
-- All traced parameters are cast to integers or escaped (`xtc_db_input`/`htmlspecialchars_wrapper`) before query building. No dynamic SQL fragments remain attacker-controlled.
+- All traced parameters are cast to integers or escaped (`xtc_db_input`/`htmlspecialchars_wrapper`) before query building (via explicit casting and `set_validation_rules`). No dynamic SQL fragments remain attacker-controlled.
 - Access control enforced where state is sensitive:
   - Downloads require an authenticated session and matching `customers_id` + order (`DownloadProcess`, lines ~53–86); aborts if mismatch.
   - Order print view checks session customer matches order owner before rendering, otherwise returns “Access denied!” (`PrintOrderThemeContentView`, lines ~85–103).
