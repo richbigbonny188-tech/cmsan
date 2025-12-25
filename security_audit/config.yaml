@@ -1,0 +1,172 @@
+# Конфигурация аудита безопасности
+target_application:
+  name: "Gambio E-commerce"
+  version: "4.9.4.1"
+  base_path: "/home/runner/work/cmsan/cmsan"
+  stack:
+    - PHP
+    - MySQL
+    - JavaScript
+
+# Настройки сканирования
+scan_settings:
+  # Расширения файлов для анализа
+  file_extensions:
+    - .php
+    - .inc.php
+    - .js
+    - .html
+  
+  # Директории для исключения
+  exclude_directories:
+    - vendor
+    - node_modules
+    - cache
+    - .git
+  
+  # Максимальная глубина рекурсии для трассировки
+  max_trace_depth: 10
+  
+  # Таймаут для анализа одного файла (секунды)
+  file_analysis_timeout: 30
+
+# Паттерны точек входа
+entrypoint_patterns:
+  # HTTP endpoints
+  http_controllers:
+    - "*.php"
+    - "admin/*.php"
+    - "callback/*.php"
+    - "api*.php"
+  
+  # AJAX/API handlers
+  ajax_handlers:
+    - "*ajax*.php"
+    - "*api*.php"
+    - "*json*.php"
+  
+  # Специальные endpoints
+  special_endpoints:
+    - "gambio_hub_callback.php"
+    - "*callback*.php"
+    - "*webhook*.php"
+    - "magnaCallback.php"
+    - "*cron*.php"
+    - "gambio_updater/*"
+    - "gambio_installer/*"
+
+# Опасные функции и стоки
+dangerous_sinks:
+  # SQL injection
+  sql:
+    - mysql_query
+    - mysqli_query
+    - mysqli_real_query
+    - PDO::query
+    - PDO::exec
+    - PDO::prepare
+  
+  # Command injection
+  command:
+    - exec
+    - shell_exec
+    - system
+    - passthru
+    - popen
+    - proc_open
+    - pcntl_exec
+  
+  # File operations
+  file:
+    - file_get_contents
+    - file_put_contents
+    - fopen
+    - fwrite
+    - unlink
+    - rename
+    - copy
+    - move_uploaded_file
+    - include
+    - require
+    - include_once
+    - require_once
+  
+  # Code execution
+  code_exec:
+    - eval
+    - assert
+    - create_function
+    - call_user_func
+    - call_user_func_array
+  
+  # XSS
+  output:
+    - echo
+    - print
+    - printf
+    - die
+    - exit
+  
+  # File upload
+  upload:
+    - move_uploaded_file
+    - copy
+  
+  # SSRF
+  network:
+    - file_get_contents
+    - curl_exec
+    - curl_init
+    - fsockopen
+    - stream_socket_client
+
+# Источники пользовательского ввода
+user_input_sources:
+  - $_GET
+  - $_POST
+  - $_REQUEST
+  - $_COOKIE
+  - $_SERVER
+  - $_FILES
+  - file_get_contents('php://input')
+  - $HTTP_RAW_POST_DATA
+
+# Функции санитизации
+sanitization_functions:
+  - htmlspecialchars
+  - htmlentities
+  - mysqli_real_escape_string
+  - addslashes
+  - strip_tags
+  - filter_var
+  - intval
+  - floatval
+  - (int)
+  - (float)
+  - (bool)
+
+# Классы уязвимостей для отслеживания
+vulnerability_classes:
+  - SQL Injection
+  - Command Injection
+  - Path Traversal
+  - Local File Inclusion
+  - Remote File Inclusion
+  - Cross-Site Scripting (XSS)
+  - Cross-Site Request Forgery (CSRF)
+  - Insecure File Upload
+  - Authentication Bypass
+  - Authorization Bypass
+  - Server-Side Request Forgery (SSRF)
+  - XML External Entity (XXE)
+  - Deserialization
+  - Session Fixation
+  - Sensitive Data Exposure
+
+# Настройки отчёта
+report_settings:
+  language: "ru"
+  output_format: "markdown"
+  include_code_snippets: true
+  max_snippet_lines: 20
+  confidence_threshold: "high"  # low, medium, high
