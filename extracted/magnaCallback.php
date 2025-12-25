@@ -582,7 +582,8 @@ function refreshCurrentClientVersion() {
 function magnaDetermineCurrentClientVersion() {
 	#$_t = microtime(true);
 	$cCVDB = MagnaDB::gi()->fetchOne('SELECT value FROM '.TABLE_MAGNA_CONFIG.' WHERE mpID=0 AND mkey=\'CurrentClientVersion\'');
-	$cCVDB = @unserialize($cCVDB);
+	// Security hardening: Use allowed_classes=false for defense in depth
+	$cCVDB = @unserialize($cCVDB, ['allowed_classes' => false]);
 	$cCV = array();
 	do {
 		if (    !is_array($cCVDB)
@@ -856,10 +857,12 @@ function magnaCallbackRun() {
 		($_POST['passphrase'] == getDBConfigValue('general.passphrase', 0)) &&
 		array_key_exists('function', $_POST)
 	) {
-		$arguments = array_key_exists('arguments', $_POST) ? unserialize($_POST['arguments']) : array();
+		// Security fix: Use unserialize with allowed_classes=false to prevent PHP Object Injection
+		$arguments = array_key_exists('arguments', $_POST) ? unserialize($_POST['arguments'], ['allowed_classes' => false]) : array();
 		$arguments = is_array($arguments) ? $arguments : array();
 
-		$includes = array_key_exists('includes', $_POST) ? unserialize($_POST['includes']) : array();
+		// Security fix: Use unserialize with allowed_classes=false to prevent PHP Object Injection
+		$includes = array_key_exists('includes', $_POST) ? unserialize($_POST['includes'], ['allowed_classes' => false]) : array();
 		$includes = is_array($includes) ? $includes : array();
 
 		MagnaDB::gi()->setShowDebugOutput(false);
