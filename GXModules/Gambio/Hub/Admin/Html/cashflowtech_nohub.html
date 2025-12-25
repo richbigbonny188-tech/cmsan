@@ -1,0 +1,20 @@
+{* --------------------------------------------------------------
+   cashflowtech_nohub.html 2019-01-22
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2019 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   -------------------------------------------------------------- *}
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+	{load_language_text section="module_center_module"}
+	<div class="breakpoint-small">
+		<p>{$txt.cashflowtech_mcm_hub_required}</p>
+		{if $content.errorMessage}
+			<p>{$content.errorMessage}</p>
+		{/if}
+		<p><a href="{$content.hubconfig_url}">{$txt.cashflowtech_mcm_hub_configuration}</a></p>
+	</div>
+{/block}
