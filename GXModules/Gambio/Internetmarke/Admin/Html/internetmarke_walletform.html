@@ -1,0 +1,13 @@
+{load_language_text section="internetmarke"}
+
+<p>{$txt.walletform_info}</p>
+
+<p>{$txt.your_wallet_balance}: {$BALANCE} EUR</p>
+
+<form action="{$ACTION_URL}" method="POST">
+	{foreach from=$params item=value key=name}
+	<input type="hidden" name="{$name}" value="{$value}">
+	{/foreach}
+
+	<input type="submit" value="{$txt.walletform_submit}">
+</form>

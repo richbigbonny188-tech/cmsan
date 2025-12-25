@@ -1,0 +1,80 @@
+<?php
+/* --------------------------------------------------------------
+	gm_laws.lang.inc.php 2018-01-15
+	Gambio GmbH
+	http://www.gambio.de
+	Copyright (c) 2018 Gambio GmbH
+	Released under the GNU General Public License (Version 2)
+	[http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+$t_language_text_section_content_array = array
+(
+	'BUTTON_SAVE' => 'Save',
+	'TITLE_LAW' => 'Rights',
+	'TITLE_COOKIES' => 'Cookie Notice',
+	'TITLE_PRIVACY' => 'Show privacy link',
+	'TITLE_PRIVACY_CHECKBOX' => 'Accept privacy via checkbox',
+	'TITLE_CONDITIONS' => 'Conditions',
+	'TITLE_WITHDRAWAL' => 'Right of Withdrawal',
+	'TITLE_CONDITIONS_SHOW_ORDER' => 'Show in Checkout',
+	'TITLE_CONDITIONS_CHECK_ORDER' => 'Confirm in Checkout',
+	'TITLE_PRIVACY_SHOW_REGISTRATION' => 'In Registration',
+	'TITLE_WITHDRAWAL_SHOW_ORDER' => 'Show in Checkout',
+	'TITLE_WITHDRAWAL_CHECK_ORDER' => 'Confirm in Registration',
+	'TITLE_WITHDRAWAL_CONTENT_ID_ORDER' => 'Content ID',
+	'TITLE_WITHDRAWAL_WEBFORM_ACTIVE' => 'Offer Webform',
+	'TITLE_WITHDRAWAL_PDF_ACTIVE' => 'Offer PDF Form',
+	'TITLE_SHOW_ACCOUNT_WITHDRAWAL_LINK' => 'Show Withdrawal Link on Customer\'s Order Information Page',
+	'TITLE_ATTACH_CONDITIONS_OF_USE_IN_ORDER_CONFIRMATION' => 'Attach Conditions of Use as PDF to the order confirmation',
+	'ATTACH_PRIVACY_NOTICE_IN_ORDER_CONFIRMATION' => 'Attach Privacy Conditions as PDF to the order confirmation',
+	'TITLE_ATTACH_WITHDRAWAL_INFO_IN_ORDER_CONFIRMATION' => 'Attach Right of Withdrawal as PDF to the order confirmation',
+	'TITLE_ATTACH_WITHDRAWAL_FORM_IN_ORDER_CONFIRMATION' => 'Attach Withdrawal Form as PDF to the Order Confirmation',
+	'TITLE_DOWNLOAD_DELAY_FOR_ABANDONMENT_OF_WITHDRAWL_RIGHT' => 'Download Delay with Abandonment of the Withdrawal Right',
+	'TITLE_DOWNLOAD_DELAY_WITHOUT_ABANDONMENT_OF_WITHDRAWL_RIGHT' => 'Download Delay without Abandonment of the Withdrawal Right',
+	'TITLE_CHECK_ABANDONMENT_OF_WITHDRAWL_DOWNLOAD' => 'Abandonment of the Withdrawal Right for Download Articles is Required',
+	'TITLE_CHECK_ABANDONMENT_OF_WITHDRAWL_SERVICE' => 'Abandonment of the Withdrawal Right for Services is Required',
+	'TITLE_SHOW_ABANDONMENT_OF_WITHDRAWL_DOWNLOAD' => 'Show Abandonment of the Withdrawal Right for Download Articles',
+	'TITLE_SHOW_ABANDONMENT_OF_WITHDRAWL_SERVICE' => 'Show Abandonment of the Withdrawal Right for Services',
+	'DESCIPTION_DOWNLOAD_DELAY_WITHOUT_ABANDONMENT_OF_WITHDRAWL_RIGHT' => 'Format: DD:HH:MM:SS',
+	'TITLE_CONFIRMATION' => 'Checkout Confirmation Page',
+	'TITLE_PRIVACY_CONFIRMATION' => 'Show Privacy Conditions Link',
+	'TITLE_CONDITIONS_CONFIRMATION' => 'Show General Terms and Conditions Link',
+	'TITLE_WITHDRAWAL_CONFIRMATION' => 'Show Right of Withdrawal Conditions Link',
+	'TEXT_LOG_IP' => 'Save IP in Checkout',
+	'TEXT_CONFIRM_IP' => 'Confirm IP Logging in Checkout',
+	'TEXT_LOG_IP_LOGIN' => 'Save IP at Login and Registration',
+	'TEXT_NOTE_LOGGING' => '',
+	'TITLE_DISPLAY_TAX' => 'VAT Display',
+	'TEXT_DISPLAY_TAX' => 'Show VAT information under product prices',
+	'TEXT_DISPLAY_TAX_EQ_0' => 'Show VAT information even if they are equal 0',
+	'TITLE_PRIVACY_CALLBACK' => 'In Callback Service',
+	'TITLE_PRIVACY_CONTACT' => 'In Contact',
+	'TITLE_PRIVACY_TELL_A_FRIEND' => 'In Module "Ask Product Question"',
+	'TITLE_PRIVACY_FOUND_CHEAPER' => 'In Module "Found cheaper"',
+	'TITLE_PRIVACY_REVIEWS' => 'In Reviews',
+	'TITLE_PRIVACY_ACCOUNT_CONTACT' => 'In Account Information',
+	'TITLE_PRIVACY_ACCOUNT_ADDRESS_BOOK' => 'In Account Address Book',
+	'TITLE_PRIVACY_ACCOUNT_NEWSLETTER' => 'In Newsletter',
+	'TITLE_PRIVACY_CHECKOUT_SHIPPING' => 'In Checkout "Mailing Address"',
+	'TITLE_PRIVACY_CHECKOUT_PAYMENT' => 'In Checkout "Billing Address"',
+	'TITLE_LOG_IP' => 'IP Logging',
+	'TITLE_STATUS' => 'Status',
+	'TITLE_POSITION' => 'Position',
+	'TITLE_COLOR' => 'Color',
+	'TITLE_TRANSPARENCY' => 'Transparency',
+	'TITLE_CLOSE_ICON' => 'Close Icon',
+	'TITLE_BUTTON_TEXT' => 'Button Text',
+	'TITLE_BUTTON_TEXT_COLOR' => 'Button Text Color',
+	'TITLE_BUTTON_COLOR' => 'Button Color',
+	'TITLE_BUTTON_LINK' => 'Button Link',
+	'TITLE_CONTENT' => 'Content',
+	'BUTTON_SELECT_COLOR' => 'Select Color',
+	'OPTION_POSITION_TOP' => 'Top',
+	'OPTION_POSITION_BOTTOM' => 'Bottom',
+	'TITLE_DATA_TRANSFER_TO_TRANSPORT_COMPANIES' => 'Data transfer to carriers',
+	'TITLE_DATA_TRANSFER_TO_TRANSPORT_COMPANIES_STATUS_LABEL' => 'Show in Checkout',
+	'TITLE_DATA_TRANSFER_TO_TRANSPORT_COMPANIES_REQUIRED_LABEL' => 'Confirm in Checkout',
+	'TITLE_DATA_TRANSFER_TO_TRANSPORT_COMPANIES_LABEL' => 'Show for Shipping Method: '
+);
