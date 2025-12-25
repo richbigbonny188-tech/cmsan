@@ -1,0 +1,91 @@
+{extends file="layout.html"}
+
+{block name="content"}
+<input type="hidden" value="{$pageToken}" name="page_token">
+<div class="vue-instance" data-parcel_services-namespace="{$base_url}/admin/html/assets/javascript/engine"
+     data-config-namespace="{$base_url}/admin/html/assets/javascript/engine"
+     data-components-namespace="{$base_url}/admin/html/assets/javascript/engine"
+     data-vue-instance-name="parcel-services">
+
+    <gx-parcel-services-overview data-parcel_services-controller="parcel_services/overview parcel_services/create-modal
+		                                                          parcel_services/edit-modal parcel_services/delete-modal"
+                                 data-components-widget="vue/components/switcher"
+                                 languages='{$adminLanguages|json_encode}'/>
+</div>
+
+{literal}
+<script type="text/x-template" id="parcel-services-overview">
+    <div class="parcel-services-overview">
+        <div class="text-right">
+            <button class="btn btn-success" @click="openCreateModal">
+                <i class="fa fa-plus"></i> &nbsp;{{ lang.create }}
+            </button>
+        </div>
+
+        <table class="parcel-services">
+            <tr class="no-hover">
+                <th class="col-id" @click="changeSorting">
+                    {{ lang.columns.name }} &nbsp;
+                    <span v-if="sortOrder === 'asc'" class="fa fa-sort-up"/>
+                    <span v-if="sortOrder === 'desc'" class="fa fa-sort-down"/>
+                </th>
+                <th class="col-action"></th>
+            </tr>
+            <tr v-if="parcelServices.length > 0" v-for="parcelService in parcelServices">
+                <td class="col-id">
+                    {{ parcelService.name }}
+                    <span v-if="parcelService.isDefault">({{ lang.labels.isDefault }})</span>
+                </td>
+                <td class="col-action">
+                    <span @click="openEditModal(parcelService)" class="fa fa-pencil"/>
+                    <span @click="openDeleteModal(parcelService)" class="fa fa-trash"/>
+                </td>
+            </tr>
+            <tr class="no-hover" v-if="parcelServices.length === 0">
+                <td colspan="3">{{ lang.labels.noParcelServicesExist }}</td>
+            </tr>
+        </table>
+
+        <div class="navigation">
+            <div class="pagination col-md-6">
+                <select class="limit pull-left" v-model="limit" @change="updatedLimit">
+                    <option v-for="(text, value) in lang.pagination.limits" :value="value">{{ text }}</option>
+                </select>
+
+                <div class="offset">
+						<span>
+							{{ totalItems > 0 ? offset + 1 : 0 }} {{ lang.pagination.offset.to }}
+							{{ offset + limit * 1 > totalItems ? totalItems : offset + limit * 1 }}
+							({{ lang.pagination.offset.of }} {{ totalItems }})
+						</span>
+                </div>
+            </div>
+
+            <div class="page col-md-6 text-right">
+                <button :disabled="page === 1" @click="showPreviousPage" class="btn">
+                    {{ lang.pagination.page.previous }}
+                </button>
+                <select v-model="page" @change="updateOffset">
+                    <option v-for="i in totalPages">{{ i }}</option>
+                </select>
+                <button :disabled="page === totalPages" @click="showNextPage" class="btn">
+                    {{ lang.pagination.page.next }}
+                </button>
+            </div>
+        </div>
+
+        <gx-create-modal :languages="parsedLanguages" @reload-overview="loadTableData"/>
+        <gx-edit-modal :languages="parsedLanguages" @reload-overview="loadTableData"/>
+        <gx-delete-modal :deleteDetails="deleteDetails" @reload-overview="loadTableData"/>
+    </div>
+</script>
+{/literal}
+
+{include file="./create_modal.html"}
+{include file="./edit_modal.html"}
+{include file="./delete_modal.html"}
+
+{* General component templates *}
+{include file="get_usermod:vue/components/switcher.html"}
+
+{/block}

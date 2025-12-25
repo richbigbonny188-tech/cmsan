@@ -1,0 +1,29 @@
+{*  ==========================================================================
+slider.html
+========================================================================== *}
+
+{block name="slider"}
+	{assign var="useContentZone" value={template_setting name="gx-use-content-zone-for-hero"}}
+    {assign var="isHomePage" value={""|detect_page == "Index"}}
+    {if $useContentZone && $isHomePage}
+		<div class="container-fluid">
+			{content_zone id="replace-teaser-slider-for-hero"}
+		</div>
+	{else}
+        <div class="slider-container-wrapper">
+            <div class="container-fluid">
+                <div class="container">
+                    <div id="stage" data-gambio-widget="slider_flyover">
+                        <div id="slider"
+                             data-gambio-widget="slider_responsive"
+                             data-slider_responsive-source="#json-serialized-slider"
+                             data-slider_responsive-effect="fade"
+                             data-slider_responsive-speed="600">
+                            {$slider}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	{/if}
+{/block}

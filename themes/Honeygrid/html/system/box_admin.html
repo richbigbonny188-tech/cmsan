@@ -1,0 +1,90 @@
+{load_language_text section="box_admin"}
+{load_language_text section="buttons" name="button"}
+
+{block name="box_admin"}
+	{block name="box_admin_top"}
+		{include file="get_usermod:{$tpl_path}layout_box_top.html" class="admin" headline=$txt.heading_admin linkcrypter="true"}
+	{/block}
+
+	{block name="box_admin_statistics_if"}
+		{if $content_data.CONTENT_BOX_TITLE_STATISTICS && $content_data.CONTENT_BOX_ORDERS_CONTENTS_ARRAY}
+			{block name="box_admin_statistics"}
+				<strong>{$content_data.CONTENT_BOX_TITLE_STATISTICS}</strong>
+				<br />
+				{foreach from=$content_data.CONTENT_BOX_ORDERS_CONTENTS_ARRAY item=orders_content}
+					{if $orders_content.confirm}
+						<a href="#" onclick="if(confirm('{$txt.confirm_text}')){literal}{{/literal}window.location.href={$orders_content.url}; return false;{literal}}{/literal} return false;">
+							{$orders_content.label}
+						</a>: {$orders_content.text}
+					{else}
+						<a href="#" onclick="window.location.href={$orders_content.url}; return false;">{$orders_content.label}</a>: {$orders_content.text}
+					{/if}
+					<br/>
+				{/foreach}
+			{/block}
+		{/if}
+	{/block}
+	{block name="box_admin_customers_if"}
+		{if $content_data.CONTENT_BOX_ENTRY_CUSTOMERS_COUNT}
+			{block name="box_admin_customers"}
+				{if $content_data.CONTENT_BOX_ENTRY_CUSTOMERS_URL}
+					<a href="#" onclick="window.location.href='{$content_data.CONTENT_BOX_ENTRY_CUSTOMERS_URL}'; return false;">{$txt.label_customers}</a>
+				{else}
+					{$txt.label_customers}:
+				{/if}
+				{$content_data.CONTENT_BOX_ENTRY_CUSTOMERS_COUNT}
+				<br/>
+			{/block}
+		{/if}
+	{/block}
+	{block name="box_admin_products_if"}
+		{if $content_data.CONTENT_BOX_ENTRY_PRODUCTS_COUNT}
+			{block name="box_admin_products"}
+				{if $content_data.CONTENT_BOX_ENTRY_PRODUCTS_URL}
+					<a href="#" onclick="window.location.href='{$content_data.CONTENT_BOX_ENTRY_PRODUCTS_COUNT}'; return false;">{$txt.label_products}</a>
+				{else}
+					{$txt.label_products}:
+				{/if}
+				{$content_data.CONTENT_BOX_ENTRY_PRODUCTS_COUNT}
+				<br/>
+			{/block}
+		{/if}
+	{/block}
+	{block name="box_admin_reviews_if"}
+		{if $content_data.CONTENT_BOX_ENTRY_REVIEWS_COUNT}
+			{block name="box_admin_reviews"}
+				{if $content_data.CONTENT_BOX_ENTRY_REVIEWS_URL}
+					<a href="#" onclick="window.location.href='{$content_data.CONTENT_BOX_ENTRY_REVIEWS_URL}'; return false;">{$txt.label_reviews}</a>
+				{else}
+					{$txt.label_reviews}:
+				{/if}
+				{$content_data.CONTENT_BOX_ENTRY_REVIEWS_COUNT}
+				<br/>
+			{/block}
+		{/if}
+	{/block}
+		<br />
+	{block name="box_admin_info_if"}
+		{if !$content_data.ADMIN_LINK_INFO}
+			{block name="box_admin_info"}
+				<a href="#" rel="nofollow" data-link_crypter-url="{crypt_link link=$content_data.BUTTON_ADMIN_URL crypt='2'}" class="btn btn-primary btn-block btn-sm" title="{$button.click_here}">
+					{$button.click_here}
+				</a>
+			{/block}
+		{/if}
+	{/block}
+	{block name="box_admin_edit_product_if"}
+		{if $content_data.BUTTON_EDIT_PRODUCT_URL}
+			{block name="box_admin_edit_product"}
+				<br />
+				<a href="#" rel="nofollow" data-link_crypter-url="{crypt_link link=$content_data.BUTTON_EDIT_PRODUCT_URL crypt='2'}" class="btn btn-primary btn-block btn-sm" title="{$button.edit_product}">
+					{$button.edit_product}
+				</a>
+			{/block}
+		{/if}
+	{/block}
+
+	{block name="box_admin_bottom"}
+		{include file="get_usermod:{$tpl_path}layout_box_bottom.html"}
+	{/block}
+{/block}

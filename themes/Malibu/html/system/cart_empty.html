@@ -1,0 +1,16 @@
+{if $cart_contains_disabled}
+    {include file="get_usermod:{$tpl_path}alert_message.html" message=$cart_disabled_message type="info" allow_links=true}
+{else}
+    {include file="get_usermod:{$tpl_path}alert_message.html" message=$txt.text_removed_products type="info"}
+    {include file="get_usermod:{$tpl_path}alert_message.html" message=$txt.text_empty type="info"}
+{/if}
+
+{block name="cart_empty"}
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-4">
+			<a class="btn btn-default btn-block" href="{$BUTTON_BACK_LINK}" title="{$button.continue_shopping}">
+				{$button.continue_shopping}
+			</a>
+		</div>
+	</div>
+{/block}

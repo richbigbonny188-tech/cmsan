@@ -1,0 +1,8 @@
+{load_language_text section="gambio_hub_klarna_hub"}
+
+{block name="admin_orders_modals_add_tracking_number_content_shipment_type_input" append}
+    <div class="col-md-8 notify-klarna-container" style="padding-top: 18px; display: none;" data-gx-widget="checkbox">
+        <input type="checkbox" id="notify-klarna" title="{$txt.TRANSMIT_SHIPMENT_NUMBER_TO_KLARNA|htmlspecialchars}" data-single_checkbox checked />
+        <span id="notify-klarna-label" style="cursor: pointer" onclick="document.getElementById('notify-klarna').click()">&nbsp;{$txt.TRANSMIT_SHIPMENT_NUMBER_TO_KLARNA}</span>
+    </div>
+{/block}

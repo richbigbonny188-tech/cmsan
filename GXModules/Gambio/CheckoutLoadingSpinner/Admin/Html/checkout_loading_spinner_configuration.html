@@ -1,0 +1,40 @@
+{*
+    Module center module configuration template
+*}
+
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="module_center_module"}
+    {load_language_text section="buttons" name="buttons"}
+
+    <div class="breakpoint-small">
+        <form action="{$content.action_save_configuration}" method="POST" class="form-configuration">
+            <input type="hidden" name="pageToken" value="{$content.pageToken}">
+
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="configuration[is_enabled]">{$txt.checkout_loading_spinner_is_enabled}</label>
+                        <div class="col-sm-8" data-gx-widget="switcher">
+                            <input type="hidden" name="configuration[is_enabled]" value="0" />
+                            <input type="checkbox" id="configuration[is_enabled]" value="1" name="configuration[is_enabled]" class="form-control" {($content.configuration['is_enabled'] == '1') ? 'checked="checked"' : ''} />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="configuration[timeout]">{$txt.checkout_loading_spinner_timeout}</label>
+                        <div class="col-sm-8" data-gx-widget="switcher">
+                            <input type="number" min="0" id="configuration[timeout]" value="{$content.configuration['timeout']}" name="configuration[timeout]" class="form-control"/>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row">
+                    <div class="col-sm-12 bottom-save-bar-content">
+                        <button type="submit" class="btn btn-primary pull-right">{$buttons.save}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{/block}

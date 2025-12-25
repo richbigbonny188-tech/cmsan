@@ -1,0 +1,74 @@
+{load_language_text section="checkout_payment_instruction"}
+{load_language_text section="paypal3" name="paypaltxt"}
+
+{block name="checkout_payment_instruction_paypal_pui"}
+	<link rel="stylesheet" type="text/css" href="{$tpl_path}assets/styles/payment_instruction_paypal_pui.css">
+	<div class="payment_instruction_paypal_pui container-fluid">
+		{block name="checkout_payment_instruction_paypal_pui_arrow"}
+			<div class="row pui_arrow">
+				<div class="col-md-2 col-md-offset-2 value">{$value|string_format:"%.2f"} {$currency}</div>
+				<div class="col-md-4"><img src="{$theme_path}images/PP_PLUS_PUI_ArrowGraphic.png" alt="==>"></div>
+				<div class="col-md-2 pplogo"><img src="{$theme_path}images/PP_PLUS_PUI_logo.png" alt="PayPal"></div>
+			</div>
+		{/block}
+		
+		{block name="checkout_payment_instruction_paypal_pui_note"}
+			<p class="payment_note">{$paypaltxt.pui_please_transfer} {$value|string_format:"%.2f"} {$currency} {if $due_date}{$paypaltxt.pui_until} {$due_date}{/if} {$paypaltxt.pui_to_paypal}</p>
+		{/block}
+		
+		{block name="checkout_payment_instruction_paypal_pui_table"}
+			{block name="checkout_payment_instruction_paypal_pui_amount"}
+				<div class="row bottomborder topborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.amount}</strong></div>
+					<div class="col-sm-4">{$value|string_format:"%.2f"} {$currency}</div>
+				</div>
+			{/block}
+			{block name="checkout_payment_instruction_paypal_pui_iban"}
+				<div class="row bottomborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.iban}</strong></div>
+					<div class="col-sm-4">{$iban}</div>
+				</div>
+			{/block}
+			{block name="checkout_payment_instruction_paypal_pui_bic"}
+				<div class="row bottomborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.bic}</strong></div>
+					<div class="col-sm-4">{$bic}</div>
+				</div>
+			{/block}
+			{block name="checkout_payment_instruction_paypal_pui_account_holder"}
+				<div class="row bottomborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.account_holder}</strong></div>
+					<div class="col-sm-4">{$account_holder}</div>
+				</div>
+			{/block}
+			{block name="checkout_payment_instruction_paypal_pui_bank_name"}
+				<div class="row bottomborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.bank_name}</strong></div>
+					<div class="col-sm-4">{$bank_name}</div>
+				</div>
+			{/block}
+			{block name="checkout_payment_instruction_paypal_pui_reference"}
+				<div class="row bottomborder">
+					<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.reference}</strong></div>
+					<div class="col-sm-4">{$reference}</div>
+				</div>
+			{/block}
+			{if $due_date}
+				{block name="checkout_payment_instruction_paypal_pui_due_date"}
+					<div class="row bottomborder">
+						<div class="col-sm-4 col-sm-offset-2"><strong>{$txt.due_date}</strong></div>
+						<div class="col-sm-4">{$due_date}</div>
+					</div>
+				{/block}
+			{/if}
+			{if $additional_note}
+				{block name="checkout_payment_instruction_paypal_pui_additional_note"}
+					<div class="row additional_note">
+						<div class="col-sm-8 col-sm-offset-2 additional_note">{$additional_note}</div>
+					</div>
+				{/block}
+			{/if}
+		{/block}
+	</div>
+{/block}
+

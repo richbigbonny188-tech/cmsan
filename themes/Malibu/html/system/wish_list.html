@@ -1,0 +1,55 @@
+{load_language_text section="wish_list"}
+{load_language_text section="buttons" name="button"}
+
+{block name="wish_list"}
+	{block name="wish_list_title"}
+		<h1>{$txt.heading_wish_list}</h1>
+	{/block}
+
+	<div data-gambio-widget="product_cart_handler"
+	     data-product_cart_handler-update-url="shop.php?do=WishList"
+	     data-product_cart_handler-ajax-actions='{literal}{{/literal}"add": "shop.php?do=WishList/AddToCart", "delete": "shop.php?do=WishList/Delete", "refresh": "shop.php?do=WishList/Update" {literal}}{/literal}'>
+
+		{block name="wish_list_alert"}
+			<div class="cart-empty{if $cart_empty != true} hidden{/if}" >
+                {if $list_contains_disabled}
+                    {include file="get_usermod:{$tpl_path}alert_message.html" message=$list_disabled_message type="info" allow_links=true}
+                {else}
+                    {include file="get_usermod:{$tpl_path}alert_message.html" message=$text_removed_products type="info"}
+					{include file="get_usermod:{$tpl_path}alert_message.html" message=$txt.text_empty type="info" allow_links=true}
+                {/if}
+			</div>
+		{/block}
+
+		<div class="cart-not-empty{if $cart_empty == true} hidden{/if}" >
+            {if $list_contains_disabled}
+                <div class="global-error-messages">
+                    {include file="get_usermod:{$tpl_path}alert_message.html" message=$list_disabled_message type="warning" allow_links=true}
+                </div>
+            {/if}
+
+            {if $text_removed_products}
+				<div class="global-error-messages">
+                    {include file="get_usermod:{$tpl_path}alert_message.html" message=$text_removed_products type="warning"}
+				</div>
+            {/if}
+
+			{block name="wish_list_form"}
+				<form name="cart_quantity" action="{$FORM_ACTION_URL}" method="post">
+					<div class="hidden-options">
+						{if $HIDDEN_OPTIONS}
+							{foreach from=$HIDDEN_OPTIONS item=optionsPerProduct}
+								{foreach from=$optionsPerProduct item=hiddenOption}
+									<input type="hidden" class="hidden" name="{$hiddenOption.name}" value="{$hiddenOption.value}">
+								{/foreach}
+							{/foreach}
+						{/if}
+						<input type="hidden" name="submit_target" value="wishlist" class="force" />
+					</div>
+
+					{$MODULE_order_details}
+				</form>
+			{/block}
+		</div>
+	</div>
+{/block}

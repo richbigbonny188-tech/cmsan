@@ -1,0 +1,101 @@
+{load_language_text section="account_history"}
+{load_language_text section="buttons" name="button"}
+{load_language_text section="pagination" name="pagination"}
+
+{block name="account_history"}
+	{block name="account_history_title"}
+		<h1>{$txt.heading_history}</h1>
+	{/block}
+
+	{foreach name=aussen item=order_data from=$orders}
+		{block name="account_history_element"}
+			<div class="order-history-element">
+				{block name="account_history_element_title"}
+					<h3>{$txt.title_order_number}{$order_data.orders_id}</h3>
+				{/block}
+				<dl class="row">
+					{block name="account_history_element_date_label"}
+						<dt class="col-xs-4 col-sm-3 col-md-2">
+							{$txt.label_date}
+						</dt>
+					{/block}
+					{block name="account_history_element_date"}
+						<dd class="col-xs-8 col-sm-9 col-md-10">
+							{$order_data.date_purchased}
+						</dd>
+					{/block}
+					{block name="account_history_element_products_label"}
+						<dt class="col-xs-4 col-sm-3 col-md-2">
+							{$txt.label_articles}
+						</dt>
+					{/block}
+					{block name="account_history_element_products"}
+						<dd class="col-xs-8 col-sm-9 col-md-10">
+							{$order_data.product_count}
+						</dd>
+					{/block}
+					{block name="account_history_element_total_label"}
+						<dt class="col-xs-4 col-sm-3 col-md-2">
+							{$txt.label_total}
+						</dt>
+					{/block}
+					{block name="account_history_element_total"}
+						<dd class="col-xs-8 col-sm-9 col-md-10">
+							{$order_data.order_total}
+						</dd>
+					{/block}
+					{block name="account_history_element_status_label"}
+						<dt class="col-xs-4 col-sm-3 col-md-2">
+							{$txt.label_status}
+						</dt>
+					{/block}
+					{block name="account_history_element_status"}
+						<dd class="col-xs-8 col-sm-9 col-md-10">
+							{$order_data.orders_status_name}
+						</dd>
+					{/block}
+				</dl>
+
+				{block name="account_history_element_buttons"}
+					<div class="row">
+						<div class="col-xs-6 col-sm-4 col-md-3">
+							{block name="account_history_element_buttons_show"}
+								<a class="btn btn-primary btn-block"
+								   href="{$order_data.btn_url}"
+								   title="{$button.show}">
+									{$button.show}
+								</a>
+							{/block}
+						</div>
+						<div class="col-xs-6 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6 text-right">
+							{block name="account_history_element_buttons_empty"}
+								&nbsp;
+							{/block}
+						</div>
+					</div>
+				{/block}
+			</div>
+		{/block}
+	{/foreach}
+
+	{block name="account_history_buttons"}
+		<div class="row">
+			<div class="col-xs-6 col-sm-4 col-md-3">
+				{block name="account_history_buttons_back"}
+					<a class="btn btn-default btn-block" href="./account.php" title="{$button.back}">
+						{$button.back}
+					</a>
+				{/block}
+			</div>
+			<div class="col-xs-6 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6 text-right">
+				{block name="account_history_buttons_empty"}
+					&nbsp;
+				{/block}
+			</div>
+		</div>
+	{/block}
+
+	{include file="get_usermod:{$tpl_path}pagination.html" pager=$pager}
+
+	{include file="get_usermod:{$tpl_path}pagination_info.html" pager=$pager}
+{/block}

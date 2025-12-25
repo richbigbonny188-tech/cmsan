@@ -1,0 +1,14 @@
+{load_language_text section="also_purchased"}
+
+{block name="product_info_related_products_if"}
+	{if $module_content != ''}
+		{block name="product_info_related_products"}
+			{block name="product_info_related_products_title"}
+				<h3>{$txt.heading_text}</h3>
+			{/block}
+			{block name="product_info_related_products_product_listing"}
+				{$module_content}
+			{/block}
+		{/block}
+	{/if}
+{/block}

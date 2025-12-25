@@ -1,0 +1,55 @@
+{load_language_text section="product_listing"}
+{load_language_text section="product_info" name="info"}
+{load_language_text section="buttons" name="button"}
+
+{block name="product_listing_template_product_listing_v1"}
+
+
+
+
+	{block name="product_listing_template_product_listing_v1_filter_section"}
+		{$FILTER_SELECTION}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_manufacturer"}
+		{manufacturer_data
+		manufacturer_id=$gm_manufacturers_id
+		out=manufacturer
+		}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_category_description"}
+		{include file="get_usermod:{$tpl_path}category_description_top.html" img_alt=$CATEGORIES_GM_ALT_TEXT category_title=$CATEGORIES_HEADING_TITLE
+		category_name=$CATEGORIES_NAME manufacturer=$manufacturer}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_filter"}
+		{include file="get_usermod:{$tpl_path}product_listing_filter.html" formname="panel"}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_container"}
+		<div class="container-fluid"
+			 data-gambio-widget="product_hover"
+			 data-product_hover-scope=".productlist-viewmode-grid">
+			<div class="row product-filter-target productlist productlist-viewmode {if $VIEW_MODE == 'tiled'}productlist-viewmode-grid{else}productlist-viewmode-list{/if}"
+				 data-gambio-widget="cart_handler">
+
+				{block name="product_listing_template_product_listing_v1_main"}
+					{include file="get_usermod:{$tpl_path}product_listing_main.html"}
+				{/block}
+			</div>
+		</div>
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_filter2"}
+		{include file="get_usermod:{$tpl_path}product_listing_filter.html" formname="panel2"}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_pagination"}
+		{include file="get_usermod:{$tpl_path}pagination_info.html" pager=$pager}
+	{/block}
+
+	{block name="product_listing_template_product_listing_v1_category_description_bottom"}
+		{include file="get_usermod:{$tpl_path}category_description_bottom.html"}
+	{/block}
+{/block}

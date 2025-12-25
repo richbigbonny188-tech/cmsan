@@ -1,0 +1,30 @@
+{block name="layout_footer"}
+    {assign var="useContentZone" value={template_setting name="gx-footer-header-use-content-zone"}}
+    <footer id="footer">
+        {if $useContentZone}
+            {block name="layout_footer_header"}
+            <div class="footer-header">
+                {content_zone id="footer-header"}
+            </div>
+            {/block}
+        {elseif $HTML}
+            {block name="layout_footer_header"}
+            <div class="footer-header">
+                {$HTML}
+            </div>
+            {/block}
+        {/if}
+
+        {block name="layout_footer_inside"}
+            <div class="inside">
+                {block name="footer-columns-content-zone"}
+                    {content_zone id="footer-columns"}
+                {/block}
+            </div>
+        {/block}
+
+        {block name="layout_footer_inside_copyright"}
+        <div class="footer-bottom">{$COPYRIGHT_FOOTER}</div>
+        {/block}
+    </footer>
+{/block}

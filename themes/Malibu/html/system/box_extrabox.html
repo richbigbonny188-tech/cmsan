@@ -1,0 +1,11 @@
+{block name="box_extrabox"}
+	{block name="box_extrabox_top"}
+		{include file="get_usermod:{$tpl_path}layout_box_top.html" class="extrabox"|cat:$content_data.NUMBER headline=$content_data.HEADING}
+	{/block}
+
+	{block name="box_extrabox_content"}{$content_data.CONTENT}{/block}
+
+	{block name="box_extrabox_bottom"}
+		{include file="get_usermod:{$tpl_path}layout_box_bottom.html"}
+	{/block}
+{/block}

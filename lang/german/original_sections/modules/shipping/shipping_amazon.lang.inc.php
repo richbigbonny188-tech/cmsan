@@ -1,0 +1,24 @@
+<?php
+/* --------------------------------------------------------------
+	shipping_amazon.lang.inc.php 2015-01-02 gm
+	Gambio GmbH
+	http://www.gambio.de
+	Copyright (c) 2015 Gambio GmbH
+	Released under the GNU General Public License (Version 2)
+	[http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+$t_language_text_section_content_array = array
+(
+	'MODULE_SHIPPING_AMAZON_ALLOWED_DESC' => 'Gib <b>einzeln</b> die Zonen an, in welche ein Versand möglich sein soll. (z.B. AT,DE (lasse dieses Feld leer, wenn du alle Zonen erlauben willst))',
+	'MODULE_SHIPPING_AMAZON_ALLOWED_TITLE' => 'Erlaubte Zonen',
+	'MODULE_SHIPPING_AMAZON_SORT_ORDER' => 'Sortierung',
+	'MODULE_SHIPPING_AMAZON_SORT_ORDER_DESC' => 'Reihenfolge der Anzeige',
+	'MODULE_SHIPPING_AMAZON_SORT_ORDER_TITLE' => 'Sortierreihenfolge',
+	'MODULE_SHIPPING_AMAZON_STATUS_DESC' => 'Möchtest du Versandfestlegung durch Amazon anbieten?',
+	'MODULE_SHIPPING_AMAZON_STATUS_TITLE' => 'Versandfestlegung durch Amazon',
+	'MODULE_SHIPPING_AMAZON_TEXT_DESCRIPTION' => 'Versand festgelegt durch Amazon',
+	'MODULE_SHIPPING_AMAZON_TEXT_TITLE' => 'Versand festgelegt durch Amazon.',
+	'MODULE_SHIPPING_AMAZON_TEXT_WAY' => 'Versand festgelegt durch Amazon.'
+);

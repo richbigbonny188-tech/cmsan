@@ -1,0 +1,24 @@
+{load_language_text section="couponinfo" name="couponinfo"}
+{$couponinfo.your_coupon}: {$content_data.COUPON_INFO.coupon_name}<br>
+{$content_data.COUPON_INFO.coupon_description}<br>
+{$couponinfo.coupon_amount}: {$content_data.COUPON_INFO.coupon_amount_formatted}<br>
+{$couponinfo.valid_from} {$content_data.COUPON_INFO.coupon_start_date|xtc_date_short} {$couponinfo.until} {$content_data.COUPON_INFO.coupon_expire_date|xtc_date_short}<br>
+{if $content_data.COUPON_INFO.minimum_order_formatted}
+	{$couponinfo.minimum_order_amount}: {$content_data.COUPON_INFO.minimum_order_formatted}<br>
+{/if}
+{if $content_data.COUPON_INFO.product_names}
+	{$couponinfo.valid_for_these_products}:
+	<ul class="coupon_products">
+		{foreach from=$content_data.COUPON_INFO.product_names item=product_name}
+			<li>{$product_name}</li>
+		{/foreach}
+	</ul>
+{/if}
+{if $content_data.COUPON_INFO.categories_names}
+	{$couponinfo.valid_for_these_categories}:
+	<ul class="coupon_categories">
+		{foreach from=$content_data.COUPON_INFO.categories_names item=category_name}
+			<li>{$category_name}</li>
+		{/foreach}
+	</ul>
+{/if}

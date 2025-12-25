@@ -1,0 +1,20 @@
+{load_language_text section="graduated_price"}
+
+{block name="product_info_graduated_price"}
+	<div class="blockpricing clearfix">
+		{block name="product_info_graduated_price_title"}
+			<div class="blockpricing-heading">{$txt.heading_graduated_price}</div>
+		{/block}
+		
+		{block name="product_info_graduated_price_list"}
+			<dl>
+				{foreach name=aussen item=module_data from=$module_content}
+					{block name="product_info_graduated_price_item"}
+						<dt>{$module_data.QUANTITY} {if $module_data.UNIT != ''}{$module_data.UNIT}{else}{$txt.unit}{/if}</dt>
+						<dd>{$txt.pieces} {$module_data.PRICE}{if $module_data.VPE} ({$module_data.VPE}){/if}</dd>
+					{/block}
+				{/foreach}
+			</dl>
+		{/block}
+	</div>
+{/block}

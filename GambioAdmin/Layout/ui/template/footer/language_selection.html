@@ -1,0 +1,18 @@
+{block name="layout_footer_info_language_selection"}
+	<div class="language-selection">
+        {if $adminLanguages|@count gt 1}
+			{foreach $adminLanguages as $language}
+				{block name="layout_footer_info_language_selection_link"}
+					<a href="#{$language.code|lower}" data-language-code="{$language.code|lower}" class="flag">
+						{block name="layout_footer_info_language_selection_link_icon"}
+							<span
+									data-lang="{$language.code|lower}"
+									class="flag-icon flag-icon-{if $language.code|lower === 'en'}gb{else}{$language.code|lower}{/if}"
+							></span>
+						{/block}
+					</a>
+				{/block}
+			{/foreach}
+        {/if}
+	</div>
+{/block}

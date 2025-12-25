@@ -1,0 +1,19 @@
+{block name="layout_header_custom_content"}
+	<div class="custom-container">
+		{block name="layout_header_custom_content_inside"}
+			<div class="inside">
+				{block name="layout_header_custom_content_inside_content_if"}
+					{if $content}
+						{block name="layout_header_custom_content_inside_content"}
+							{$content}
+						{/block}
+					{else}
+						{block name="layout_header_custom_content_inside_content_empty"}
+							<!--&nbsp;-->
+						{/block}
+					{/if}
+				{/block}
+			</div>
+		{/block}
+	</div>
+{/block}

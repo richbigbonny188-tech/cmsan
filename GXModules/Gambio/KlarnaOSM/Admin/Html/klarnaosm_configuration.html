@@ -1,0 +1,95 @@
+{* --------------------------------------------------------------
+   klarnaosm_configuration.html 2022-06-01
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2022 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*}
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="module_center_module"}
+
+    <div class="breakpoint-small">
+    <form action="{$content.action_save_configuration}" method="POST" class="form-configuration"
+          id="afterbuy-configuration">
+        <input type="hidden" name="pageToken" value="{$content.pageToken}">
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{$txt.klarnaosm_configuration}</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_module_active}</label>
+                    <div class="col-sm-8" data-gx-widget="switcher">
+                        <input type="hidden" name="configuration[active]" value="0">
+                        <input type="checkbox" id="configuration[active]" value="1" name="configuration[active]"
+                               class="form-control" {($content.configuration['active'] == '1') ? 'checked="checked"' : ''}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_purpose}</label>
+                    <div class="col-sm-8">
+                        <select name="configuration[cookie_consent_purpose_id]" class="form-control">
+                            <option value="0" {if $content.configuration['cookie_consent_purpose_id'] === 0}selected{/if}>
+                                {$txt.klarnaosm_cookie_consent_dontuse}
+                            </option>
+                            {foreach $content.purposes as $purpose}
+                                <option value="{$purpose.id}" {if $content.configuration['cookie_consent_purpose_id'] == $purpose.id}selected{/if}>
+                                    {$purpose.name}
+                                </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_jslib}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                            name="configuration[snippet_library]">{$content.configuration['snippet_library']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_product_top}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                                  name="configuration[snippet_product_top]">{$content.configuration['snippet_product_top']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_product_bottom}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                                  name="configuration[snippet_product_bottom]">{$content.configuration['snippet_product_bottom']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_cart_top}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                                  name="configuration[snippet_cart_top]">{$content.configuration['snippet_cart_top']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_cart}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                                  name="configuration[snippet_cart]">{$content.configuration['snippet_cart']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.klarnaosm_snippet_footer_bottom}</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="6"
+                                  name="configuration[snippet_footer_bottom]">{$content.configuration['snippet_footer_bottom']}</textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary pull-right">{$txt.klarnaosm_save_configuration}</button>
+            </div>
+        </div>
+    </form>
+{/block}

@@ -1,0 +1,10 @@
+{if $SHOW_PRODUCTS_MODEL}
+	{block name="product_info_model"}
+		<dt class="col-xs-4 text-left model-number" {if !$PRODUCTS_MODEL} style="display: none" {/if}>
+			{$txt.text_model}
+		</dt>
+		<dd class="col-xs-8 model-number model-number-text" {if !$PRODUCTS_MODEL} style="display: none" {/if}>
+			{$PRODUCTS_MODEL}
+		</dd>
+	{/block}
+{/if}

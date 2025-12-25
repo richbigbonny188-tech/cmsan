@@ -1,0 +1,11 @@
+{block name="cart_totals_checkout_buttons"}
+    {$smarty.block.parent}
+    {if $KLARNAOSM_CART}
+        <div class="klarnaosm klarnaosm_cart" 
+             data-klarnaosm-namespace="GXModules/Gambio/KlarnaOSM/Build/Shop/Themes/All/Javascript"
+             data-klarnaosm-widget="klarnaosmcart"
+        >
+            {$KLARNAOSM_CART}
+        </div>
+    {/if}
+{/block}

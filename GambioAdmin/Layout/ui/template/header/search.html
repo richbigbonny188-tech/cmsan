@@ -1,0 +1,60 @@
+{block name="layout_header_search"}
+    <div class="search">
+        {block name="layout_header_search_bar"}
+            <div class="search-bar">
+                {block name="layout_header_search_bar_input"}
+                    <div class="search-bar-input">
+                        {block name="layout_header_search_bar_input_icon"}
+                            <i class="fa fa-search"></i>
+                        {/block}
+                        <input class="search-input"
+                               title="{$searchPlaceholder}"
+                               type="text"
+                               placeholder="{$searchPlaceholder}">
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                {/block}
+
+                {block name="layout_header_search_bar_sections"}
+                    <div class="search-bar-sections">
+                        {block name="layout_header_search_bar_sections_orders"}
+                            <div class="search-section orders" data-search-area="orders">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_orders}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_invoices"}
+                            <div class="search-section invoices" data-search-area="invoices">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_invoices}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_customers"}
+                            <div class="search-section customers" data-search-area="customers">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_customers}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_categories"}
+                            <div class="search-section categories" data-search-area="categories">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_categories}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_configurations"}
+                            <div class="search-section configurations" data-search-area="configurations">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_configurations}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_manual"}
+                            <div class="search-section manual" data-search-area="manual">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_manual}</span>
+                            </div>
+                        {/block}
+                        {block name="layout_header_search_bar_sections_forum"}
+                            <div class="search-section forum" data-search-area="forum">
+                                <span class="search-placeholder"></span>&nbsp;<span>{$admin_labels.admin_search_in_label} {$admin_labels.admin_search_forum}</span>
+                            </div>
+                        {/block}
+                    </div>
+                {/block}
+            </div>
+        {/block}
+    </div>
+{/block}

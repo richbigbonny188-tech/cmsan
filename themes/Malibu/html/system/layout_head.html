@@ -1,0 +1,163 @@
+{load_language_text section="general"}
+
+{block name="layout_head"}
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml" {$content_data.HTML_PARAMS}>
+		{block name="layout_head_head"}
+			<head>
+				{block name="layout_head_head_license_comment"}
+					{* The following copyright announcement is in compliance
+					to section 2c of the GNU General Public License, and
+					thus can not be removed, or can only be modified
+					appropriately.
+
+					Please leave this comment intact together with the
+					following copyright announcement. *}
+
+					<!--
+
+					=========================================================
+					Shopsoftware by Gambio GmbH (c) 2005-2021 [www.gambio.de]
+					=========================================================
+
+					Gambio GmbH offers you highly scalable E-Commerce-Solutions and Services.
+					The Shopsoftware is redistributable under the GNU General Public License (Version 2) [http://www.gnu.org/licenses/gpl-2.0.html].
+					based on: E-Commerce Engine Copyright (c) 2006 xt:Commerce, created by Mario Zanier & Guido Winger and licensed under GNU/GPL.
+					Information and contribution at http://www.xt-commerce.com
+
+					=========================================================
+					Please visit our website: www.gambio.de
+					=========================================================
+
+					-->
+				{/block}
+
+                {block name="layout_head_head_additional_html_array_first"}
+                    {$content_data.additional_html_array.head.first}
+                {/block}
+
+				{block name="layout_head_head_viewport_meta"}
+					<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+				{/block}
+
+				{block name="layout_head_head_additional_html_array_top"}
+					{$content_data.additional_html_array.head.top}
+				{/block}
+
+				{* Configuration of automatic hyphenation polyfill *}
+				{block name="layout_head_head_hyphenopoly_configuration"}
+					{if $content_data.hyphenopolyLanguage && $content_data.hyphenopolyLoader}
+						<script>
+							var Hyphenopoly = {
+								require: {
+									"{$content_data.hyphenopolyLanguage}": "FORCEHYPHENOPOLY"
+								},
+								paths: {
+									patterndir: "{$content_data.BASE_URL}JSEngine/build/vendor/hyphenopoly/patterns/",
+									maindir: "{$content_data.BASE_URL}JSEngine/build/vendor/hyphenopoly/"
+								},
+								setup: {
+									timeout: 1000,
+									classnames: {
+										"title": {},
+										"product-url": {},
+										"hyphenate": {},
+									}
+								}
+							};
+
+							{$content_data.hyphenopolyLoader}
+						</script>
+					{/if}
+				{/block}
+
+				{block name="layout_head_head_base"}
+					<base href="{$content_data.BASE_URL}" />
+				{/block}
+
+				{block name="layout_head_head_favicon_if"}
+					{if $content_data.FAVICON}
+						{block name="layout_head_head_favicon"}
+							<link rel="shortcut icon" href="{$content_data.FAVICON}" type="image/x-icon" />
+						{/block}
+					{/if}
+				{/block}
+
+				{block name="layout_head_head_favicon_ipad_if"}
+					{if $content_data.FAVICON_IPAD}
+						{block name="layout_head_head_favicon_ipad"}
+							<link rel="apple-touch-icon" href="{$content_data.FAVICON_IPAD}" />
+						{/block}
+					{/if}
+				{/block}
+
+				{block name="layout_head_head_inline_css_if"}
+					{if $content_data.REBUILD_CSS}
+						{block name="layout_head_head_css_include"}
+							<link id="main-css" type="text/css" rel="stylesheet" href="{$content_data.CSS_FILE}?{$content_data.CSS_PARAMS}" />
+						{/block}
+					{else}
+                        {block name="layout_head_head_css_include"}
+                            <link id="main-css" type="text/css" rel="stylesheet" href="{$content_data.MAIN_CSS}" />
+                        {/block}
+					{/if}
+				{/block}
+
+				{block name="layout_head_head_additional_html_array_bottom"}
+					{$content_data.additional_html_array.head.bottom}
+				{/block}
+
+				{block name="layout_head_head_fixed_header_assign"}
+					{assign var="fixedHeader" value={template_setting name="gx-header-fixed"}}
+				{/block}
+
+				{block name="layout_head_head_debug_bar_header"}
+					{if $content_data.debug_bar}
+						{$content_data.debug_bar_header_content nofilter}
+					{/if}
+				{/block}
+
+			</head>
+		{/block}
+		{block name="layout_head_body"}
+			<body class="{page_id}"
+				  data-gambio-namespace="{$content_data.BASE_URL}{$theme_path}javascripts/system"
+				  data-jse-namespace="{$content_data.BASE_URL}JSEngine/build"
+				  data-gambio-controller="initialize"
+				  data-gambio-widget="input_number responsive_image_loader transitions {if $fixedHeader}header {/if}image_maps modal history dropdown core_workarounds anchor"
+				  data-input_number-separator="{$content_data.numberSeparator}"
+					{$content_data.additional_html_array.body.params}>
+
+				{block name="layout_head_body_additional_html"}
+					{$content_data.additional_html_array.body.top}
+				{/block}
+
+				{block name="layout_head_body_additional_warnings"}
+					{if $content_data.additional_warnings}
+						{foreach from=$content_data.additional_warnings item=warning}
+							<table style="background: #fff;" class="box-error" border="0" width="100%" cellspacing="0" cellpadding="2">
+								<tbody>
+									<tr>
+										<td class="errorBox">
+											<table style="width: 100%;"><tr><td style="vertical-align: middle; text-align: center;">{$warning}</td></tr></table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						{/foreach}
+					{/if}
+				{/block}
+
+				{block name="layout_head_body_shop_offline_warning"}
+					{if $content_data.show_shop_offline_warning}
+						<table style="background: #fff;" class="box-warning" border="0" width="100%" cellspacing="0" cellpadding="2">
+							<tbody>
+								<tr>
+									<td class="warningBox"><table style="width: 100%;"><tbody><tr><td style="vertical-align: middle; text-align: center;"><a style="color: inherit; text-decoration: inherit;" href="admin/gm_offline.php">{$txt.TEXT_SHOP_STATUS}</a></td></tr></tbody></table></td>
+								</tr>
+							</tbody>
+						</table>
+					{/if}
+				{/block}
+		{/block}
+{/block}

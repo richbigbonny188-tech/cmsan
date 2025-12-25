@@ -1,0 +1,11 @@
+{load_language_text section="pagination" name="pagination"}
+
+{block name="pagination_info"}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="pagination-info">
+				{$pagination.TEXT_DISPLAY_NUMBER_OF_ITEMS|sprintf:$pager->lowestOnPage():$pager->highestOnPage():$pager->totalItemCount()}
+			</div>
+		</div>
+	</div>
+{/block}

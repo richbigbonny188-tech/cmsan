@@ -1,0 +1,16 @@
+{extends file="layout.html"}
+
+{block name="content"}
+    {* load_language_text section="dhlreturns" *}
+	<script>
+		window.dhlreturns = {$dhlreturns};
+	</script>
+    {block name="dhlreturns"}
+		<div class="gx-vue-dhlreturns"></div>
+
+		<!--
+		{$debug}
+		-->
+
+    {/block}
+{/block}

@@ -1,0 +1,13 @@
+{load_language_text section="new_products"}
+
+{if $module_content != ''}
+	{block name="home_recommended_products_default"}
+		{block name="home_recommended_products_default_title"}
+			<h2>{$txt.heading_advice}</h2>
+		{/block}
+	
+		{block name="home_recommended_products_default_listing"}
+			{$module_content_html}
+		{/block}
+	{/block}
+{/if}

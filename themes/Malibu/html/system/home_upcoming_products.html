@@ -1,0 +1,13 @@
+{load_language_text section="upcoming_products"}
+
+{block name="home_upcoming_products"}
+	{if $module_content != ''}
+		{block name="home_upcoming_products_title"}
+			<h2>{$txt.heading_upcoming}</h2>
+		{/block}
+
+		{block name="home_upcoming_products_product_listing"}
+			{$module_content_html}
+		{/block}
+	{/if}
+{/block}
