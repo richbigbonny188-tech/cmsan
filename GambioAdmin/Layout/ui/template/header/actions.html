@@ -1,0 +1,66 @@
+{block name="layout_header_actions"}
+	<div class="actions">
+        {if $shopOffline == true}
+            {block name="layout_header_actions_shop_offline"}
+				<div class="shop-offline-notice">
+					<i class="fa fa-exclamation-triangle"></i>
+					<a href="{$baseUrl}/admin/gm_offline.php">{$adminGeneral.TEXT_SHOP_STATUS}</a>
+				</div>
+            {/block}
+        {/if}
+
+        {if $environment === 'development'}
+            {block name="layout_header_actions_dev_mode"}
+				<div class="action dev-mode{if $jsNextDev} enabled{/if}">
+					<i class="fa fa-flask"></i>
+				</div>
+            {/block}
+        {/if}
+        {block name="layout_header_actions_manual"}
+			<div class="action external">
+				<a href="{$baseUrl}/admin/admin.php?do=DirectHelpProxy/GoToManual"
+				   title="{$adminGeneral.GM_TOP_MENU_MANUAL}" target="_blank">
+					<i class="fa fa-question"></i>
+				</a>
+			</div>
+        {/block}
+        {block name="layout_header_actions_forum"}
+			<div class="action external">
+				<a href="{$baseUrl}/admin/admin.php?do=DirectHelpProxy/GoToForum"
+				   title="{$adminGeneral.GM_TOP_MENU_FORUM}"
+				   target="_blank">
+					<i class="fa fa-users"></i>
+				</a>
+			</div>
+        {/block}
+        {block name="layout_header_actions_info_box"}
+			<div class="action info-box">
+				<i class="fa fa-bullhorn"></i>
+				<span class="notification-count hidden"></span>
+
+				<div class="notifications hidden">
+					<div class="arrow">
+						<i class="fa fa-sort-up"></i>
+					</div>
+					<div class="messages">
+                        {* dynamic content *}
+						<div class="loading-spinner">
+							<i class="fa fa-spinner fa-spin"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+        {/block}
+        {block name="layout_header_actions_frontend"}
+			<div class="action frontend">
+				<a href="{$baseUrl}"><i class="fa fa-shopping-cart"></i></a>
+			</div>
+        {/block}
+        {block name="layout_header_actions_logout"}
+			<div class="action logout"
+				 title="{$adminGeneral.GM_TOP_MENU_LOGOUT} ({$smarty.session.customer_first_name|htmlspecialchars} {$smarty.session.customer_last_name|htmlspecialchars})">
+				<a href="{$baseUrl}/logoff.php"><i class="fa fa-power-off"></i></a>
+			</div>
+        {/block}
+	</div>
+{/block}

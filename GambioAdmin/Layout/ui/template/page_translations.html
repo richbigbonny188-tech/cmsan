@@ -1,0 +1,12 @@
+<script>
+	window.jsEnvironment = {
+		baseUrl: '{$baseUrl}',
+		environment: '{$environment}',
+		translations: {$jsTranslations nofilter},
+        {if isset($vuePage)}
+		vuePage: {
+			translations: {$vueTranslations nofilter}
+		},
+        {/if}
+	};
+</script>

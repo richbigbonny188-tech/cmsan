@@ -1,0 +1,29 @@
+	{block name="product_info_template_standard_images"}
+		<div class="product-info-stage col-xs-12 col-md-8{if $images|count lt 2} centered{/if}">
+
+			<div id="image-collection-container">
+				{include file="get_usermod:{$tpl_path}product_info_gallery_main.html"}
+			</div>
+
+			{block name="product_info_template_standard_product_images_manufacturer_ribbon_if"}
+                {product_ribbons
+					showManufacturerImages='SHOW_MANUFACTURER_IMAGE_PRODUCT_DETAILS'|gm_get_conf
+					showProductRibbons='SHOW_PRODUCT_RIBBONS'|gm_get_conf
+					product_id=$productId
+					out=arr_ribbons
+                }
+				{if $arr_ribbons.manufacturer|count > 0}
+					{block name="product_info_template_standard_product_images_manufacturer_ribbon_include"}
+						{include file="get_usermod:{$tpl_path}product_listing_manufacturer.html"
+						ribbon="manufacturer"
+						id=$arr_ribbons.manufacturer.0.ID
+						text=$arr_ribbons.manufacturer.0.IMAGE_ALT
+						img=$arr_ribbons.manufacturer.0.IMAGE
+						url=$arr_ribbons.manufacturer.0.URL
+						}
+					{/block}
+				{/if}
+			{/block}
+
+		</div>
+	{/block}

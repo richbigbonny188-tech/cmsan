@@ -1,0 +1,16 @@
+{block name="index_inner_wrapper_left_aside"}
+    <aside id="left">
+        {block name="index_inner_wrapper_left_content"}
+            {if $SHOW_LEFT_COLUMN}
+                {menuboxes first=1 last=100 exclude="content"}
+            {else}
+                {menuboxes only="categories,filter"}
+            {/if}
+        {/block}
+        {block name="index_inner_wrapper_left_trusted_shops"}
+            {if $TRUSTED_SHOPS_REVIEW_STICKER|strpos:"variant: 'skyscraper_vertical'" !== false || $TRUSTED_SHOPS_REVIEW_STICKER|strpos:"variant: 'vertical'" !== false}
+                {$TRUSTED_SHOPS_REVIEW_STICKER}
+            {/if}
+        {/block}
+    </aside>
+{/block}

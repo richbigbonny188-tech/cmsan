@@ -1,0 +1,15 @@
+{if $responsive16by9 || $responsive4by3}
+<div class="embed-responsive{if $responsive16by9} embed-responsive-16by9{elseif $responsive4by3} embed-responsive-4by3{/if}">
+    {/if}
+    <iframe
+        width="{$width}"
+        height="{$height}"
+        src="https://www.youtube-nocookie.com/embed/{$videoId}"
+        title="{$title}"
+        frameborder="0"
+        class="embed-responsive-item"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+    </iframe>
+    {if $responsive16by9 || $responsive4by3}
+</div>
+{/if}

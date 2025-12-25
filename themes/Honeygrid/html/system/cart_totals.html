@@ -1,0 +1,36 @@
+{load_language_text section="shopping_cart"}
+{load_language_text section="general" name="general_txt"}
+{load_language_text section="buttons" name="button"}
+{load_language_text section="gift_cart" name="gift"}
+
+{block name="cart_totals"}
+	{if $customer_status_allow_checkout == '1'}
+		{block name="cart_totals_checkout_buttons"}
+			<div class="checkout-buttons">
+				{foreach name=cob item=cobutton from=$checkout_buttons}
+					{if $cobutton.script}
+						{$cobutton.script}
+					{else}
+						<a href="{$cobutton.url}">
+							<img src="{$cobutton.img}" />
+						</a>
+					{/if}
+					{if !$smarty.foreach.cob.last}<div class="checkout-buttons-or">{$txt.text_or}</div>{/if}
+				{/foreach}
+
+				{if isset($PAYPAL_EC_BUTTON)}
+                <div class="paypal-ec-button-container">
+                    <img class="paypal-ec-button" src="{$PAYPAL_EC_BUTTON.src}" alt="PayPal ECS"
+                         data-gambio-widget="{$PAYPAL_EC_BUTTON.widget}"
+                         data-paypal_ec_button-page="{$PAYPAL_EC_BUTTON.page}"
+                         data-paypal_ec_button-redirect="{$PAYPAL_EC_BUTTON.redirect}"
+                         data-paypal_ec_button-display-cart="{$PAYPAL_EC_BUTTON.display_cart}" />
+                </div>
+				{/if}
+			</div>
+		{/block}
+	{/if}
+
+	{block name="cart_totals_paypal"}
+	{/block}
+{/block}

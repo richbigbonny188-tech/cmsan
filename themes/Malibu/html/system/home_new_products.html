@@ -1,0 +1,14 @@
+{load_language_text section="index"} 
+{load_language_text section="new_products" name="product"}
+
+{if $module_content != ''}
+	{block name="home_new_products_content"}
+		{block name="home_new_products_title"}
+			<h2>{$product.heading_text}</h2>
+		{/block}
+
+		{block name="home_new_products_product_listing"}
+			{$module_content}
+		{/block}
+	{/block}
+{/if}

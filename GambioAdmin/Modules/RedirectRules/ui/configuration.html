@@ -1,0 +1,268 @@
+{extends file="layout.html"}
+
+{block name="content"}
+	<input type="hidden" value="{$pageToken}" name="page_token">
+	<div class="vue-instance"
+		 data-redirectrules-namespace="{$base_url}/admin/html/assets/javascript/engine"
+		 data-config-namespace="{$base_url}/admin/html/assets/javascript/engine"
+		 data-components-namespace="{$base_url}/admin/html/assets/javascript/engine"
+		 data-vue-instance-name="redirectrules">
+
+		<gx-redirectrules-overview
+				data-redirectrules-controller="redirectrules/redirectrules-overview"
+				base_url="{$base_url}"
+				data-components-widget="vue/components/switcher"
+		></gx-redirectrules-overview>
+	</div>
+{literal}
+	<script type="text/x-template" id="redirectrules-overview">
+		<div class="redirectrules-overview">
+			<div class="row">
+				<div class="col-md-2">
+					{{ lang.configuration_maxage }}:
+				</div>
+				<div class="col-md-2">
+					<select v-model.number="configuration.maxAge" class="form-control" @change="saveConfiguration">
+						<option value="0">{{ lang.configuration_maxage_0 }}</option>
+						<option value="3600">{{ lang.configuration_maxage_3600 }}</option>
+						<option value="43000">{{ lang.configuration_maxage_43000 }}</option>
+						<option value="604800">{{ lang.configuration_maxage_604800 }}</option>
+					</select>
+				</div>
+				<div class="col-md-8 expertswitch">
+					{{ lang.expert_mode }}:
+					<span class="switcher"><gx-switcher v-model="expertMode"></gx-switcher></span>
+				</div>
+			</div>
+
+			<div class="navigation" v-if="totalElementsCount > 0">
+				<div class="pagination col-md-6">
+					<select class="limit pull-left" v-model.number="pagination.elementsPerPage" @change="">
+						<option v-for="limit in pagination.limits" :value="limit">{{limit}} {{ lang.per_page }}</option>
+					</select>
+
+					<div class="offset">
+						<span>
+							{{ currentPageStart }} {{ lang.to }} {{ currentPageEnd }} ({{ lang.of }} {{ totalElementsCount }})
+						</span>
+					</div>
+				</div>
+
+				<div class="page col-md-6 text-right">
+					<button :disabled="pagination.page === 1" @click="pagination.page -= 1" class="btn">
+						{{ lang.page_prev }}
+					</button>
+					<select v-model="pagination.page" @change="">
+						<option v-for="i in maxPages">{{ i }}</option>
+					</select>
+					<button :disabled="pagination.page === maxPages" @click="pagination.page += 1" class="btn">
+						{{ lang.page_next }}
+					</button>
+				</div>
+			</div>
+
+			<form id="redirectrules-editform" action="" method="post" v-if="totalElementsCount > 0">
+				<table class="redirectrules">
+					<thead>
+					<tr class="no-hover">
+						<th class="rule-path">{{ lang.url_to_match }}</th>
+						<th class="rule-type" v-if="expertMode">{{ lang.response_code }}</th>
+						<th class="rule-target">{{ lang.target_url }}</th>
+						<th class="rule-processing" v-if="expertMode">{{ lang.query_processing }}</th>
+						<th class="rule-status">{{ lang.rule_status }}</th>
+						<th class="action">&nbsp;</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-if="rules.length" v-for="(rule, ruleindex) in rules" :class="{ruleactive: rule.status }">
+						<td class="rule-path">
+							<div class="view">
+								{{ base_url }}/{{ rule.urlPath }}<span class="querystring"
+																	   v-if="rule.queryMatchMode !== 'ignore'">?{{ rule.query }}</span>
+							</div>
+							<div class="edit">
+								<div class="row">
+									<div class="col-md-12">{{ base_url }}/ …</div>
+								</div>
+								<div class="row">
+									<div :class="{ 'col-md-10': expertMode, 'col-md-12': !expertMode }">
+										<input class="form-control" type="text" maxlength="400"
+											   placeholder="some/path/on/your/site" v-model="edit.urlPath" required>
+									</div>
+									<div class="col-md-2" v-if="expertMode">
+										<select class="form-control"
+												v-model="edit.queryMatchMode">
+											<option value="match">{{ lang.querymatchmode_match }}</option>
+											<option value="ignore">{{ lang.querymatchmode_ignore }}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</td>
+						<td class="rule-type" v-if="expertMode">
+							<div class="view">{{ rule.responseCode }}</div>
+							<div class="edit">
+								<br>
+								<select class="form-control" v-model="edit.responseCode">
+									<option value="301">301 – Moved Permanently</option>
+									<option value="302">302 – Found</option>
+									<option value="303">303 – See Other</option>
+									<option value="307">307 – Temporary Redirect</option>
+									<option value="308">308 – Permanent Redirect</option>
+								</select>
+							</div>
+						</td>
+						<td class="rule-target">
+							<div class="view">{{ rule.target }}</div>
+							<div class="edit">
+								<br>
+								<input class="form-control" type="text" maxlength="200"
+									   placeholder="https://some.where.else/on/the/web?foo=bar" v-model="edit.target"
+									   required>
+							</div>
+						</td>
+						<td class="rule-processing" v-if="expertMode">
+							<div class="view">{{ rule.queryProcessing === 'merge' ? lang.queryprocessing_merge :
+												 lang.queryprocessing_drop }}
+							</div>
+							<div class="edit">
+								<br>
+								<select class="form-control" v-model="edit.queryProcessing">
+									<option value="merge">{{ lang.queryprocessing_merge }}</option>
+									<option value="drop">{{ lang.queryprocessing_drop }}</option>
+								</select>
+							</div>
+						</td>
+						<td class="rule-status">
+							<div class="view">
+								<div v-if="rule.status" class="switcher checked" @click="disableRule(rule.id)">
+									<div class="switcher-toggler"></div>
+									<div class="switcher-inner">
+										<div class="switcher-state-on">
+											<span class="fa fa-check"></span>
+										</div>
+									</div>
+								</div>
+								<div v-else class="switcher" @click="enableRule(rule.id)">
+									<div class="switcher-toggler"></div>
+									<div class="switcher-inner">
+										<div class="switcher-state-off">
+											<span class="fa fa-times"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+						<td class="action">
+							<div class="view hoveraction">
+								<span class="fa fa-pencil actionvisible" @click="editRule($event, ruleindex)"></span>
+								<span class="fa fa-trash actionvisible" @click="deleteRule(rule.id)"></span>
+							</div>
+							<div class="edit">
+								<br>
+								<button class="btn btn-success" @click.prevent="saveRule">
+									<i class="fa fa-save"></i>&nbsp;{{ lang.save_rule }}
+								</button>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</form>
+
+			<form action="" method="post" id="redirectrules-addform">
+				<table class="redirectrules add-rule">
+					<thead>
+					<tr class="no-hover">
+						<th colspan="5">{{ lang.add_rule_heading }}</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr class="add-rule no-hover">
+						<td class="rule-path">
+							<div class="row">
+								<div class="col-md-12">{{ base_url }}/ …</div>
+							</div>
+							<div class="row">
+								<div :class="{ 'col-md-10': expertMode, 'col-md-12': !expertMode }">
+									<input class="form-control" type="text" maxlength="200" id="add-rule-urlpath"
+										   placeholder="some/path/on/your/site?key=value&key2=value2"
+										   v-model="add.urlPath" required>
+								</div>
+								<div v-if="expertMode" class="col-md-2">
+									<select class="form-control" id="add-rule-querymatchmode"
+											v-model="add.queryMatchMode">
+										<option value="match">{{ lang.querymatchmode_match }}</option>
+										<option value="ignore">{{ lang.querymatchmode_ignore }}</option>
+									</select>
+								</div>
+							</div>
+						</td>
+						<td class="rule-type" v-if="expertMode">
+							<br>
+							<select class="form-control" id="add-rule-type" v-model="add.responseCode">
+								<option value="301">301 – Moved Permanently</option>
+								<option value="302">302 – Found</option>
+								<option value="303">303 – See Other</option>
+								<option value="307">307 – Temporary Redirect</option>
+								<option value="308">308 – Permanent Redirect</option>
+							</select>
+						</td>
+						<td class="rule-target">
+							<br>
+							<input class="form-control" type="text" maxlength="200" id="add-rule-target"
+								   placeholder="https://some.where.else/on/the/web?foo=bar" v-model="add.target"
+								   required>
+						</td>
+						<td class="rule-processing" v-if="expertMode">
+							<br>
+							<select class="form-control" id="add-rule-queryprocessing" v-model="add.queryProcessing">
+								<option value="merge">{{ lang.queryprocessing_merge }}</option>
+								<option value="drop">{{ lang.queryprocessing_drop }}</option>
+							</select>
+						</td>
+						<td class="action">
+							<br>
+							<button class="btn btn-success" @click.prevent="addRule">
+								<i class="fa fa-plus"></i>&nbsp;{{ lang.add_rule }}
+							</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</form>
+
+			<div class="navigation" v-if="totalElementsCount > 0">
+				<div class="pagination col-md-6">
+					<select class="limit pull-left" v-model.number="pagination.elementsPerPage" @change="">
+						<option v-for="limit in pagination.limits" :value="limit">{{limit}} {{ lang.per_page }}</option>
+					</select>
+
+					<div class="offset">
+						<span>
+							{{ currentPageStart }} {{ lang.to }} {{ currentPageEnd }} ({{ lang.of }} {{ totalElementsCount }})
+						</span>
+					</div>
+				</div>
+
+				<div class="page col-md-6 text-right">
+					<button :disabled="pagination.page === 1" @click="pagination.page -= 1" class="btn">
+						{{ lang.page_prev }}
+					</button>
+					<select v-model="pagination.page" @change="">
+						<option v-for="i in maxPages">{{ i }}</option>
+					</select>
+					<button :disabled="pagination.page === maxPages" @click="pagination.page += 1" class="btn">
+						{{ lang.page_next }}
+					</button>
+				</div>
+			</div>
+
+		</div>
+	</script>
+{/literal}
+
+    {* General component templates *}
+    {include file="get_usermod:vue/components/switcher.html"}
+
+{/block}

@@ -1,0 +1,26 @@
+{load_language_text section="ot_gv"}
+{block name="checkout_success_giftvouchersstatus"}
+	<div class="gift-vouchers-status">
+		<h2>{$txt.VOUCHERS_USED_IN_THIS_ORDER}</h2>
+		<table>
+			<thead>
+				<tr>
+					<th class="giftvoucher-code">{$txt.VOUCHER_CODE}</th>
+					<th class="giftvoucher-balance-remaining">{$txt.BALANCE_REMAINING}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach $couponData as $coupon}
+					<tr>
+						<td class="giftvoucher-code">
+                            {if $coupon.coupon_code === 'balance'}{$txt.CUSTOMER_BALANCE}{else}{$coupon.coupon_code}{/if}
+						</td>
+						<td class="giftvoucher-balance-remaining">
+                            {$coupon.coupon_amount_formatted}
+						</td>
+					</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
+{/block}

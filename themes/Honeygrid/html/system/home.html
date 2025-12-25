@@ -1,0 +1,84 @@
+{block name="home"}
+	{block name="home_error"}
+		{$MODULE_error}
+	{/block}
+
+	{block name="home-below-slider-content-zone"}
+		{content_zone id="home-below-slider"}
+	{/block}
+
+	{block name="home_main_if"}
+		{if $title|trim || $text|trim}
+			{block name="home_main"}
+				<div class="content-page-index">
+					{if $title|trim}
+						{block name="home_main_title"}
+							<h1>{$title}</h1>
+						{/block}
+					{/if}
+					{block name="home_main_text"}
+						{$text}
+					{/block}
+				</div>
+			{/block}
+		{/if}
+	{/block}
+
+	{block name="home_upcoming_products"}
+		{$MODULE_upcoming_products}
+	{/block}
+
+	{block name="home_new_product"}
+		{$MODULE_new_products}
+	{/block}
+	
+	{block name="home_center_if"}
+		{if $title_center|trim || $text_center|trim}
+			{block name="home_center"}
+				<div class="content-page-index">
+					{if $title_center|trim}
+						{block name="home_center_title"}
+							<h2>{$title_center}</h2>
+						{/block}
+					{/if}
+					{block name="home_center_text"}
+						{$text_center}
+					{/block}
+				</div>
+			{/block}
+		{/if}
+	{/block}
+
+	{block name="home-center-content-zone"}
+		{content_zone id="home-center"}
+	{/block}
+
+	{block name="home_specials"}
+		{$specials_main}
+	{/block}
+						
+	{block name="home_new"}
+		{$products_new_main}
+	{/block}
+
+	{block name="home-above-footer-content-zone"}
+		{content_zone id="home-above-footer"}
+	{/block}
+
+	{block name="home_bottom_if"}
+		{if $title_bottom|trim || $text_bottom|trim}
+			{block name="home_bottom"}
+				<div class="content-page-index">
+					{if $title_bottom|trim}
+						{block name="home_bottom_title"}
+							<h2>{$title_bottom}</h2>
+						{/block}
+					{/if}
+					{block name="home_bottom_text"}
+						{$text_bottom}
+					{/block}
+				</div>
+			{/block}
+		{/if}
+	{/block}
+{/block}

@@ -1,0 +1,50 @@
+{block name="layout_body_footer"}
+    {if $jsNextDev}
+		<script type="text/javascript" src="//localhost:8080/js/layout.js"></script>
+    {else}
+		<script type="text/javascript" src="{$baseUrl}/GambioAdmin/build/js/layout.js"></script>
+    {/if}
+
+    {if $engine === 'JSE'}
+		<script>
+			window.JSEngineConfiguration = {
+				environment: '{$environment}',
+				appUrl: '{$baseUrl}',
+				appVersion: '{$shopVersion}',
+				languageCode: '{$languageCode}',
+				pageToken: '{$pageToken}',
+				cacheToken: '{$cacheToken}',
+				bustFiles: {$bust_files},
+				vue: {
+					el: '.vue-instance'
+				},
+                {literal}
+				collections: [
+					{name: 'controllers', attribute: 'controller'},
+					{name: 'extensions', attribute: 'extension'},
+					{name: 'widgets', attribute: 'widget'},
+					{name: 'compatibility', attribute: 'compatibility'}
+				],
+                {/literal}
+				translations: {$jseTranslations nofilter},
+				registry: {
+					userId: {$_SESSION.customer_id},
+					languageId: {$_SESSION.languages_id}
+				}
+			};
+		</script>
+		<script src="{$baseUrl}/JSEngine/build/vendor{$suffix}.js"></script>
+		<script src="{$baseUrl}/admin/html/assets/javascript/admin-vendor{$suffix}.js"></script>
+		<script src="{$baseUrl}/JSEngine/build/jse{$suffix}.js"></script>
+    {elseif $engine === 'GambioAdmin'}
+        {if isset($vuePage)}
+            {if $jsNextDev}
+				<script type="text/javascript" src="//localhost:8080/js/vendor.js"></script>
+				<script type="text/javascript" src="//localhost:8080/js/{$vuePage}.js"></script>
+            {else}
+				<script type="text/javascript" src="{$baseUrl}/GambioAdmin/build/js/vendor.js"></script>
+				<script type="text/javascript" src="{$baseUrl}/GambioAdmin/build/js/{$vuePage}.js"></script>
+            {/if}
+        {/if}
+    {/if}
+{/block}

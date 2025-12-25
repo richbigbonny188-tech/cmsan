@@ -1,0 +1,167 @@
+{*  ==========================================================================
+product_info_template_standard.html
+========================================================================== *}
+
+{block name="product_info_template_standard_content"}
+<div class="container-fluid{if !$images} no-gallery-image{/if}">
+    <div class="row">
+        {$smarty.block.parent}
+    </div>
+</div>
+{/block}
+
+{block name="product_info_template_standard_content_row"}
+<div class="row">
+    <div class="clearfix">
+        <div class="container">
+            {$smarty.block.parent}
+            {/block}
+
+            {block name="product_info_template_standard_description"}
+        </div>
+    </div>
+</div>
+<div class="clearfix product-info-content-wrapper">
+    <div class="container">
+        <div class="row">
+            {$smarty.block.parent}
+            {/block}
+
+            {* should be product_info_template_standard_content_row, not working, not possible to extend block twice? *}
+            {block name="product_info_template_standard_reviews_if"}
+            {$smarty.block.parent}
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="product_info_template_standard_sticky_box_rating"}
+<div class="rating-model-row">
+    <div class="hidden-xs hidden-sm product-rating">
+        {block name="product_info_template_standard_sticky_box_rating_if"}
+        {if $showRating && $AGGREGATE_REVIEW_DATA.averageRating && $AGGREGATE_REVIEW_DATA.averageRating != 0}
+        {block name="product_info_template_standard_sticky_box_rating2"}
+        <span>
+                            <span style="display: none">{$AGGREGATE_REVIEW_DATA.averageRating}</span>
+                            <span style="display: none">{$AGGREGATE_REVIEW_DATA.count}</span>
+                        </span>
+        <a href="#product-ratings"{if 'SHOW_RATING_AS_TAB'|gm_get_conf === 'true'} onclick="document.getElementById('reviews-tab').click()"{/if}>
+        {include file="get_usermod:{$tpl_path}rating_stars.html" rating_rounded=$AGGREGATE_REVIEW_DATA.averageRating rating_count=$AGGREGATE_REVIEW_DATA.count }
+        </a>
+        {/block}
+        {/if}
+        {/block}
+    </div>
+    <div class="hidden-xs hidden-sm product-model model-number"{if !$PRODUCTS_MODEL} style="display:none"{/if}>
+        {if $SHOW_PRODUCTS_MODEL}
+	        ({$txt.text_model} <span class="model-number-text">{$PRODUCTS_MODEL}</span>)
+        {/if}
+    </div>
+</div>
+{/block}
+
+{block name="product_info_template_standard_product_review_data_if"}
+<div class="rating-model-row">
+    {if $showRating && $AGGREGATE_REVIEW_DATA.averageRating && $AGGREGATE_REVIEW_DATA.averageRating != 0}
+    <div class="product-rating">
+        {block name="product_info_template_standard_product_review_data"}
+        <a href="#product-ratings"{if 'SHOW_RATING_AS_TAB'|gm_get_conf === 'true'} onclick="document.getElementById('reviews-tab').click()"{/if}>
+            {include file="get_usermod:{$tpl_path}rating_stars.html" rating_rounded=$AGGREGATE_REVIEW_DATA.averageRating rating_count=$AGGREGATE_REVIEW_DATA.count }
+        </a>
+        {/block}
+    </div>
+    {/if}
+    <div class="product-model model-number"{if !$PRODUCTS_MODEL} style="display:none"{/if}>
+        {if $SHOW_PRODUCTS_MODEL}
+            ({$txt.text_model} <span class="model-number-text">{$PRODUCTS_MODEL}</span>)
+        {/if}
+    </div>
+</div>
+{/block}
+
+{block name="product_info_template_standard_sticky_box_ribbon_if"}
+{/block}
+
+{block name="product_info_template_standard_sticky_box_price_container"}
+{if $arr_ribbons.ribbons}
+{block name="product_info_template_standard_sticky_box_ribbon_include"}
+{include file="get_usermod:{$tpl_path}product_listing_ribbon.html" ribbons=$arr_ribbons}
+{/block}
+{/if}
+{$smarty.block.parent}
+{/block}
+
+{block name="product_info_template_standard_social_share"}
+{if $SHOW_FACEBOOK || $SHOW_TWITTER || $SHOW_PINTEREST || $SHOW_WHATSAPP}
+<div class="product-info-share col-md-12">
+    {include file="get_usermod:{$tpl_path}product_info_social_share.html"}
+</div>
+{/if}
+{/block}
+
+
+{block name="product_info_template_standard_sticky_box_product_options"}
+<div class="product-definitions">
+
+    {block name="product_info_template_standard_sticky_box_shipping_time_include"}
+    {include file="get_usermod:{$tpl_path}product_info_shipping_time.html"}
+    {/block}
+
+    {block name="product_info_template_standard_sticky_box_stock_include"}
+    {include file="get_usermod:{$tpl_path}product_info_stock.html"}
+    {/block}
+
+    {block name="product_info_template_standard_sticky_box_additional_fields"}
+    <div class="additional-fields-wrapper">
+        {$additional_fields}
+    </div>
+    {/block}
+
+    {block name="product_info_template_standard_sticky_box_weight_if"}
+    {if $SHOW_PRODUCTS_WEIGHT}
+    {block name="product_info_template_standard_sticky_box_weight"}
+    <div class="product-definition-weight">
+        <strong>{$txt.text_weight}</strong>
+        <span class="products-details-weight-container"><span>{$PRODUCTS_WEIGHT}</span> {$txt.text_weight_unit} {if $PRODUCTS_QUANTITY_UNIT}{$PRODUCTS_QUANTITY_UNIT}{else}{$txt.text_weight_qty_unit}{/if}</span>
+    </div>
+    {/block}
+    {/if}
+    {/block}
+
+    {block name="product_info_template_standard_sticky_box_min_order_if"}
+    {if $GM_MIN_ORDER}
+    {block name="product_info_template_standard_sticky_box_min_order"}
+    <div class="product-definition-min-order">
+        <strong class="product-details-order-min">{$txt.text_min_order}</strong>
+        <span class="product-details-order-min">{$GM_MIN_ORDER}</span>
+    </div>
+    {/block}
+    {/if}
+    {/block}
+</div>
+{/block}
+
+{block name="product_info_template_standard_sticky_box_quantity_unit_if"}
+{assign var="productInfoHideQuantityInput" value={template_setting name="gx-product-info-hide-quantity-input"}}
+    {if $PRODUCTS_QUANTITY_UNIT && !$productInfoHideQuantityInput}
+        {block name="product_info_template_standard_sticky_box_quantity_unit"}
+            {$PRODUCTS_QUANTITY_UNIT}:
+        {/block}
+    {/if}
+{/block}
+
+{block name="product_info_template_standard_sticky_box_product_title"}
+    {if $SHOW_WISHLIST}
+        <a href="#" class="wishlist-button btn-wishlist" title="{$button.add_to_wishlist}">
+            {literal}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title>wishlist</title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><rect class="cls-1" width="40" height="40"/><path d="M19.19,36a1.16,1.16,0,0,0,1.62,0l12.7-12.61A10,10,0,0,0,20,8.7,10,10,0,0,0,6.5,23.42ZM8.12,10.91a7.6,7.6,0,0,1,5.49-2.26A7.46,7.46,0,0,1,19,10.88l0,0,.18.18a1.15,1.15,0,0,0,1.63,0l.18-.18A7.7,7.7,0,0,1,31.89,21.79L20,33.58,8.12,21.79A7.74,7.74,0,0,1,8.12,10.91Z"/></g></g></svg>{/literal}
+            <span class="sr-only">{$button.add_to_wishlist}</span>
+        </a>
+    {/if}
+{$smarty.block.parent}
+{/block}
+
+{block name="product_info_template_standard_product_lists"}
+<div class="product-info-listings container clearfix" data-gambio-widget="product_hover">
+    {include file="get_usermod:{$tpl_path}product_info_product_lists.html"}
+</div>
+{/block}

@@ -1,0 +1,7 @@
+<select name="{$content_data.elementName}" id="display-type-select-{$content_data.elementName}">
+	{foreach from=$content_data.displayTypeCollection item=displayType }
+		<option value="{$displayType->name()}" name="{$displayType->name()}"{if $displayType->name() === $content_data.selectedDisplayType} selected{/if}>
+			{$displayType->localisation()}
+		</option>
+	{/foreach}
+</select>

@@ -1,0 +1,18 @@
+{block name="layout_message_stack_container"}
+	<div class="message-stack">
+        {if isset($message_stack)}
+            {foreach $message_stack as $type => $messages}
+                {foreach $messages as $entry}
+                    {block name="layout_message_stack_alert"}
+                        <div class="alert alert-{$type}">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {$entry.message nofilter}
+                        </div>
+                    {/block}
+                {/foreach}
+            {/foreach}
+        {/if}
+
+        {block name="message_stack"}{/block}
+	</div>
+{/block}

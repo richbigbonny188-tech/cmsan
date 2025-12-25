@@ -1,0 +1,204 @@
+{load_language_text section="contact_us"}
+{load_language_text section="buttons" name="button"}
+{load_language_text section="gv_send"}
+
+{block name="voucher_send"}
+	{block name="voucher_send_title"}
+		<h1>{$txt.heading_gvsend}</h1>
+	{/block}
+
+	{if $action eq 'process'}
+		{block name="voucher_send_process_success"}
+			<p>{$txt.text_success}</p>
+		{/block}
+
+		<br />
+
+		{block name="voucher_send_process_buttons"}
+			<div class="row">
+				<div class="col-xs-6 col-sm-4 col-md-3">
+					{block name="voucher_send_process_buttons_continue"}
+						<a href="{$CONTINUE_LINK}" class="btn btn-default btn-block">{$button.continue}</a>
+					{/block}
+				</div>
+			</div>
+		{/block}
+	{elseif $action eq 'send'}
+		{block name="voucher_send_send"}
+			<p>
+				{block name="voucher_send_send_main_message"}
+					{$MAIN_MESSAGE}
+					<br />
+				{/block}
+				{if $POST_MESSAGE neq ''}
+					{block name="voucher_send_send_post_massage"}
+						{$POST_MESSAGE}
+					{/block}
+				{/if}
+			</p>
+		{/block}
+
+		{block name="voucher_send_send_buttons"}
+			<form action="{$FORM_ACTION_URL}" method="post">
+				<fieldset>
+					<div class="row">
+						<div class="col-xs-6 col-sm-4 col-md-3">
+							{block name="voucher_send_send_buttons_back"}
+								<a href="javascript:history.go(-1)"  class="btn btn-default btn-block">{$button.back}</a>
+							{/block}
+						</div>
+						<div class="col-xs-6 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6 text-right">
+							{block name="voucher_send_send_buttons_continue"}
+								<button type="submit" class="btn btn-primary btn-block" title="{$button.continue}">{$button.continue}</button>
+							{/block}
+						</div>
+					</div>
+
+					{if $HIDDEN_FIELDS|count > 0}
+						{foreach from=$HIDDEN_FIELDS item=hiddenField}
+							<input type="hidden" class="hidden" name="{$hiddenField.name}" value="{$hiddenField.value}"/>
+						{/foreach}
+					{/if}
+				</fieldset>
+			</form>
+		{/block}
+
+	{elseif $action eq ''}
+		{block name="voucher_send_default_title"}
+			<p>{$txt.heading_text}</p>
+		{/block}
+
+		{block name="voucher_send_default_form"}
+			<form class="form-horizontal" action="{$FORM_ACTION_URL}" method="post">
+				<fieldset>
+					{block name="voucher_send_default_name"}
+						<div class="form-group">
+							{block name="voucher_send_default_name_label"}
+								<label for="to_name" class="control-label col-sm-3">
+									{$txt.entry_name}
+								</label>
+							{/block}
+
+							{block name="voucher_send_default_name_container"}
+								<div class="col-sm-9 col-lg-6 input-container">
+									{block name="voucher_send_default_name_input"}
+										<input id="to_name" name="to_name" value="{$INPUT_TO_NAME}" type="text" class="form-control input-text"/>
+									{/block}
+								</div>
+							{/block}
+						</div>
+					{/block}
+
+					{block name="voucher_send_default_email"}
+						<div class="form-group mandatory">
+							{block name="voucher_send_default_email_label"}
+								<label for="email" class="control-label col-sm-3">
+									{$txt.entry_email}
+								</label>
+							{/block}
+
+							{block name="voucher_send_default_email_container"}
+								<div class="col-sm-9 col-lg-6 input-container">
+									{block name="voucher_send_default_email_input"}
+										<input id="email" name="email" value="{$INPUT_EMAIL}" type="email" class="form-control input-text" required/>
+									{/block}
+									{if $ERROR_EMAIL neq ''}
+										{block name="voucher_send_default_email_error"}
+											{$txt.error_entry_email_address_check}
+										{/block}
+									{/if}
+								</div>
+							{/block}
+						</div>
+					{/block}
+
+					{block name="voucher_send_default_amount"}
+						<div class="form-group mandatory">
+							{block name="voucher_send_default_amount_label"}
+								<label for="amount" class="control-label col-sm-3">
+									{$txt.entry_amount}
+								</label>
+							{/block}
+
+							{block name="voucher_send_default_amount_container"}
+								<div class="col-sm-9 col-lg-6 input-container">
+									{block name="voucher_send_default_amount_input"}
+										<input id="amount" name="amount" value="{$INPUT_AMOUNT}" type="number" class="form-control" min="0" max="{$INPUT_AMOUNT_MAX}" step="0.01" required/>
+									{/block}
+									{if $ERROR_AMOUNT neq ''}
+										{block name="voucher_send_default_amount_error"}
+											{$ERROR_AMOUNT}<br/>
+										{/block}
+									{/if}
+									{block name="voucher_send_default_amount_balance"}
+										{$txt.current_balance} {$gvDepositCurrency}
+									{/block}
+								</div>
+							{/block}
+						</div>
+					{/block}
+
+					{block name="voucher_send_default_message"}
+						<div class="form-group">
+							{block name="voucher_send_default_message_label"}
+								<label for="message_body" class="control-label col-sm-3">
+									{$txt.entry_message}
+								</label>
+							{/block}
+
+							{block name="voucher_send_default_message_container"}
+								<div class="col-sm-9 col-lg-6 input-container">
+									{block name="voucher_send_default_message_input"}
+										<textarea id="message_body" name="message_body" cols="50" rows="10" class="input-textarea form-control">{$TEXTAREA_MESSAGE}</textarea>
+									{/block}
+								</div>
+							{/block}
+						</div>
+					{/block}
+
+					{block name="voucher_send_privacy_if"}
+						{if $show_privacy}
+							{block name="voucher_send_privacy"}
+								{if $show_privacy_checkbox}
+									{block name="voucher_send_privacy_checkbox"}
+										<input id="privacy_accepted"
+											   type="checkbox"
+											   name="privacy_accepted"
+											   value="1"
+											   required/>
+										<label for="privacy_accepted" class="control-label">{$privacy_link} *</label>
+									{/block}
+								{else}
+									{block name="voucher_send_privacy_link"}
+										<span>{$privacy_link}</span>
+									{/block}
+								{/if}
+							{/block}
+						{/if}
+					{/block}
+
+					{block name="voucher_send_default_buttons"}
+						<div class="row">
+							<div class="col-xs-6 col-sm-4 col-md-3">
+								{block name="voucher_send_default_buttons_empty"}
+									&nbsp;
+								{/block}
+							</div>
+							<div class="col-xs-6 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6 text-right">
+								{block name="voucher_send_default_buttons_continue"}
+									<button type="submit" class="btn btn-primary btn-block" title="{$button.continue}">{$button.continue}</button>
+								{/block}
+							</div>
+						</div>
+					{/block}
+				</fieldset>
+
+				{block name="voucher_send_default_mandatory"}
+					<p class="mandatory-info">
+						{$txt.text_required}
+					</p>
+				{/block}
+			</form>
+		{/block}
+	{/if}
+{/block}

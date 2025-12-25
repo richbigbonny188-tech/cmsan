@@ -1,0 +1,32 @@
+{load_language_text section="box_manufacturers"}
+
+{block name="box_manufacturers_if"}
+	{if $content_data.manufacturerList|count > 0 || $content_data.manufacturerDropdown|count > 1}
+		{block name="box_manufacturers"}
+			{block name="box_manufacturers_top"}
+				{include file="get_usermod:{$tpl_path}layout_box_top.html" class="manufacturers" headline=$txt.heading_manufacturers}
+			{/block}
+
+			{block name="box_manufacturers_content"}
+				{if $content_data.manufacturerList}
+					{foreach from=$content_data.manufacturerList item=manufacturer}
+						<a href="{$manufacturer.url}">{$manufacturer.name}</a><br />
+					{/foreach}
+				{elseif $content_data.manufacturerDropdown}
+					<form name="manufacturers" id="manufacturers" method="get" action="{$content_data.formAction}">
+						<select name="manufacturers_id" onchange="if(this.value!=''){literal}{{/literal}this.form.submit();{literal}}{/literal}" size="{$content_data.manufacturerDropdownSize}" class="lightbox_visibility_hidden input-select">
+							{foreach from=$content_data.manufacturerDropdown item=manufacturer}
+								{if $manufacturer.id === $content_data.manufacturerDropdownDefault}selected{/if}
+								<option value="{$manufacturer.id}">{$manufacturer.text}</option>
+							{/foreach}
+						</select>
+					</form>
+				{/if}
+			{/block}
+
+			{block name="box_manufacturers_bottom"}
+				{include file="get_usermod:{$tpl_path}layout_box_bottom.html"}
+			{/block}
+		{/block}
+	{/if}
+{/block}
