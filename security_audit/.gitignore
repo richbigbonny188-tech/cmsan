@@ -1,7 +1,13 @@
 # Результаты аудита
 results/
-*.json
-*.md
+results/*.json
+results/*.md
+
+# Но разрешить документацию в корне
+!README.md
+!USAGE_GUIDE.md
+!DEMO.md
+!PROJECT_SUMMARY.md
 
 # Python
 __pycache__/
