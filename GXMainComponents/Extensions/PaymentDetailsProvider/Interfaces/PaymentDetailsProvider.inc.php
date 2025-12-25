@@ -1,0 +1,22 @@
+<?php
+/* --------------------------------------------------------------
+   PaymentDetailsProvider.inc.php 2018-06-20
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2018 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+interface PaymentDetailsProvider
+{
+    /**
+     * Returns an array containing payment details.
+     *
+     * @param \IdType $orderId
+     *
+     * @return array
+     */
+    public function getDetails(IdType $orderId);
+}
