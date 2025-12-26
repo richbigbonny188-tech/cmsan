@@ -1,0 +1,23 @@
+{load_language_text section="new_products"}
+{load_language_text section="index" name="index"}
+{load_language_text section="product_listing" name="listing"}
+
+{block name="home_recommended_products_overview"}
+	{block name="home_recommended_products_overview_title"}
+		<h1>{$txt.heading_text}</h1>
+	{/block}
+
+	{if $module_content}
+		{block name="home_recommended_products_overview_new_products"}
+			{include file="get_usermod:{$tpl_path}pagination.html" pager=$pager}
+
+			{$module_content}
+
+			{include file="get_usermod:{$tpl_path}pagination.html" pager=$pager}
+		{/block}
+	{else}
+		{block name="home_recommended_products_overview_no_new_products"}
+			{$txt.text_no_new_products}
+		{/block}
+	{/if}
+{/block}

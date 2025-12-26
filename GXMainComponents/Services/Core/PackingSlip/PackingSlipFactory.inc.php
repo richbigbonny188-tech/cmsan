@@ -1,0 +1,54 @@
+<?php
+/* --------------------------------------------------------------
+   PackingSlipFactory.inc.php 2018-05-16
+   Gambio GmbH
+   http://www.gambio.de
+   Copyright (c) 2018 Gambio GmbH
+   Released under the GNU General Public License (Version 2)
+   [http://www.gnu.org/licenses/gpl-2.0.html]
+   --------------------------------------------------------------
+*/
+
+/**
+ * Class PackingSlipFactory
+ */
+class PackingSlipFactory implements PackingSlipFactoryInterface
+{
+    /**
+     * @var CI_DB_query_builder
+     */
+    protected $db;
+    
+    
+    /**
+     * PackingSlipFactory constructor.
+     *
+     * @param \CI_DB_query_builder $queryBuilder
+     */
+    public function __construct(CI_DB_query_builder $queryBuilder)
+    {
+        $this->db = $queryBuilder;
+    }
+    
+    
+    /**
+     * Creates a packing slip instance.
+     *
+     * @param \IdType             $id
+     * @param \StringType         $number
+     * @param \DateTime           $date
+     * @param \FilenameStringType $filename
+     * @param \IdType             $orderId
+     *
+     * @return bool|\PackingSlip
+     */
+    public function createPackingSlip(
+        IdType $id,
+        StringType $number,
+        DateTime $date,
+        FilenameStringType $filename,
+        IdType $orderId
+    ) {
+        return MainFactory::create('PackingSlip', $id, $number, $date, $filename, $orderId);
+    }
+}

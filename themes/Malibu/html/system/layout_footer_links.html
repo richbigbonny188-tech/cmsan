@@ -1,0 +1,48 @@
+{load_language_text section="box_content"}
+
+{block name="layout_footer_links"}
+	<div class="box box-content panel panel-default"{if $linkcrypter && $linkcrypter != ''} data-gambio-widget="link_crypter"{/if}>
+		{block name="layout_footer_links_heading"}
+			<div class="panel-heading">
+				{block name="layout_footer_links_heading_title"}
+					<span class="panel-title footer-column-title">{$txt.heading_content}</span>
+				{/block}
+			</div>
+		{/block}
+		{block name="layout_footer_links_body"}
+			<div class="panel-body">
+				{block name="layout_footer_links_nav"}
+					<nav>
+						{block name="layout_footer_links_list"}
+							<ul id="info" class="nav">
+								{foreach item=content_array from=$content_data.CONTENT_LINKS_DATA}
+									{block name="layout_footer_links_list_item"}
+										<li>
+											{block name="layout_footer_links_content"}
+												<a href="{$content_array.URL}"{if $content_array.URL_TARGET} target="{$content_array.URL_TARGET}"{/if} title="{$content_array.NAME|replace:'"':''|strip_tags}">
+													{block name="layout_footer_links_content_name"}{$content_array.NAME}{/block}
+												</a>
+											{/block}
+										</li>
+									{/block}
+								{/foreach}
+							</ul>
+						{/block}
+
+                        <script id="info-menu-template" type="text/mustache">
+                            {literal}
+                                <ul id="info" class="nav">
+                                    <li v-for="(item, index) in items">
+                                        <a href="javascript:;" @click="goTo(item.content)">
+                                            {{item.title}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            {/literal}
+                        </script>
+					</nav>
+				{/block}
+			</div>
+		{/block}
+	</div>
+{/block}

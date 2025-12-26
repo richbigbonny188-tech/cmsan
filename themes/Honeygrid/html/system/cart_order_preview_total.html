@@ -1,0 +1,153 @@
+{load_language_text section="order_details"}
+{load_language_text section="general" name="general"}
+{load_language_text section="gambioultra" name="gambioultra"}
+{load_language_text section="buttons" name="button"}
+{load_language_text section="gift_cart" name="gift"}
+
+{if $content_data.customer_status_allow_checkout == '1'}
+	{block name="cart_order_preview_total"}
+		{block name="cart_order_preview_total_title"}
+			<h4 class="hidden-xs hidden-sm">{$txt.text_sum_head}</h4>
+		{/block}
+
+		{block name="cart_order_preview_total_table"}
+			<table class="order-total table">
+				{block name="cart_order_preview_total_table_tbody"}
+					<tbody>
+						{if $content_data.SHOW_SHIPPING_WEIGHT == 1}
+							{block name="cart_order_preview_total_table_tbody_weight"}
+								<tr>
+									<td>
+										{if $content_data.SHOW_SHIPPING_WEIGHT_INFO == 1}
+											<img src="{$theme_path}images/icon_cart_shipping_costs_info.png" alt="{$txt.shipping_weight_info}" title="{$txt.shipping_weight_info}" />
+										{/if}
+										{$txt.shipping_weight}:
+									</td>
+									<td class="shipping-weight-value">
+										{$content_data.SHIPPING_WEIGHT} {$txt.text_weight_unit}
+									</td>
+								</tr>
+							{/block}
+						{/if}
+
+						{block name="order_total_table_tbody_ordertotals"}
+							{foreach from=$content_data.ordertotals item=titem}
+								{if $titem.code === 'ot_tax' && $content_data.TAX_FREE_TEXT}{continue}{/if}
+								{if $titem.code === 'ot_gm_tax_free'}{continue}{/if}
+								<tr>
+									<td>
+										{$titem.title}
+										{if $titem.code === 'ot_coupon' && $smarty.session.cc_id && $content_data.show_coupon_info}
+											<span id="ot-coupon-info-toggle" onclick="$('#ot-coupon-info-row').toggle();"><i class="far fa-question-circle"></i></span>
+										{/if}
+                                        {if $titem.code === 'ot_gv' && $content_data.voucher_info}
+											<span id="ot-gv-info-toggle" onclick="$('#ot-gv-info-row').toggle();"><i class="far fa-question-circle"></i></span>
+                                        {/if}
+										
+										{if $titem.code === 'ot_shipping'}
+											{if $content_data.SHIPPING_INFO_SHIPPING_COSTS_VALUE != ""}
+												<a href="#shipping-information-layer"
+												   title="{$SHIPPING_AND_PAYMENT_CONTENT_TITLE}"
+												   class="js-open-modal" data-modal-type="alert"
+												   data-modal-settings='{literal}{"title": "{/literal}{$general.SHIPPING_COSTS_LAYER_TITLE}{literal}", "sectionSelector": ".content_text", "bootstrapClass": "modal-lg", "refreshOnClose": true}{/literal}'
+												><span id="ot-shipping-info-toggle"><i class="fa fa-pencil"></i></span></a>
+											{/if}
+										{/if}
+									</td>
+									<td>{$titem.text}</td>
+								</tr>
+								{if $titem.code === 'ot_coupon' && $smarty.session.cc_id && $content_data.show_coupon_info}
+									<tr id="ot-coupon-info-row" style="display: none">
+										<td class="colspan-2 additional-info">
+											<div class="ot-coupon-info">
+												<div class="ot-coupon-info-block">
+													{include file="get_usermod:{$tpl_path}cart_order_couponinfo.html"}
+												</div>
+											</div>
+										</td>
+									</tr>
+								{/if}
+                                {if $titem.code === 'ot_gv' && $content_data.voucher_info}
+									<tr id="ot-gv-info-row" style="display: none">
+										<td class="colspan-2 additional-info">
+											<div class="ot-gv-info">
+												<div class="ot-gv-info-block">
+                                                    {foreach $content_data.voucher_info as $vinfo}
+														{$vinfo.coupon_code} ({$vinfo.coupon_amount})
+                                                    	{if $vinfo.remove_url}<a href="{$vinfo.remove_url}"><i class="fas fa-times"></i></a>{/if}<br>
+                                                    {/foreach}
+												</div>
+											</div>
+										</td>
+									</tr>
+                                {/if}
+							{/foreach}
+						{/block}
+
+						{if $content_data.TAX_FREE_TEXT}
+							{block name="cart_order_preview_total_table_tbody_tax_free"}
+								<tr>
+									<td colspan="2" class="colspan-2">
+										<span class="order-total-shipping">
+											{$content_data.TAX_FREE_TEXT}
+										</span>
+									</td>
+								</tr>
+							{/block}
+						{/if}
+
+						{block name="cart_order_alert_no_shipping_allowed"}
+							{if !in_array('ot_shipping', array_column($content_data.ordertotals, 'code')) && $smarty.session.cart->content_type !== "virtual" && $content_data.OT_SHIPPING_INSTALLED === true}
+								<tr>
+									<td colspan="2" class="colspan-2">
+										{$txt.shipping_not_allowed_warning}
+										<a href="#shipping-information-layer"
+										   title="{$SHIPPING_AND_PAYMENT_CONTENT_TITLE}"
+										   class="js-open-modal" data-modal-type="alert"
+										   data-modal-settings='{literal}{"title": "{/literal}{$general.SHIPPING_COSTS_LAYER_TITLE}{literal}", "sectionSelector": ".content_text", "bootstrapClass": "modal-lg", "refreshOnClose": true}{/literal}'
+										><span id="ot-shipping-info-toggle"><i class="fa fa-pencil"></i></span></a>
+									</td>
+								</tr>
+							{/if}
+						{/block}
+
+						{block name="cart_order_preview_total_table_tbody_footer"}
+							<tr class="footer total sum">
+								{block name="cart_order_preview_total_table_tbody_footer_sum"}
+									<td>
+										{$txt.text_sum}
+									</td>
+								{/block}
+								{block name="cart_order_preview_total_table_tbody_footer_total"}
+									<td>
+										{$content_data.TOTAL}
+									</td>
+								{/block}
+							</tr>
+						{/block}
+
+						<tr class="footer total checkout-button">
+							<td class="colspan-2">
+								{if $content_data.customer_status_allow_checkout == '1' && $smarty.session.allow_checkout == 'true'}
+									{block name="snippets_order_total_checkout_button"}
+										<a title="{$button.checkout}" class="btn btn-primary btn-block button-submit" href="{'checkout_shipping.php'|xtc_href_link:'':'SSL'}">{$button.checkout}</a>
+									{/block}
+								{else}
+                                    {block name="snippets_order_total_checkout_button_disabled"}
+										<span title="{$button.checkout_disabled}" class="btn btn-primary btn-block button-disabled">{$button.checkout}</span>
+                                    {/block}
+								{/if}
+
+								{if 'MODULE_CENTER_SHAREDSHOPPINGCART_INSTALLED'|gm_get_conf == '1'}
+									{block name="snippets_order_total_shared_shoppingcart"}
+										<a href=".share-cart-layer" data-gambio-widget="share_cart_button_handler" title="{$general_txt.NAVBAR_SHARE_CART}" class="js-open-modal cart-action-link share-shopping-cart" data-modal-finish-event="SHARE_CART_MODAL_READY" data-modal-type="alert" data-modal-settings='{literal}{{/literal}"title": "{$sharedCart.title}", "dialogClass": "layer-medium", "buttons": [] {literal}}{/literal}'><span class="fa fa-share"></span> {$general.NAVBAR_SHARE_CART}</a>
+									{/block}
+								{/if}
+							</td>
+						</tr>
+					</tbody>
+				{/block}
+			</table>
+		{/block}
+	{/block}
+{/if}

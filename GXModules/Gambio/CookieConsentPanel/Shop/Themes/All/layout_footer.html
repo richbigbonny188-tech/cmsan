@@ -1,0 +1,6 @@
+{block name="box_content_list_items" append}
+	{load_language_text section="cookie_consent_panel" name="txt"}
+	{if cookie_consent_panel_is_installed()}
+		<li><a href="javascript:;" trigger-cookie-consent-panel>{$txt.label_cpc_footer_link_text}</a></li>
+	{/if}
+{/block}

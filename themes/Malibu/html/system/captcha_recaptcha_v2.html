@@ -1,0 +1,28 @@
+{load_language_text section="reCaptcha"}
+{block name="captcha_recaptcha_v2"}
+    {if cookie_consent_panel_is_installed() && cookie_purpose_is_active(3) && !cookie_purpose_is_enabled(3)}
+		<script
+				data-type="text/javascript"
+				data-src="https://www.google.com/recaptcha/api.js"
+				type="as-oil"
+				data-purposes="3"
+				data-managed="as-oil"
+				data-async="false"
+		>
+		</script>
+		<script async
+				data-type="text/javascript"
+				type="as-oil"
+				data-purposes="3"
+				data-managed="as-oil">
+			document.getElementById('g-recaptcha-no-consent-message').remove();
+		</script>
+		<div class="g-recaptcha" data-sitekey="{$content_data.PUBLIC_KEY}"></div>
+		<div id="g-recaptcha-no-consent-message">
+            {$txt.RECAPTCHA_NO_CONSENT_GIVEN}
+		</div>
+	{else}
+		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+		<div class="g-recaptcha" data-sitekey="{$content_data.PUBLIC_KEY}"></div>
+	{/if}
+{/block}

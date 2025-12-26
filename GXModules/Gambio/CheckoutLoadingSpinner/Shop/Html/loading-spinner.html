@@ -1,0 +1,85 @@
+{*
+    Checkout loading spinner component
+
+    Parameters:
+        $timeout - Timeout
+        $text - Loading text (optional)
+*}
+
+{block name="checkout_loading_spinner_extension"}
+
+    {* Template *}
+    <template id="checkout-loading-spinner-container-template">
+        <div class="checkout-loading-spinner-container-backdrop">
+            {if $text}
+                <span class="text">{$text}</span>
+            {/if}
+            <div class="container">
+                <span class="spinner">
+                    <i class="fa fa-5x fa-spinner fa-fw"></i>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    {* Style *}
+    <style>
+        .checkout-loading-spinner-container-backdrop {
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            position: fixed;
+            background-color: rgba(255, 255, 255, .75);
+            display: none;
+            z-index: 9999;
+        }
+
+        .checkout-loading-spinner-container-backdrop.loading {
+            display: block;
+        }
+
+        .checkout-loading-spinner-container-backdrop > div.container {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -50px;
+        }
+
+        .checkout-loading-spinner-container-backdrop > .text {
+            margin-top: 100px;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            margin-left: 25px;
+            font-size: 2rem;
+        }
+
+        .checkout-loading-spinner-container-backdrop .spinner > i {
+            font-size: 7em;
+            animation-name:            spin;
+            animation-duration:        900ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: steps(8);
+            transform-origin:          50% calc(50% + 0.5);
+            color:                     {template_setting name="brand-primary"};
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+     {* JavaScript *}
+    <script data-timeout="{$timeout}" src="GXModules/Gambio/CheckoutLoadingSpinner/Shop/Themes/All/Javascript/extensions/loading-spinner.js"></script>
+{/block}

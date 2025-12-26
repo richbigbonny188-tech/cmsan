@@ -1,0 +1,12 @@
+
+
+{*  ==========================================================================
+layout_header_logo.html
+- removed div and put class "navbar-brand" to a tag
+========================================================================== *}
+
+{block name="layout_header_logo"}
+    <a class="navbar-brand" href="{$logo_link}" title="{$smarty.const.STORE_NAME|escape:'html'}">
+        <img id="main-header-logo" class="img-responsive" src="{$logo_url}" alt="{$smarty.const.STORE_NAME|escape:'html'}-Logo">
+    </a>
+{/block}

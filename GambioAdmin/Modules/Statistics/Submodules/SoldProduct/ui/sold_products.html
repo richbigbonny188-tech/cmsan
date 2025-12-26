@@ -1,0 +1,102 @@
+{extends file="layout.html"}
+{load_language_text section="stats_products_purchased" name="productsPurchased"}
+{load_language_text section="stats_products_viewed" name="productsViewed"}
+
+{block name="layout_content_header_container"}
+    <div class="content-header not-scrollable">
+        {block name="layout_content_header_title"}
+            {if isset($pageTitle)}
+                <h2 class="content-title">{$pageTitle}</h2>
+            {elseif isset($page_title)}
+                <h2 class="content-title">{$page_title}</h2>
+            {/if}
+        {/block}
+
+        {block name="layout_content_navigation"}
+            <div class="content-navigation" style="align-self: normal;">
+                <div class="nav-item no-link">
+                    <a href="#" class="pe-none">{$productsPurchased.TAB_TITLE}</a>
+                </div>
+                <div class="nav-item">
+                    <a href="{{$baseUrl}}/admin/statistics/products/viewed">{$productsViewed.TAB_TITLE}</a>
+                </div>
+            </div>
+        {/block}
+    </div>
+{/block}
+
+
+
+{block name="content"}
+    <div class="table-container">
+        <div class="table--header">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{$adminGeneral.table_column_product}</th>
+                    <th>{$adminGeneral.table_column_category}</th>
+                    <th>{$adminGeneral.table_column_purchased}</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <table class="table table--content">
+            <tbody>
+            {if $sold_products|count > 0}
+                {foreach item=product from=$sold_products}
+                <tr>
+                    <td>
+                        {if $product.productId > 0}
+                            <a href="{$baseUrl}/admin/categories.php?pID={$product.productId}&action=new_product" class="fw-bold">{$product.productName}</a>
+                        {else}
+                            <a href="#" class="pe-none fw-bold">{$product.productName}</a>
+                        {/if}
+                    </td>
+                    <td class="table--column-categories" title="{$product.categoryName}">{$product.categoryName}</td>
+                    <td>{$product.orderCount}</td>
+                </tr>
+                {/foreach}
+            {else}
+                <tr>
+                    <td colspan="3">
+                        <div class="text-center py-1">{$productsPurchased.TEXT_NO_RESULT}.</div>
+                    </td>
+                </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div class="table--footer">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="pagination d-flex align-items-center justify-content-end ms-auto">
+                    <span>{$pagination.from} {$adminGeneral.pagination_to} {$pagination.to} ({$adminGeneral.pagination_from} {$pagination.totalItems} {$pageTitle|lower})</span>
+                    {assign var="hasPrevPage" value=$pagination.page>1}
+                    <a href="?page={$pagination.page - 1}" title="Vorherige Seite" class="btn btn-sm btn-default settings-btn{if !$hasPrevPage} disabled{/if}" role="button">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <span>{$adminGeneral.pagination_page}</span>
+                    <div class="d-inline-block mx-2">
+                        <form action="{$baseUrl}/admin/statistics/products/purchased" method="get">
+                            <select
+                                name="page"
+                                onchange="this.form.submit();"
+                                class="form-select form-select-sm"
+                                {if $sold_products|count <= 0}disabled="disabled"{/if}
+                            >
+                                {for $i = 1; $i <= $pagination.maxPage; $i++}
+                                <option{if $i === $pagination.page} selected{/if}>{$i}</option>
+                                {/for}
+                            </select>
+                        </form>
+                    </div>
+                    <span class="ms-0">
+                        {$adminGeneral.pagination_from} <strong>{$pagination.maxPage}</strong>
+                    </span>
+                    {assign var="hasNextPage" value=!($pagination.page+1 > $pagination.maxPage)}
+                    <a href="?page={$pagination.page + 1}" title="Nächste Seite" class="btn btn-sm btn-default settings-btn{if !$hasNextPage} disabled{/if}" role="button">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

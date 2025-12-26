@@ -1,0 +1,37 @@
+{load_language_text section="gift_cart" name="gift"}
+<div id="gift-coupon-block">
+    {block name="snippets_shopping_cart_button_redeemgiftcouponcode"}
+		<div class="gift-coupon-code-entry">
+			<div class="input-group">
+				<input
+						form="redeem-gift-coupon-code"
+						type="text"
+						class="form-control gift-coupon-code-input"
+						name="gift-coupon-code"
+						id="gift-coupon-code"
+						placeholder="{$gift.text_code}"
+				><span class="input-group-btn"><button
+							form="redeem-gift-coupon-code"
+							class="btn extform"
+							type="submit"
+							id="gift-coupon-code-submit">{$button.redeem}</button></span>
+			</div>
+		</div>
+        {if $content_data.GV_AMOUNT}
+			<div class="gv-amount">
+				<div class="gv-amount-toggleuse">
+                    {if !isset($smarty.session.cot_gv) || $smarty.session.cot_gv === true}
+						<a class="toggleusebalance" href="{$content_data.GV_LINK_DONOTUSEBALANCE}"><input type="checkbox" name="gv_use_balance" value="1" checked></a>
+                        {$gift.usebalance} ({$content_data.GV_AMOUNT|trim})
+                    {else}
+						<a class="toggleusebalance" href="{$content_data.GV_LINK_USEBALANCE}"><input type="checkbox" name="gv_use_balance" value="1"></a>
+                        {$gift.usebalance} ({$content_data.GV_AMOUNT|trim})
+                    {/if}
+				</div>
+				<div class="gv-amount-send-to-friend">
+                    {$gift.send_to_friend_intro} <a href="{$content_data.GV_SEND_TO_FRIEND_LINK}">{$gift.send_to_friend_link}</a>
+				</div>
+			</div>
+        {/if}
+    {/block}
+</div>

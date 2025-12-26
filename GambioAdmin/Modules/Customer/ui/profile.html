@@ -1,0 +1,36 @@
+{extends file="layout.html"}
+
+{block name="layout_content_header_container"}
+    <div class="content-header not-scrollable">
+        {block name="layout_content_header_title"}
+            <h2 class="content-title"><a href="{$baseUrl}/admin/customers" title="{$profile_back_to_overview}" class="btn btn-sm ms-n2 border-0"><i class="fa fa-chevron-left"></i></a> {$profile_title}</h2>
+        {/block}
+
+        {block name="layout_content_navigation"}
+        <div class="content-navigation">
+            {foreach $contentNavigation as $name => $url}
+                {block name="layout_content_navigation_item"}
+                    {if $url !== ''}
+                        <div class="nav-item">
+                            <a href="{$url}">{$name}</a>
+                        </div>
+                    {else}
+                        <div class="nav-item no-link">
+                            {$name}
+                        </div>
+                    {/if}
+                {/block}
+            {/foreach}
+        </div>
+        {/block}
+    </div>
+{/block}
+
+{block name="content"}
+	<input type="hidden" value="{$pageToken}" name="page_token">
+	<div id="profile"></div>
+
+	{block name="above_gambio_dashboard"}{/block}
+	{$content}
+	{block name="below_gambio_dashboard"}{/block}
+{/block}

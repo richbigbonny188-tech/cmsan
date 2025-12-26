@@ -1,0 +1,26 @@
+{load_language_text section="specials"}
+{load_language_text section="product_listing" name="product"}
+{load_language_text section="index" name="index"}
+
+{block name="offers"}
+	{block name="offers_title"}
+		<h1>{$txt.heading_text}</h1>
+	{/block}
+
+	{if $module_content}
+
+		{block name="offers_pagination_top"}
+			{include file="get_usermod:{$tpl_path}pagination.html" pager=$pager}
+		{/block}
+
+		{block name="offers_product_listing"}
+			{$module_content}
+		{/block}
+
+		{block name="offers_pagination_bottom"}
+			{include file="get_usermod:{$tpl_path}pagination.html" pager=$pager}
+		{/block}
+	{else}
+		{$txt.no_specials}
+    {/if}
+{/block}

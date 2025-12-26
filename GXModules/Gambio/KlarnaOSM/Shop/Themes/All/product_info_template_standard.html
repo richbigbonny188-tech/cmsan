@@ -1,0 +1,22 @@
+{block name="product_info_template_standard_sticky_box_product_title" prepend}
+    {if $KLARNAOSM_PRODUCT_TOP}
+        <div class="row klarnaosm klarnaosm_product_top"
+             data-klarnaosm-namespace="GXModules/Gambio/KlarnaOSM/Build/Shop/Themes/All/Javascript"
+             data-klarnaosm-widget="klarnaosmproduct"
+        >
+            {$KLARNAOSM_PRODUCT_TOP}
+        </div>
+    {/if}
+{/block}
+
+{block name="product_info_template_standard_sticky_box_product_box_bottom"}
+    {$smarty.block.parent}
+    {if $KLARNAOSM_PRODUCT_BOTTOM}
+        <div class="klarnaosm klarnaosm_product_bottom"
+             data-klarnaosm-namespace="GXModules/Gambio/KlarnaOSM/Build/Shop/Themes/All/Javascript"
+             data-klarnaosm-widget="klarnaosmproduct"
+        >
+            {$KLARNAOSM_PRODUCT_BOTTOM}
+        </div>
+    {/if}
+{/block}

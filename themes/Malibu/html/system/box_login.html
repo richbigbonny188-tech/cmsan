@@ -1,0 +1,59 @@
+{load_language_text section="box_login"}
+{load_language_text section="buttons" name="button"}
+
+{block name="box_login"}
+	{block name="box_login_top"}
+		{include file="get_usermod:{$tpl_path}layout_box_top.html" class="login" headline=$txt.heading_login}
+	{/block}
+
+	{block name="box_login_form"}
+		<form id="{$content_data.FORM_ID}" action="{$content_data.FORM_ACTION_URL}" method="{$content_data.FORM_METHOD}">
+		
+			{block name="box_login_form_email"}
+				<div class="form-group input-container">
+					<span class="input-container">
+						<input autocomplete="username" type="email" placeholder="{$txt.text_email}" name="{$content_data.FIELD_EMAIL_NAME}" id="box-login-{$content_data.FIELD_EMAIL_NAME}" class="form-control" />
+					</span>
+				</div>
+			{/block}
+		
+			{block name="box_login_form_password"}
+				<div class="form-group input-container">
+					<span class="input-container">
+                        <div class="password-form-field" data-gambio-widget="show_password">
+						    <input autocomplete="current-password" type="password" placeholder="{$txt.text_pwd}" name="{$content_data.FIELD_PWD_NAME}" id="box-login-{$content_data.FIELD_PWD_NAME}" class="form-control" />
+                            <button class="btn show-password hidden" type="button">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+					</span>
+				</div>
+			{/block}
+			
+			{block name="box_login_form_submit"}
+				<button type="submit" class="btn btn-block btn-primary btn-sm" title="{$button.login}">
+					{$button.login}
+				</button>
+			{/block}
+
+			{block name="box_login_form_buttons"}
+				<ul class="box-login-links">
+					<li>
+						{block name="box_login_form_buttons_create_account"}
+							<a title="{$txt.text_create_account}" href="{$content_data.LINK_CREATE_ACCOUNT}">{$txt.text_create_account}</a>
+						{/block}
+					</li>
+					<li>
+						{block name="box_login_form_buttons_kost_password"}
+							<a title="{$txt.text_password_forgotten}" href="{$content_data.LINK_LOST_PASSWORD}">{$txt.text_password_forgotten}</a>
+						{/block}
+					</li>
+				</ul>
+			{/block}
+		</form>
+	{/block}
+
+	{block name="box_login_bottom"}
+		{include file="get_usermod:{$tpl_path}layout_box_bottom.html"}
+	{/block}
+{/block}

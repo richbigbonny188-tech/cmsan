@@ -1,0 +1,67 @@
+{block name="layout_footer"}
+	<footer id="footer">
+		{if $HTML}
+			{block name="layout_footer_header"}
+				<div class="footer-header">
+					{$HTML}
+				</div>
+			{/block}
+		{/if}
+		
+		{block name="layout_footer_inside"}
+			<div class="inside">
+				<div class="row">
+					{block name="layout_footer_inside_content1"}
+						<div class="footer-col-1">{$MORE_ABOUT}</div>
+					{/block}
+					{block name="layout_footer_inside_content2"}
+						<div class="footer-col-2">{if $FOOTER_COL_HEADER_4321005}
+							<div class="box box-content panel panel-default">
+								<div class="panel-heading">
+									<div class="panel-title footer-column-title">
+										{$FOOTER_COL_HEADER_4321005}
+									</div>
+								</div>
+								<div class="panel-body">
+									{$FOOTER_COL_4321005}
+								</div>
+							</div>{else}{$FOOTER_COL_4321005}{/if}
+						</div>
+					{/block}
+					{block name="layout_footer_inside_content3"}
+						<div class="footer-col-3">{if $FOOTER_COL_HEADER_4321006}
+							<div class="box box-content panel panel-default">
+								<div class="panel-heading">
+									<div class="panel-title footer-column-title">
+										{$FOOTER_COL_HEADER_4321006}
+									</div>
+								</div>
+								<div class="panel-body">
+									{$FOOTER_COL_4321006}
+								</div>
+							</div>{else}{$FOOTER_COL_4321006}{/if}
+						</div>
+					{/block}
+					{block name="layout_footer_inside_content4"}
+						<div class="footer-col-4">{if $FOOTER_COL_HEADER_4321007}
+							<div class="box box-content panel panel-default">
+								<div class="panel-heading">
+									<div class="panel-title footer-column-title">
+										{$FOOTER_COL_HEADER_4321007}
+									</div>
+								</div>
+								<div class="panel-body">
+									{$FOOTER_COL_4321007}
+								</div>
+							</div>{else}{$FOOTER_COL_4321007}{/if}
+						</div>
+					{/block}
+				</div>
+			</div>
+		{/block}
+		
+		{block name="layout_footer_inside_copyright"}
+			<div class="footer-bottom">{$COPYRIGHT_FOOTER}</div>
+		{/block}
+	</footer>
+{/block}

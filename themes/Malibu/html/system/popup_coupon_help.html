@@ -1,0 +1,40 @@
+{load_language_text section="popup"}
+
+{block name="popup_coupon_help"}
+			{block name="popup_coupon_help_text"}
+				<div class="content_text">
+					{$txt.text_coupon_help_header}
+
+					{$TEXT_COUPON_HELP_NAME}
+					{if $TEXT_COUPON_HELP_DESC}{$TEXT_COUPON_HELP_DESC}{/if}
+					{if $TEXT_COUPON_HELP_FIXED}{$TEXT_COUPON_HELP_FIXED}{/if}
+					{if $TEXT_COUPON_HELP_FREESHIP}{$TEXT_COUPON_HELP_FREESHIP}{/if}
+
+					{if $TEXT_COUPON_HELP_MINORDER}{$TEXT_COUPON_HELP_MINORDER}{/if}
+					{if $TEXT_COUPON_HELP_DATE}{$TEXT_COUPON_HELP_DATE}{/if}
+
+					{if $CATS|count > 0 || $PRODS|count > 0}
+						<b>{$txt.TEXT_COUPON_HELP_RESTRICT}</b><br />
+						<br />
+
+						{if $CATS|count > 0}
+							{$txt.text_coupon_help_categories}:
+
+							{foreach from=$CATS item=CAT}
+								<br />{$CAT}
+							{/foreach}
+						{elseif $PRODS|count > 0}
+							{$txt.text_coupon_help_products}:
+
+							{foreach from=$PRODS item=PROD}
+								<br />{$PROD}
+							{/foreach}
+						{/if}
+					{/if}
+
+					{$TEXT_HELP}
+				</div>
+			{/block}
+		</body>
+	</html>
+{/block}

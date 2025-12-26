@@ -1,0 +1,17 @@
+{block name="category_description_bottom"}
+	{block name="category_description_bottom_container_if"}
+		{if $CATEGORIES_DESCRIPTION_BOTTOM}
+			{block name="category_description_bottom_container"}
+				<div class="categories-description-container categories-description-bottom-container">
+					{block name="category_description_bottom_container_description"}
+						{$CATEGORIES_DESCRIPTION_BOTTOM}
+					{/block}
+				</div>
+			{/block}
+		{/if}
+	{/block}
+{/block}
+
+{block name="categories-description-bottom-content-zone"}
+	{content_zone id="categories-description-bottom_`$CATEGORIES_ID`"}
+{/block}

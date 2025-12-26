@@ -1,0 +1,21 @@
+
+
+{*  ==========================================================================
+layout_header_navbar_buttons.html
+========================================================================== *}
+
+{block name="layout_header_navbar_buttons_open_categories"}
+{/block}
+
+{block name="layout_header_navbar_buttons_basket"}
+    {assign var="offcanvasCart" value=true}
+    <button type="button" class="navbar-toggle cart-icon" {if $offcanvasCart}data-toggle="cart"{/if}>
+        {literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title>cart</title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M31,13.66a1.08,1.08,0,0,0-1.07-1H26.08V11.28a6.31,6.31,0,0,0-12.62,0v1.36H9.27a1,1,0,0,0-1,1L5.21,32A3.8,3.8,0,0,0,9,35.8H30.19A3.8,3.8,0,0,0,34,31.94Zm-15.42-1V11.28a4.2,4.2,0,0,1,8.39,0v1.35Zm-1.06,5.59a1.05,1.05,0,0,0,1.06-1.06v-2.4H24v2.4a1.06,1.06,0,0,0,2.12,0v-2.4h2.84L31.86,32a1.68,1.68,0,0,1-1.67,1.68H9a1.67,1.67,0,0,1-1.68-1.61l2.94-17.31h3.19v2.4A1.06,1.06,0,0,0,14.51,18.22Z"/></g></g></svg>{/literal}
+        <span class="cart-products-count{if $qty == 0} hidden{/if}">
+            {$qty}
+        </span>
+    </button>
+{/block}
+
+{block name="layout_header_navbar_buttons_search"}
+{/block}

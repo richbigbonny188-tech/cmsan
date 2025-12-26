@@ -1,0 +1,21 @@
+{block name="modifier_group_type_text"}
+    {assign "show_additional_price" $content_data.show_additional_price}
+    <div class="modifier-group modifier-{$content_data.modifier.type}-group modifier-type__text"{if !$content_data.modifier.visible} style="display: none;"{/if}>
+        <label class="modifier-label">
+            {$content_data.modifier.label}:
+            {if $show_additional_price}<span class="selected-value-price" data-default-price="{$content_data.modifier.selected.additionalInfo.price}">{if $content_data.modifier.selected.id}{$content_data.modifier.selected.additionalInfo.price}{/if}</span>{/if}
+        </label>
+        <div class="modifier-content">
+            <ul class="modifiers-list">
+                {foreach from=$content_data.modifier.items item=modifier}
+                    <li class="{if !$modifier.selectable}un-selectable{elseif $content_data.modifier.selected.value eq $modifier.value}active{/if}" title="{$modifier.info}">
+                        <a href="javascript:;" class="modifier-label-text modifier-item{if !$modifier.selectable} un-selectable{/if}" data-value="{$modifier.value}" {if $show_additional_price}data-price="{$modifier.additionalInfo.price}"{/if}>
+                            <span>{$modifier.info}</span>
+                        </a>
+                    </li>
+                {/foreach}
+            </ul>
+            <input type="hidden" name="{$content_data.modifier.name}" class="hidden-input" value="{$content_data.modifier.selected.value}">
+        </div>
+    </div>
+{/block}

@@ -1,0 +1,18 @@
+{block name="product_modifiers_template_group"}
+<div class="modifiers-selection">
+    {if isset($groups.property) && count($groups.property) gt 0}
+        <div class="properties-selection-form">
+        {foreach from=$groups.property item=group}
+            {$group}
+        {/foreach}
+        </div>
+    {/if}
+    {if isset($groups.attribute) && count($groups.attribute) gt 0}
+        <div class="attributes-selection-form">
+        {foreach from=$groups.attribute item=group}
+            {$group}
+        {/foreach}
+        </div>
+    {/if}
+</div>
+{/block}

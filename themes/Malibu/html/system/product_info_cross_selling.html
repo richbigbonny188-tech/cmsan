@@ -1,0 +1,13 @@
+{load_language_text section="cross_selling"}
+
+{if $module_content != ''}
+	{block name="product_info_cross_selling"}
+		{block name="product_info_cross_selling_title"}
+			<h2>{$txt.heading_text}</h2>
+		{/block}
+		
+		{block name="product_info_cross_selling_list"}
+			{$module_content}
+		{/block}
+	{/block}
+{/if}
