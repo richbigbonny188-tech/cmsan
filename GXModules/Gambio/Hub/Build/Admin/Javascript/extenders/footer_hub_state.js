@@ -1,0 +1,150 @@
+'use strict';
+
+/* --------------------------------------------------------------
+ footer_hub_state.js 2018-04-24
+ Gambio GmbH
+ http://www.gambio.de
+ Copyright (c) 2017 Gambio GmbH
+ Released under the GNU General Public License (Version 2)
+ [http://www.gnu.org/licenses/gpl-2.0.html]
+ --------------------------------------------------------------
+ */
+
+/**
+ * Footer Hub State Extender
+ *
+ * This module creates a Gambio Hub state badge in the admin footer in order to display the connection state of
+ * Hub.
+ *
+ * Add a "data-connected" attribute on the <script/> tag if there's an active connection with Gambio Hub.
+ *
+ * Add a "data-lecacy-mode" attribute on the <script/> tag to enable compatibility with older shop pages.
+ *
+ * Add a "data-text" attribute on the <script/> tag to change the displayed text.
+ *
+ * Example:
+ *
+ * <script src="http://shop.de/admin/assets/html/javascript/modules/gambio_hub/extenders/footer_hub_state.js"
+ *     data-connected data-legacy-mode data-text="HUB Connected"></script>
+ */
+(function () {
+
+	'use strict';
+
+	/**
+  * Parse options from script's data attributes.
+  *
+  * @param {HTMLElement} script Element that loaded current script.
+  *
+  * @return {{isLegacy: boolean, isConnected: boolean, text: (string|*)}}
+  */
+
+	function parseDataOptions(script) {
+		return {
+			isLegacy: script.getAttribute('data-legacy-mode') !== null,
+			isConnected: script.getAttribute('data-connected') !== null,
+			text: script.getAttribute('data-text')
+		};
+	}
+
+	/**
+  * Creates Gambio Hub footer badge for legacy pages.
+  *
+  * @param {Object} options Contains the extender options.
+  *
+  * @return {HTMLElement} Returns the badge element.
+  */
+	function createLegacyBadge(options) {
+		var style = ['padding: 6px', 'margin-top: -4px', 'margin-left: 42px', 'font-size: 11px', 'color: #fff', 'text-decoration: none'];
+
+		var badge = document.createElement('a');
+		badge.setAttribute('href', 'admin.php?do=HubConfiguration/account');
+		badge.setAttribute('style', style.join('; '));
+		badge.className = 'badge ' + (options.isConnected ? 'connected badge-success' : 'disconnected badge-danger');
+
+		var icon = document.createElement('i');
+		icon.className = 'fa fa-share-alt-square';
+		badge.appendChild(icon);
+
+		var text = document.createTextNode(' ' + options.text);
+		badge.appendChild(text);
+
+		var targetContainer = document.querySelector('.main-bottom-footer .shop-key-link').parentNode;
+		targetContainer.style.marginRight = '10px';
+		targetContainer.appendChild(badge);
+
+		return badge;
+	}
+
+	/**
+  * Creates Gambio Hub footer badge for modern pages.
+  *
+  * @param {Object} options Contains the extender options.
+  *
+  * @return {HTMLElement} Returns the badge element.
+  */
+	function createModernBadge(options) {
+		var style = ['padding: 6px', 'margin-top: -4px', 'font-size: 11px'];
+
+		var badgeContainer = document.createElement('div');
+		badgeContainer.setAttribute('style', 'min-width: 150px; display: inline-block; margin-left: 24px;');
+		badgeContainer.className = 'hub-connection-state';
+
+		var badge = document.createElement('a');
+		badge.setAttribute('href', 'admin.php?do=HubConfiguration/account');
+		badge.setAttribute('style', style.join('; '));
+		badge.className = 'label ' + (options.isConnected ? 'connected label-success' : 'disconnected label-danger');
+
+		var icon = document.createElement('i');
+		icon.className = 'fa fa-share-alt-square';
+		icon.style.marginLeft = '0';
+		badge.appendChild(icon);
+
+		var text = document.createTextNode(' ' + options.text);
+		badge.appendChild(text);
+
+		badgeContainer.appendChild(badge);
+
+		var targetContainer = document.querySelector('#main-footer .info .version');
+		targetContainer.appendChild(badgeContainer);
+
+		var languageSelection = document.querySelector('#main-footer .info .language-selection');
+		languageSelection.style.marginLeft = '30px';
+
+		return badgeContainer;
+	}
+
+	/**
+  * Creates Gambio Hub Badge
+  *
+  * @param {Object} options Contains the extender options.
+  *
+  * @return {HTMLElement} Returns the badge element.
+  */
+	function createBadge(options) {
+		return options.isLegacy ? createLegacyBadge(options) : createModernBadge(options);
+	}
+
+	/**
+  * Initializes Gambio Hub footer badge extender.
+  *
+  * This method will create a badge in the admin footer section which indicates the Gambio Hub connection state
+  * of the shop.
+  */
+	function initialize(script) {
+		var options = parseDataOptions(script);
+
+		createBadge(options);
+	}
+
+	var script = document.currentScript;
+
+	if (document.readyState != 'loading') {
+		initialize(script);
+	} else {
+		document.addEventListener('DOMContentLoaded', function () {
+			return initialize(script);
+		});
+	}
+})();
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFkbWluL0phdmFzY3JpcHQvZXh0ZW5kZXJzL2Zvb3Rlcl9odWJfc3RhdGUuanMiXSwibmFtZXMiOlsicGFyc2VEYXRhT3B0aW9ucyIsInNjcmlwdCIsImlzTGVnYWN5IiwiZ2V0QXR0cmlidXRlIiwiaXNDb25uZWN0ZWQiLCJ0ZXh0IiwiY3JlYXRlTGVnYWN5QmFkZ2UiLCJvcHRpb25zIiwic3R5bGUiLCJiYWRnZSIsImRvY3VtZW50IiwiY3JlYXRlRWxlbWVudCIsInNldEF0dHJpYnV0ZSIsImpvaW4iLCJjbGFzc05hbWUiLCJpY29uIiwiYXBwZW5kQ2hpbGQiLCJjcmVhdGVUZXh0Tm9kZSIsInRhcmdldENvbnRhaW5lciIsInF1ZXJ5U2VsZWN0b3IiLCJwYXJlbnROb2RlIiwibWFyZ2luUmlnaHQiLCJjcmVhdGVNb2Rlcm5CYWRnZSIsImJhZGdlQ29udGFpbmVyIiwibWFyZ2luTGVmdCIsImxhbmd1YWdlU2VsZWN0aW9uIiwiY3JlYXRlQmFkZ2UiLCJpbml0aWFsaXplIiwiY3VycmVudFNjcmlwdCIsInJlYWR5U3RhdGUiLCJhZGRFdmVudExpc3RlbmVyIl0sIm1hcHBpbmdzIjoiOztBQUFBOzs7Ozs7Ozs7O0FBVUE7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBaUJBLENBQUMsWUFBVzs7QUFFWDs7QUFFQTs7Ozs7Ozs7QUFPQSxVQUFTQSxnQkFBVCxDQUEwQkMsTUFBMUIsRUFBa0M7QUFDakMsU0FBTztBQUNOQyxhQUFVRCxPQUFPRSxZQUFQLENBQW9CLGtCQUFwQixNQUE0QyxJQURoRDtBQUVOQyxnQkFBYUgsT0FBT0UsWUFBUCxDQUFvQixnQkFBcEIsTUFBMEMsSUFGakQ7QUFHTkUsU0FBTUosT0FBT0UsWUFBUCxDQUFvQixXQUFwQjtBQUhBLEdBQVA7QUFLQTs7QUFFRDs7Ozs7OztBQU9BLFVBQVNHLGlCQUFULENBQTJCQyxPQUEzQixFQUFvQztBQUNuQyxNQUFNQyxRQUFRLENBQ2IsY0FEYSxFQUViLGtCQUZhLEVBR2IsbUJBSGEsRUFJYixpQkFKYSxFQUti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QUFTbUIsVUFBVCxJQUF1QixTQUEzQixFQUFzQztBQUNyQ0YsYUFBVzFCLE1BQVg7QUFDQSxFQUZELE1BRU87QUFDTlMsV0FBU29CLGdCQUFULENBQTBCLGtCQUExQixFQUE4QztBQUFBLFVBQU1ILFdBQVcxQixNQUFYLENBQU47QUFBQSxHQUE5QztBQUNBO0FBRUQsQ0FqSUQiLCJmaWxlIjoiQWRtaW4vSmF2YXNjcmlwdC9leHRlbmRlcnMvZm9vdGVyX2h1Yl9zdGF0ZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4gZm9vdGVyX2h1Yl9zdGF0ZS5qcyAyMDE4LTA0LTI0XG4gR2FtYmlvIEdtYkhcbiBodHRwOi8vd3d3LmdhbWJpby5kZVxuIENvcHlyaWdodCAoYykgMjAxNyBHYW1iaW8gR21iSFxuIFJlbGVhc2VkIHVuZGVyIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSAoVmVyc2lvbiAyKVxuIFtodHRwOi8vd3d3LmdudS5vcmcvbGljZW5zZXMvZ3BsLTIuMC5odG1sXVxuIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4gKi9cblxuLyoqXG4gKiBGb290ZXIgSHViIFN0YXRlIEV4dGVuZGVyXG4gKlxuICogVGhpcyBtb2R1bGUgY3JlYXRlcyBhIEdhbWJpbyBIdWIgc3RhdGUgYmFkZ2UgaW4gdGhlIGFkbWluIGZvb3RlciBpbiBvcmRlciB0byBkaXNwbGF5IHRoZSBjb25uZWN0aW9uIHN0YXRlIG9mXG4gKiBIdWIuXG4gKlxuICogQWRkIGEgXCJkYXRhLWNvbm5lY3RlZFwiIGF0dHJpYnV0ZSBvbiB0aGUgPHNjcmlwdC8+IHRhZyBpZiB0aGVyZSdzIGFuIGFjdGl2ZSBjb25uZWN0aW9uIHdpdGggR2FtYmlvIEh1Yi5cbiAqXG4gKiBBZGQgYSBcImRhdGEtbGVjYWN5LW1vZGVcIiBhdHRyaWJ1dGUgb24gdGhlIDxzY3JpcHQvPiB0YWcgdG8gZW5hYmxlIGNvbXBhdGliaWxpdHkgd2l0aCBvbGRlciBzaG9wIHBhZ2VzLlxuICpcbiAqIEFkZCBhIFwiZGF0YS10ZXh0XCIgYXR0cmlidXRlIG9uIHRoZSA8c2NyaXB0Lz4gdGFnIHRvIGNoYW5nZSB0aGUgZGlzcGxheWVkIHRleHQuXG4gKlxuICogRXhhbXBsZTpcbiAqXG4gKiA8c2NyaXB0IHNyYz1cImh0dHA6Ly9zaG9wLmRlL2FkbWluL2Fzc2V0cy9odG1sL2phdmFzY3JpcHQvbW9kdWxlcy9nYW1iaW9faHViL2V4dGVuZGVycy9mb290ZXJfaHViX3N0YXRlLmpzXCJcbiAqICAgICBkYXRhLWNvbm5lY3RlZCBkYXRhLWxlZ2FjeS1tb2RlIGRhdGEtdGV4dD1cIkhVQiBDb25uZWN0ZWRcIj48L3NjcmlwdD5cbiAqL1xuKGZ1bmN0aW9uKCkge1xuXHRcblx0J3VzZSBzdHJpY3QnO1xuXHRcblx0LyoqXG5cdCAqIFBhcnNlIG9wdGlvbnMgZnJvbSBzY3JpcHQncyBkYXRhIGF0dHJpYnV0ZXMuXG5cdCAqXG5cdCAqIEBwYXJhbSB7SFRNTEVsZW1lbnR9IHNjcmlwdCBFbGVtZW50IHRoYXQgbG9hZGVkIGN1cnJlbnQgc2NyaXB0LlxuXHQgKlxuXHQgKiBAcmV0dXJuIHt7aXNMZWdhY3k6IGJvb2xlYW4sIGlzQ29ubmVjdGVkOiBib29sZWFuLCB0ZXh0OiAoc3RyaW5nfCopfX1cblx0ICovXG5cdGZ1bmN0aW9uIHBhcnNlRGF0YU9wdGlvbnMoc2NyaXB0KSB7XG5cdFx0cmV0dXJuIHtcblx0XHRcdGlzTGVnYWN5OiBzY3JpcHQuZ2V0QXR0cmlidXRlKCdkYXRhLWxlZ2FjeS1tb2RlJykgIT09IG51bGwsXG5cdFx0XHRpc0Nvbm5lY3RlZDogc2NyaXB0LmdldEF0dHJpYnV0ZSgnZGF0YS1jb25uZWN0ZWQnKSAhPT0gbnVsbCxcblx0XHRcdHRleHQ6IHNjcmlwdC5nZXRBdHRyaWJ1dGUoJ2RhdGEtdGV4dCcpXG5cdFx0fVxuXHR9XG5cdFxuXHQvKipcblx0ICogQ3JlYXRlcyBHYW1iaW8gSHViIGZvb3RlciBiYWRnZSBmb3IgbGVnYWN5IHBhZ2VzLlxuXHQgKlxuXHQgKiBAcGFyYW0ge09iamVjdH0gb3B0aW9ucyBDb250YWlucyB0aGUgZXh0ZW5kZXIgb3B0aW9ucy5cblx0ICpcblx0ICogQHJldHVybiB7SFRNTEVsZW1lbnR9IFJldHVybnMgdGhlIGJhZGdlIGVsZW1lbnQuXG5cdCAqL1xuXHRmdW5jdGlvbiBjcmVhdGVMZWdhY3lCYWRnZShvcHRpb25zKSB7XG5cdFx0Y29uc3Qgc3R5bGUgPSBbXG5cdFx0XHQncGFkZGluZzogNnB4Jyxcblx0XHRcdCdtYXJnaW4tdG9wOiAtNHB4Jyxcblx0XHRcdCdtYXJnaW4tbGVmdDogNDJweCcsXG5cdFx0XHQnZm9udC1zaXplOiAxMXB4Jyxcblx0XHRcdCdjb2xvcjogI2ZmZicsXG5cdFx0XHQndGV4dC1kZWNvcmF0aW9uOiBub25lJ1xuXHRcdF07XG5cdFx0XG5cdFx0Y29uc3QgYmFkZ2UgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJyk7XG5cdFx0YmFkZ2Uuc2V0QXR0cmlidXRlKCdocmVmJywgJ2FkbWluLnBocD9kbz1IdWJDb25maWd1cmF0aW9uL2FjY291bnQnKTtcblx0XHRiYWRnZS5zZXRBdHRyaWJ1dGUoJ3N0eWxlJywgc3R5bGUuam9pbignOyAnKSk7XG5cdFx0YmFkZ2UuY2xhc3NOYW1lID0gJ2JhZGdlICcgKyAob3B0aW9ucy5pc0Nvbm5lY3RlZCA/ICdjb25uZWN0ZWQgYmFkZ2Utc3VjY2VzcycgOiAnZGlzY29ubmVjdGVkIGJhZGdlLWRhbmdlcicpO1xuXHRcdFxuXHRcdGNvbnN0IGljb24gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdpJyk7XG5cdFx0aWNvbi5jbGFzc05hbWUgPSAnZmEgZmEtc2hhcmUtYWx0LXNxdWFyZSc7XG5cdFx0YmFkZ2UuYXBwZW5kQ2hpbGQoaWNvbik7XG5cdFx0XG5cdFx0Y29uc3QgdGV4dCA9IGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKCcgJyArIG9wdGlvbnMudGV4dCk7XG5cdFx0YmFkZ2UuYXBwZW5kQ2hpbGQodGV4dCk7XG5cdFx0XG5cdFx0Y29uc3QgdGFyZ2V0Q29udGFpbmVyID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcignLm1haW4tYm90dG9tLWZvb3RlciAuc2hvcC1rZXktbGluaycpLnBhcmVudE5vZGU7XG5cdFx0dGFyZ2V0Q29udGFpbmVyLnN0eWxlLm1hcmdpblJpZ2h0ID0gJzEwcHgnO1xuXHRcdHRhcmdldENvbnRhaW5lci5hcHBlbmRDaGlsZChiYWRnZSk7XG5cdFx0XG5cdFx0cmV0dXJuIGJhZGdlO1xuXHR9XG5cdFxuXHQvKipcblx0ICogQ3JlYXRlcyBHYW1iaW8gSHViIGZvb3RlciBiYWRnZSBmb3IgbW9kZXJuIHBhZ2VzLlxuXHQgKlxuXHQgKiBAcGFyYW0ge09iamVjdH0gb3B0aW9ucyBDb250YWlucyB0aGUgZXh0ZW5kZXIgb3B0aW9ucy5cblx0ICpcblx0ICogQHJldHVybiB7SFRNTEVsZW1lbnR9IFJldHVybnMgdGhlIGJhZGdlIGVsZW1lbnQuXG5cdCAqL1xuXHRmdW5jdGlvbiBjcmVhdGVNb2Rlcm5CYWRnZShvcHRpb25zKSB7XG5cdFx0Y29uc3Qgc3R5bGUgPSBbXG5cdFx0XHQncGFkZGluZzogNnB4Jyxcblx0XHRcdCdtYXJnaW4tdG9wOiAtNHB4Jyxcblx0XHRcdCdmb250LXNpemU6IDExcHgnLFxuXHRcdF07XG5cdFx0XG5cdFx0Y29uc3QgYmFkZ2VDb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtcblx0XHRiYWRnZUNvbnRhaW5lci5zZXRBdHRyaWJ1dGUoJ3N0eWxlJywgJ21pbi13aWR0aDogMTUwcHg7IGRpc3BsYXk6IGlubGluZS1ibG9jazsgbWFyZ2luLWxlZnQ6IDI0cHg7Jyk7XG5cdFx0YmFkZ2VDb250YWluZXIuY2xhc3NOYW1lID0gJ2h1Yi1jb25uZWN0aW9uLXN0YXRlJztcblx0XHRcblx0XHRjb25zdCBiYWRnZSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2EnKTtcblx0XHRiYWRnZS5zZXRBdHRyaWJ1dGUoJ2hyZWYnLCAnYWRtaW4ucGhwP2RvPUh1YkNvbmZpZ3VyYXRpb24vYWNjb3VudCcpO1xuXHRcdGJhZGdlLnNldEF0dHJpYnV0ZSgnc3R5bGUnLCBzdHlsZS5qb2luKCc7ICcpKTtcblx0XHRiYWRnZS5jbGFzc05hbWUgPSAnbGFiZWwgJyArIChvcHRpb25zLmlzQ29ubmVjdGVkID8gJ2Nvbm5lY3RlZCBsYWJlbC1zdWNjZXNzJyA6ICdkaXNjb25uZWN0ZWQgbGFiZWwtZGFuZ2VyJyk7XG5cdFx0XG5cdFx0Y29uc3QgaWNvbiA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2knKTtcblx0XHRpY29uLmNsYXNzTmFtZSA9ICdmYSBmYS1zaGFyZS1hbHQtc3F1YXJlJztcblx0XHRpY29uLnN0eWxlLm1hcmdpbkxlZnQgPSAnMCc7XG5cdFx0YmFkZ2UuYXBwZW5kQ2hpbGQoaWNvbik7XG5cdFx0XG5cdFx0Y29uc3QgdGV4dCA9IGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKCcgJyArIG9wdGlvbnMudGV4dCk7XG5cdFx0YmFkZ2UuYXBwZW5kQ2hpbGQodGV4dCk7XG5cdFx0XG5cdFx0YmFkZ2VDb250YWluZXIuYXBwZW5kQ2hpbGQoYmFkZ2UpO1xuXHRcdFxuXHRcdGxldCB0YXJnZXRDb250YWluZXIgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCcjbWFpbi1mb290ZXIgLmluZm8gLnZlcnNpb24nKTtcblx0XHR0YXJnZXRDb250YWluZXIuYXBwZW5kQ2hpbGQoYmFkZ2VDb250YWluZXIpO1xuXHRcdFxuXHRcdGNvbnN0IGxhbmd1YWdlU2VsZWN0aW9uID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcignI21haW4tZm9vdGVyIC5pbmZvIC5sYW5ndWFnZS1zZWxlY3Rpb24nKTtcblx0XHRsYW5ndWFnZVNlbGVjdGlvbi5zdHlsZS5tYXJnaW5MZWZ0ID0gJzMwcHgnO1xuXHRcdFxuXHRcdHJldHVybiBiYWRnZUNvbnRhaW5lcjtcblx0fVxuXHRcblx0LyoqXG5cdCAqIENyZWF0ZXMgR2FtYmlvIEh1YiBCYWRnZVxuXHQgKlxuXHQgKiBAcGFyYW0ge09iamVjdH0gb3B0aW9ucyBDb250YWlucyB0aGUgZXh0ZW5kZXIgb3B0aW9ucy5cblx0ICpcblx0ICogQHJldHVybiB7SFRNTEVsZW1lbnR9IFJldHVybnMgdGhlIGJhZGdlIGVsZW1lbnQuXG5cdCAqL1xuXHRmdW5jdGlvbiBjcmVhdGVCYWRnZShvcHRpb25zKSB7XG5cdFx0cmV0dXJuIG9wdGlvbnMuaXNMZWdhY3kgPyBjcmVhdGVMZWdhY3lCYWRnZShvcHRpb25zKSA6IGNyZWF0ZU1vZGVybkJhZGdlKG9wdGlvbnMpO1xuXHR9XG5cdFxuXHRcblx0LyoqXG5cdCAqIEluaXRpYWxpemVzIEdhbWJpbyBIdWIgZm9vdGVyIGJhZGdlIGV4dGVuZGVyLlxuXHQgKlxuXHQgKiBUaGlzIG1ldGhvZCB3aWxsIGNyZWF0ZSBhIGJhZGdlIGluIHRoZSBhZG1pbiBmb290ZXIgc2VjdGlvbiB3aGljaCBpbmRpY2F0ZXMgdGhlIEdhbWJpbyBIdWIgY29ubmVjdGlvbiBzdGF0ZVxuXHQgKiBvZiB0aGUgc2hvcC5cblx0ICovXG5cdGZ1bmN0aW9uIGluaXRpYWxpemUoc2NyaXB0KSB7XG5cdFx0Y29uc3Qgb3B0aW9ucyA9IHBhcnNlRGF0YU9wdGlvbnMoc2NyaXB0KTtcblx0XHRcblx0XHRjcmVhdGVCYWRnZShvcHRpb25zKTtcblx0fVxuXHRcblx0Y29uc3Qgc2NyaXB0ID0gZG9jdW1lbnQuY3VycmVudFNjcmlwdDtcblx0XG5cdGlmIChkb2N1bWVudC5yZWFkeVN0YXRlICE9ICdsb2FkaW5nJykge1xuXHRcdGluaXRpYWxpemUoc2NyaXB0KTtcblx0fSBlbHNlIHtcblx0XHRkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJywgKCkgPT4gaW5pdGlhbGl6ZShzY3JpcHQpKTtcblx0fVxuXHRcbn0pKCk7XG4iXX0=

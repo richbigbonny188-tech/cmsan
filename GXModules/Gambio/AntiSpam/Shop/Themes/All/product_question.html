@@ -1,0 +1,9 @@
+{block name="product_question_modal_body_form_friend_email"}
+    {$smarty.block.parent}
+    {block name="hidden_anti_spam"}
+        {* contains the real "Secret Anti Spam Token" *}
+        <input type="hidden" id="c747fd04ba117510f399b5f43ba8155087c19523" name="c747fd04ba117510f399b5f43ba8155087c19523" value="{$content_data.secret_token_anti_spam}">
+        {* contains a fake token that will be replaced, via javascript, with the real "Secret Anti Spam Token" *}
+        <input type="hidden" id="ae6b85682663ab4570bd10c67b83d21fe77cdf97" name="ae6b85682663ab4570bd10c67b83d21fe77cdf97" value="{$content_data.fake_hash}">
+    {/block}
+{/block}

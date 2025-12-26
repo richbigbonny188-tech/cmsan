@@ -1,0 +1,40 @@
+{block name="layout_footer"}
+    <footer id="footer">
+        <div class="container">
+            <nav>
+                {block name="box_content_list"}
+                    <ul id="info" class="text-center">
+                        {block name="box_content_list_items"}
+                            {foreach item=content_array from=$MORE_ABOUT_DATA}
+                                <li>
+                                    {block name="box_content_content"}
+                                        <a href="{$content_array.URL}"{if $content_array.URL_TARGET} target="{$content_array.URL_TARGET}"{/if} title="{$content_array.NAME|replace:'"':''|strip_tags}">
+                                            {block name="box_content_content_name"}{$content_array.NAME}{/block}
+                                        </a>
+                                    {/block}
+                                </li>
+                            {/foreach}
+                        {/block}
+                    </ul>
+                {/block}
+
+                <script id="info-menu-template" type="text/mustache">
+                    {literal}
+                        <ul id="info" class="text-center">
+                            <li v-for="(item, index) in items">
+                                <a href="javascript:;" @click="goTo(item.content)">
+                                    {{item.title}}
+                                </a>
+                            </li>
+                        </ul>
+                    {/literal}
+                </script>
+            </nav>
+            {if $COPYRIGHT_FOOTER}
+                {block name="layout_footer_inside_copyright"}
+                    <p class="text-center">{$COPYRIGHT_FOOTER}</p>
+                {/block}
+            {/if}
+        </div>
+    </footer>
+{/block}

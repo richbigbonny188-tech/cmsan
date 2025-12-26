@@ -1,0 +1,58 @@
+{block name="popup_content"}
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+		{block name="popup_content_head"}
+			<head>
+				<title>{$CONTENT_HEADING}</title>
+				<base href="{$BASE_HREF}" />
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+				{if $content_data.STYLE_EDIT_MODE != 'sos'}
+					<link type="text/css" rel="stylesheet" href="{if $MAIN_CSS}{$MAIN_CSS}{else}{$CSS_FILE}?{$CSS_PARAMS}{/if}" />
+				{/if}
+
+				{block name="popup_content_head_style"}
+					<style>
+						{block name="popup_content_head_style_css"}
+							body {
+								padding-top: 0;
+							}
+						{/block}
+					</style>
+				{/block}
+				</style>
+			</head>
+		{/block}
+		{block name="popup_content_body"}
+			<body style="background: transparent; height: auto;">
+				{block name="popup_content_body_content"}
+					<div id="content_page" class="popup_content">
+						{if $LIGHTBOX_MODE == '0'}
+							{block name="popup_content_body_content_title"}
+								<h2>{$CONTENT_HEADING}</h2>
+							{/block}
+						{/if}
+						{block name="popup_content_body_content_text"}
+							<div class="content_text">
+							   	{if $WITHDRAWAL_CONTENTS|count > 0}
+									{foreach name=withdrawalContents from=$WITHDRAWAL_CONTENTS item=withdrawalContent}
+										{if $withdrawalContent.heading}
+											<strong>{$withdrawalContent.heading}</strong><br /><br />
+										{/if}
+
+										{$withdrawalContent.html}
+
+										{if $smarty.foreach.withdrawalContents.last === false}
+											<br /><br /><br />
+										{/if}
+									{/foreach}
+								{else}
+							   		{$HTML}
+								{/if}
+						   </div>
+						{/block}
+					</div>
+				{/block}
+			</body>
+		{/block}
+	</html>
+{/block}

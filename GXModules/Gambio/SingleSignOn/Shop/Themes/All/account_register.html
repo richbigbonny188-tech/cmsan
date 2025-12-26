@@ -1,0 +1,90 @@
+{block name="account_register_form" prepend}
+	{if $amazon_sso}
+		{load_language_text section="SingleSignon" name="sso"}
+		<script>
+			window.onAmazonLoginReady = function() {
+				amazon.Login.setClientId('{$amazon_sso.client_id}');
+				amazon.Login.setUseCookie(true);
+			}
+			window.onAmazonPaymentsReady = function() {
+				let orderReferenceId;
+				new OffAmazonPayments.Widgets.AddressBook({
+					sellerId: '{$amazon_sso.seller_id}',
+					design: {
+						designMode: 'responsive'
+					},
+					onOrderReferenceCreate: function(orderReference) {
+						orderReferenceId = orderReference.getAmazonOrderReferenceId();
+					},
+					onAddressSelect: function(orderReference) {
+						$.ajax({
+							type: 'POST',
+							url: '{$amazon_sso.controller_url}',
+							data: {
+								orderReferenceId: orderReferenceId
+							},
+							dataType: 'json',
+							success: function(result) {
+								if(result.address.countryStatus === true) {
+									$('#amzInvalidCountry').hide('fast');
+									$('input[name="gender"]').each(function() { $(this).get(0).checked = false; });
+									$('#firstname').val(result.address.firstName);
+									$('#lastname').val(result.address.lastName);
+									$('#postcode').val(result.address.postalCode);
+									$('#city').val(result.address.city);
+									if($('#house_number').length > 0) {
+										$('#street_address').val(result.address.street);
+										$('#house_number').val(result.address.houseNumber);
+									}
+									else {
+										$('#street_address').val(result.address.addressLine2);
+									}
+									if($('#additional_address_info').length > 0) {
+										$('#additional_address_info').text(result.address.addressLine1);
+									}
+									else {
+										$('#company').val(result.address.addressLine1);
+									}
+									$('#telephone').val(result.address.phone);
+									$('#country').val(result.address.countryId);
+									let $genderInput = $('input[name="gender"]');
+									$genderInput.closest('div.mandatory')
+										.addClass('mandatory-unselected')
+										.addClass('has-error');
+								}
+								else {
+									$('#amzInvalidCountry').show('fast');
+								}
+							},
+							error: function(result) {
+							}
+						});
+					},
+					onReady: function(orderReference) {
+						document.getElementById('amazonssoaddress').style.display = 'block';
+					},
+					onError: function(error) {
+						console.info('error loading address widget');
+						$('#amazonssoaddress').hide();
+					}
+				}).bind('addressBookWidgetDiv');
+
+				$(function() {
+					$('input[name="gender"]').on('change', function(e) {
+						$(this).closest('div.mandatory')
+							.removeClass('has-error')
+							.removeClass('mandatory-unselected');
+					});
+				});
+			}
+		</script>
+		<script src="{$amazon_sso.widgets_url}" async></script>
+		<form class="dummyform" id="amazonssoaddress">
+			<fieldset>
+				<legend>{$sso.choose_address_title}</legend>
+				<div id="addressBookWidgetDiv">{$sso.loading_address_book}</div>
+				<div id="amzInvalidCountry">{$sso.unsupported_country}</div>
+			</fieldset>
+		</form>
+	{/if}
+{/block}

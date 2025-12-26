@@ -1,0 +1,124 @@
+{load_language_text section="general" name="general"}
+
+{block name="product_info_product_box_bottom"}
+	<div class="row">
+		<input type="hidden" name="products_id" id="products-id" value="{$PRODUCTS_ID}" />
+		{if $IS_FOR_SALE}
+			{block name="product_info_product_box_bottom_quantity_container"}
+				<div class="input-number" data-type="float" data-stepping="{$QTY_STEPPING}">
+	
+					{block name="product_info_product_box_bottom_quantity_if"}
+						{if $PRODUCTS_QUANTITY_UNIT}
+							{block name="product_info_product_box_bottom_quantity"}
+								<label class="control-label sr-only">
+									{$PRODUCTS_QUANTITY_UNIT}
+								</label>
+							{/block}
+						{/if}
+					{/block}
+	
+					{block name="product_info_product_box_bottom_input"}
+						<div class="input-group">
+							<a class="btn btn-default btn-lg btn-minus"><span class="fa fa-minus"></span></a>
+							<input type="number" step="{$QTY_STEPPING}" class="form-control input-lg pull-right js-calculate-qty" value="{$QUANTITY}" id="attributes-calc-quantity" name="products_qty"{if $DISABLED_QUANTITY} disabled="disabled"{/if} />
+							<a class="input-group-btn btn btn-default btn-lg btn-plus"><span class="fa fa-plus"></span></a>
+						</div>
+					{/block}
+	
+				</div>
+			{/block}
+			
+			{block name="product_info_product_box_bottom_add_to_cart"}
+				<div class="button-container">
+					<input name="btn-add-to-cart" type="submit" class="btn btn-lg btn-buy btn-block js-btn-add-to-cart{if $DEACTIVATE_BUTTON == true} btn-inactive inactive{/if}" value="{$txt.add_to_cart}" title="{$txt.add_to_cart}" {if $DEACTIVATE_BUTTON == true} disabled{/if}/>
+					<button name="btn-add-to-cart-fake" onClick="void(0)" class="btn-add-to-cart-fake btn btn-lg btn-buy btn-block {if $DEACTIVATE_BUTTON == true} btn-inactive inactive{/if}" value="" title="{$txt.add_to_cart}" style="display: none; margin-top: 0" {if $DEACTIVATE_BUTTON == true} disabled{/if}>{$txt.add_to_cart}</button>
+				</div>
+			{/block}
+        {elseif $PRODUCTS_PRICE_STATUS === '2' && $PRODUCTS_PRICE !== $general.GM_SHOW_NO_PRICE}
+            {block name="product_info_product_box_bottom_add_to_cart_not_for_sale"}
+                <div class="button-container">
+                    <input name="btn-add-to-cart" type="button" class="btn btn-lg btn-buy btn-block btn-inactive inactive" value="{$button.not_for_sale}" title="{$button.not_for_sale}" disabled/>
+                </div>
+            {/block}
+		{/if}
+		
+		{block name="module_product_info_standard_sticky_box_paypal_ec_button"}
+		{if isset($PAYPAL_EC_BUTTON)}
+		<div class="paypal-ec-button-container">
+			<img class="paypal-ec-button" src="{$PAYPAL_EC_BUTTON.src}" alt="PayPal ECS"
+				 data-gambio-widget="{$PAYPAL_EC_BUTTON.widget}"
+				 data-paypal_ec_button-page="{$PAYPAL_EC_BUTTON.page}"
+				 data-paypal_ec_button-redirect="{$PAYPAL_EC_BUTTON.redirect}"
+				 data-paypal_ec_button-display-cart="{$PAYPAL_EC_BUTTON.display_cart}"/>
+		</div>
+		{/if}
+		{/block}
+
+		{block name="product_info_product_box_bottom_paypal"}
+		{/block}
+
+		<div class="product-info-links">
+			{block name="product_info_product_box_bottom_wishlist_if"}
+				{if $SHOW_WISHLIST}
+					{block name="product_info_product_box_bottom_wishlist"}
+						<div class="wishlist-container">
+							<a href="#" class="btn-wishlist btn btn-block btn-sm " title="{$button.add_to_wishlist}">
+								<span class="col-xs-2 btn-icon">
+									<i class="fa fa-heart-o"></i> 
+								</span>
+								
+								<span class="col-xs-10 btn-text">
+									{$button.add_to_wishlist}
+								</span>
+							</a>
+						</div>
+					{/block}
+				{/if}
+			{/block}
+
+			{block name="product_info_product_box_bottom_price_offer_if"}
+				{if $GM_PRICE_OFFER!=''}
+					{block name="product_info_product_box_bottom_price_offer"}
+						<div class="price-offer-container">
+							<a class="btn-price-offer btn btn-block btn-sm">
+								<span class="col-xs-2 btn-icon">
+									<i class="fa fa-bullhorn"></i>
+								</span>
+
+								<span class="col-xs-10 btn-text">
+									{$txt.text_price_offer}
+								</span>
+							</a>
+						</div>
+					{/block}
+				{/if}
+			{/block}
+
+			{block name="product_info_product_box_bottom_tell_a_friend_if"}
+				{if $GM_TELL_A_FRIEND!=''}
+					{block name="product_info_product_box_bottom_tell_a_friend"}
+						<div class="product-question-container">
+							<a class="btn-product-question btn btn-block btn-sm" data-gambio-widget="product_question" data-product_question-product-id="{$PRODUCTS_ID}">
+								<span class="col-xs-2 btn-icon">
+									<i class="fa fa-comment-o"></i>
+								</span>
+
+								<span class="col-xs-10 btn-text">
+									{$txt.text_tell_a_friend}
+								</span>
+							</a>
+						</div>
+					{/block}
+				{/if}
+			{/block}
+		</div>
+		
+		{block name="product_info_product_box_bottom_text_phrases"}
+			<script id="product-details-text-phrases" type="application/json">
+				{literal}{{/literal}
+					"productsInCartSuffix": "{$txt.products_in_cart_suffix}", "showCart": "{$txt.show_cart}"
+				{literal}}{/literal}
+			</script>
+		{/block}
+	</div>
+{/block}

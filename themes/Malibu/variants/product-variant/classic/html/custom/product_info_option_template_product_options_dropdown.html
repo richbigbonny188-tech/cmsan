@@ -1,0 +1,26 @@
+{*  ==========================================================================
+product_info_option_template_product_options_dropdown.html
+- remove grid classes and divs
+- add .form-group-big-select class
+========================================================================== *}
+
+{block name="product_info_option_template_product_options_dropdown_option"}
+{if $options_data.DATA || $GM_HIDE_OUT_OF_STOCK == 'false'}
+<div class="form-group form-group-big-select">
+    {block name="product_info_option_template_product_options_dropdown_select_label"}
+    <label class="control-label {if 'ENABLE_JS_HYPHENATION'|gm_get_conf == 'true'}hyphenate{/if}">{$options_data.NAME}:</label>
+    {/block}
+    {block name="product_info_option_template_product_options_dropdown_select_container"}
+    {block name="product_info_option_template_product_options_dropdown_select"}
+    <select class="form-control {if $PRICE_STATUS != 1} js-calculate{/if}" name="id[{$options_data.ID}]" id="id[{$options_data.ID}]">
+        {foreach key=key_data item=item_data from=$options_data.DATA}
+        <option value="{$item_data.ID}" title="{$item_data.TEXT|replace:'"':'&quot;'} {if $item_data.PRICE}{$item_data.PREFIX} {$item_data.PRICE}{/if}{if $GM_SHOW_STOCK == 'true' && $options_data.NAME != 'downloads'} {$GM_STOCK_TEXT_BEFORE|replace:'"':'&quot;'}{$item_data.GM_STOCK}{$GM_STOCK_TEXT_AFTER|replace:'"':'&quot;'}{/if}" {if !$chk} selected="selected" {$chk = true}{/if}>{$item_data.TEXT} {if $item_data.PRICE}{$item_data.PREFIX} {$item_data.PRICE}{/if}{if $GM_SHOW_STOCK == 'true' && $options_data.NAME != 'downloads'} {$GM_STOCK_TEXT_BEFORE}{$item_data.GM_STOCK}{$GM_STOCK_TEXT_AFTER}{/if}</option>
+        {/foreach}
+    </select>
+    {literal}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.66 12.64"><defs></defs><title>chevron-down</title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path class="cls-1" d="M11.33,12.64a1.33,1.33,0,0,1-.93-.38l-10-10A1.31,1.31,0,0,1,2.24.39l9.09,9.08L20.42.39a1.31,1.31,0,0,1,1.86,1.85l-10,10A1.33,1.33,0,0,1,11.33,12.64Z"/></g></g></svg>{/literal}
+    {/block}
+    {$chk = false}
+    {/block}
+</div>
+{/if}
+{/block}

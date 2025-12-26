@@ -1,0 +1,30 @@
+{load_language_text section="general"}
+
+{block name="product_info_price"}
+	<div class="current-price-container">
+		{block name="product_info_price_price"}
+            {if $PRODUCTS_PRICE_STATUS === '1'}
+				<a href="{$PRODUCTS_PRICE_CONTACT_URL}" class="price-on-request">{$txt.GM_SHOW_PRICE_ON_REQUEST}</a>
+			{else}
+				{$PRODUCTS_PRICE}
+
+                {if $PRODUCTS_VPE && $PRODUCTS_PRICE !== $txt.GM_SHOW_NO_PRICE}
+                    {block name="product_info_price_vpe"}
+                        <br />
+                        <span class="tax-shipping-text gm_products_vpe products-vpe">
+                            {$PRODUCTS_VPE}
+                        </span>
+                        <br />
+                    {/block}
+                {/if}
+            {/if}
+        {/block}
+	</div>
+	{block name="product_info_price_tax"}
+        {if !$PRODUCTS_PRICE_STATUS || ($PRODUCTS_PRICE_STATUS === '2' && $PRODUCTS_PRICE !== $txt.GM_SHOW_NO_PRICE)}
+            <p class="tax-shipping-text text-small">
+                {$PRODUCTS_TAX_INFO}{$PRODUCTS_SHIPPING_LINK}
+            </p>
+        {/if}
+	{/block}
+{/block}

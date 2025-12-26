@@ -1,0 +1,36 @@
+<?php
+/*--------------------------------------------------------------------------------------------------
+    ContentidentificationInterface.php 2019-12-04
+    Gambio GmbH
+    http://www.gambio.de
+    Copyright (c) 2019 Gambio GmbH
+    Released under the GNU General Public License (Version 2)
+    [http://www.gnu.org/licenses/gpl-2.0.html]
+    --------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * Interface ContentidentificationInterface
+ */
+interface ContentIdentificationInterface
+{
+    /**
+     * @return int
+     */
+    public function contentGroup() : ?int ;
+    
+    
+    /**
+     * @return string
+     */
+    public function contentAlias() : ?string;
+    
+    
+    /**
+     * @param string $themeId
+     *
+     * @return ContentIdentificationInterface
+     */
+    public function forTheme(string $themeId) : ContentIdentificationInterface;
+    
+}

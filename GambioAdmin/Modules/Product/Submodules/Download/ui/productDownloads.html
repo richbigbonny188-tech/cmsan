@@ -1,0 +1,79 @@
+{extends file="layout.html"}
+{load_language_text section="admin_product_page" name="txt"}
+{load_language_text section="admin_buttons" name="admin_buttons_txt"}
+
+{block name="layout_content_header_container"}
+<div class="content-header not-scrollable">
+    {block name="layout_content_header_title"}
+        {if isset($pageTitle)}
+            <h2 class="content-title">{$pageTitle|htmlspecialchars}</h2>
+        {elseif isset($page_title)}
+            <h2 class="content-title">{$page_title|htmlspecialchars}</h2>
+        {/if}
+    {/block}
+
+    {block name="layout_content_navigation"}
+        <div class="content-navigation">
+            {if isset($contentNavigation)}
+                {foreach $contentNavigation as $name => $url}
+                    {block name="layout_content_navigation_item"}
+                        {if $url !== ''}
+                            <div class="nav-item">
+                                <a href="{$url}">{$name}</a>
+                            </div>
+                        {else}
+                            <div class="nav-item no-link">
+                                {$name}
+                            </div>
+                        {/if}
+                    {/block}
+                {/foreach}
+            {/if}
+        </div>
+    {/block}
+</div>
+{/block}
+
+{block name="layout_content_navigation"}
+    <div class="content-navigation" style="align-self: normal;">
+        <div class="nav-item">
+            <a href="{{$baseUrl}}/admin/categories.php?cPath={{$cPath}}&pID={{$product.id}}&action=new_product">{$txt.TAB_GENERAL}</a>
+        </div>
+        <div class="nav-item">
+            <a href="{{$baseUrl}}/admin/properties_combis.php?cPath={{$cPath}}&products_id={{$product.id}}&action=edit_category">{$txt.TAB_VARIANTS}</a>
+        </div>
+        <div class="nav-item">
+            <a href="{{$baseUrl}}/admin/products/{{$product.id}}/options?cPath={{$cPath}}">{$txt.TAB_OPTIONS}</a>
+        </div>
+        <div class="nav-item no-link">
+            {$txt.TAB_DOWNLOADS}
+        </div>
+        <div class="nav-item">
+            {if $product.specialsId}
+                <a href="{{$baseUrl}}/admin/specials.php?action=edit&sID={{$product.specialsId}}">{$admin_buttons_txt.BUTTON_SPECIAL}</a>
+            {else}
+                <a href="{{$baseUrl}}/admin/specials.php?action=new&pID={{$product.id}}">{$admin_buttons_txt.BUTTON_SPECIAL}</a>
+            {/if}
+        </div>
+        <div class="nav-item">
+            <a href="{{$baseUrl}}/admin/categories.php?cPath={{$cPath}}&current_product_id={{$product.id}}&action=edit_crossselling">{$txt.TAB_CROSSSELLING}</a>
+        </div>
+    </div>
+{/block}
+
+{block name="content"}
+    <div id="product-options-product-id" hidden>{$product.id}</div>
+    <div id="product-options-product-name" hidden>{$product.name|htmlspecialchars}</div>
+    <div id="product-downloads-language" hidden>{$language}</div>
+    <div id="isGrossAdminActive" hidden>{$isGrossAdminActive}</div>
+	<div id="currency" hidden>{$currency}</div>
+	<div class="gx-vue-downloads"></div>
+
+	{block name="above_gambio_dashboard"}{/block}
+	{$content}
+	{block name="below_gambio_dashboard"}{/block}
+{/block}
+
+{block name="bottom_save_bar"}
+<a href="{{$baseUrl}}/product_info.php?info=p{{$product.id}}_.html" class="btn btn-default btn-sm" target="_blank">{$admin_buttons_txt.BUTTON_GO_TO_PRODUCT}</a>
+{/block}

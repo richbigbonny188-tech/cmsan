@@ -1,0 +1,84 @@
+{block name="account_options"}
+	{$smarty.block.parent}
+	{load_language_text section="SingleSignon" name="sso"}
+
+	{if $ssoData && $ssoData.ssoButtons|@count}
+		<div class="col-xs-12 col-md-6 sso-connections-container"
+        {if $cookieConsentIsInstalled && $ssoCookieConsentPurposeIsActive}
+             type="as-oil"
+             data-purposes="{$ssoCookieConsentPurposeId}"
+             data-managed="as-oil"
+             style="display: none;"
+        {/if}
+        >
+			<h2>{$sso.connected_logins}</h2>
+
+			<div class="sso-connections">
+				{if $ssoData.ssoButtons['google']}
+					<div class="sso-connection{if !$ssoData.ssoButtons['google'].connected} disconnected{/if}">
+						<a class="sso-link sso-link-google" title="{$sso.login_with_google}" href="{$ssoData.ssoButtons['google'].loginUrl}">
+							<i class="ssoicon fa fa-google" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_google}</span>
+						</a>
+						{if $ssoData.ssoButtons['google'].connected}
+							<form class="sso-disconnect" action="{$ssoData.delete_connection_action}" method="post">
+								<input type="hidden" name="service" value="{$ssoData.ssoButtons['google'].issuer}">
+								<button class="btn-disconnect">
+									<i class="fa fa-times-circle" aria-hidden="true"></i>
+									{$sso.disconnect}
+								</button>
+							</form>
+						{/if}
+					</div>
+				{/if}
+				{if $ssoData.ssoButtons['facebook']}
+					<div class="sso-connection{if !$ssoData.ssoButtons['facebook'].connected} disconnected{/if}">
+						<a class="sso-link sso-link-facebook" title="{$sso.login_with_facebook}" href="{$ssoData.ssoButtons['facebook'].loginUrl}">
+							<i class="ssoicon fa fa-facebook-official" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_facebook}</span>
+						</a>
+						{if $ssoData.ssoButtons['facebook'].connected}
+							<form class="sso-disconnect" action="{$ssoData.delete_connection_action}" method="post">
+								<input type="hidden" name="service" value="{$ssoData.ssoButtons['facebook'].issuer}">
+								<button class="btn-disconnect">
+									<i class="fa fa-times-circle" aria-hidden="true"></i>
+									{$sso.disconnect}
+								</button>
+							</form>
+						{/if}
+					</div>
+				{/if}
+				{if $ssoData.ssoButtons['paypal']}
+					<div class="sso-connection{if !$ssoData.ssoButtons['paypal'].connected} disconnected{/if}">
+						<a class="sso-link sso-link-paypal" title="{$sso.login_with_paypal}" href="{$ssoData.ssoButtons['paypal'].loginUrl}">
+							<i class="ssoicon fa fa-paypal" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_paypal}</span>
+						</a>
+						{if $ssoData.ssoButtons['paypal'].connected}
+							<form class="sso-disconnect" action="{$ssoData.delete_connection_action}" method="post">
+								<input type="hidden" name="service" value="{$ssoData.ssoButtons['paypal'].issuer}">
+								<button class="btn-disconnect">
+									<i class="fa fa-times-circle" aria-hidden="true"></i>
+									{$sso.disconnect}
+								</button>
+							</form>
+						{/if}
+					</div>
+				{/if}
+				{if $ssoData.ssoButtons['amazon']}
+					<div class="sso-connection{if !$ssoData.ssoButtons['amazon'].connected} disconnected{/if}">
+						<a class="sso-link sso-link-amazon" title="{$sso.login_with_amazon}" href="{$ssoData.ssoButtons['amazon'].loginUrl}">
+							<i class="ssoicon fa fa-amazon" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_amazon}</span>
+						</a>
+						{if $ssoData.ssoButtons['amazon'].connected}
+							<form class="sso-disconnect" action="{$ssoData.delete_connection_action}" method="post">
+								<input type="hidden" name="service" value="{$ssoData.ssoButtons['amazon'].issuer}">
+								<button class="btn-disconnect">
+									<i class="fa fa-times-circle" aria-hidden="true"></i>
+									{$sso.disconnect}
+								</button>
+							</form>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		</div>
+	{/if}
+{/block}

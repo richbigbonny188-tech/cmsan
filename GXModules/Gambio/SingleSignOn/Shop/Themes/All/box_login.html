@@ -1,0 +1,48 @@
+{block name="box_login_form"}
+	{$smarty.block.parent}
+	{if $content_data.sso}
+		{load_language_text section="SingleSignon" name="sso"}
+		<div class="box-sso"
+        {if $content_data.cookieConsentIsInstalled && $content_data.ssoCookieConsentPurposeIsActive}
+            type="as-oil"
+             data-purposes="{$content_data.ssoCookieConsentPurposeId}"
+             data-managed="as-oil"
+             style="display: none;"
+        {/if}
+        >
+			<div class="separator">
+				<span>{$sso.quick_login_with}</span>
+			</div>
+			<div class="row">
+				{if $content_data.sso.googleLoginUrl}
+					<div class="col-xs-3">
+						<a class="sso-link sso-link-google" title="{$sso.login_with_google}" href="{$content_data.sso.googleLoginUrl}">
+							<i class="ssoicon fa fa-google" aria-hidden="true"></i>
+						</a>
+					</div>
+				{/if}
+				{if $content_data.sso.facebookLoginUrl}
+					<div class="col-xs-3">
+						<a class="sso-link sso-link-facebook" title="{$sso.login_with_facebook}" href="{$content_data.sso.facebookLoginUrl}">
+							<i class="ssoicon fa fa-facebook-official" aria-hidden="true"></i>
+						</a>
+					</div>
+				{/if}
+				{if $content_data.sso.paypalLoginUrl}
+					<div class="col-xs-3">
+						<a class="sso-link sso-link-paypal" title="{$sso.login_with_paypal}" href="{$content_data.sso.paypalLoginUrl}">
+							<i class="ssoicon fa fa-paypal" aria-hidden="true"></i>
+						</a>
+					</div>
+				{/if}
+				{if $content_data.sso.amazonLoginUrl}
+					<div class="col-xs-3">
+						<a class="sso-link sso-link-amazon" title="{$sso.login_with_amazon}" href="{$content_data.sso.amazonLoginUrl}">
+							<i class="ssoicon fa fa-amazon" aria-hidden="true"></i>
+						</a>
+					</div>
+				{/if}
+			</div>
+		</div>
+	{/if}
+{/block}

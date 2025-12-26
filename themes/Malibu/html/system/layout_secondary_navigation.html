@@ -1,0 +1,499 @@
+{load_language_text section="top_navigation"}
+{load_language_text section="infobox" name="infobox"}
+{load_language_text section="buttons" name="buttons"}
+{load_language_text section="general" name="general"}
+
+{block name="layout_secondary_navigation"}
+	<div id="topbar-container">
+		{assign var="showTopSearch" value={template_setting name="gx-show-search-top-nav"}}
+		{assign var="hideSearchCol" value={template_setting name="gx-hide-search-col"}}
+		{assign var="showTopNavIcons" value={template_setting name="gx-navbar-topbar-show-icons"}}
+
+		{block name="layout_secondary_navigation_mobile_top_search_if"}
+			{if $showTopSearch && 'GM_QUICK_SEARCH'|gm_get_conf == 'true' && $hideSearchCol}
+				{block name="layout_secondary_navigation_mobile_top_search"}
+					<div class="hidden-sm hidden-md hidden-lg top-mobile-search">
+						{$TOP_SEARCH}
+					</div>
+				{/block}
+			{/if}
+		{/block}
+
+		{block name="layout_secondary_navigation_navbar"}
+			<div class="navbar-topbar">
+				{block name="layout_secondary_navigation_nav"}
+				<nav class="navbar-inverse"  data-gambio-widget="menu link_crypter" data-menu-switch-element-position="false" data-menu-events='{literal}{"desktop": ["click"], "mobile": ["click"]}{/literal}' data-menu-ignore-class="dropdown-menu">
+					<ul class="nav navbar-nav">
+
+						{block name="layout_secondary_navigation_content"}
+							{if $CONTENT_LINKS_DATA}
+								<li class="dropdown navbar-topbar-item hidden-xs">
+									<a href="#" class="dropdown-toggle" data-toggle-hover="dropdown">
+										{literal}
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M25.2,24.46c-2,5.47-9.65,6.94-8.23-.15l1.67-8h3.5c-.81,4.28-1.39,6.89-2,9.88s3.19.79,4.06-1.7ZM19.45,14.31a2,2,0,0,1-.53-1.42,2.13,2.13,0,0,1,.58-1.42A2,2,0,0,1,21,10.89a1.85,1.85,0,0,1,1.39.58A1.91,1.91,0,0,1,23,12.89a1.88,1.88,0,0,1-.63,1.42,2,2,0,0,1-1.45.55A1.94,1.94,0,0,1,19.45,14.31Z"/><path d="M20,5.5A14.5,14.5,0,1,1,5.5,20,14.51,14.51,0,0,1,20,5.5M20,4A16,16,0,1,0,36,20,16,16,0,0,0,20,4Z"/></g></g></svg>
+										{/literal}
+									</a>
+									<ul id="secondaryNavigation" class="dropdown-menu">
+										{foreach name=cat_data item=content_item from=$CONTENT_LINKS_DATA}
+											<li>
+												<a title="{$content_item.NAME|strip_tags}" href="{$content_item.URL}"
+														{if $content_item.URL_TARGET && $content_item.URL_TARGET != ''}
+													target="{$content_item.URL_TARGET}"
+														{/if}>
+													{$content_item.NAME}
+												</a>
+											</li>
+										{/foreach}
+									</ul>
+
+                                    <script id="secondaryNavigation-menu-template" type="text/mustache">
+                                        {literal}
+                                            <ul id="secondaryNavigation" class="dropdown-menu">
+                                                <li v-for="(item, index) in items">
+                                                    <a href="javascript:;" :title="item.title" @click="goTo(item.content)">
+                                                        {{item.title}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        {/literal}
+                                    </script>
+								</li>
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_desktop_top_search_if"}
+							{if $showTopSearch && 'GM_QUICK_SEARCH'|gm_get_conf == 'true'}
+								{block name="layout_secondary_navigation_desktop_top_search"}
+									<li class="navbar-topbar-item topbar-search hidden-xs">
+										<a href="#" title="{$buttons.search}">
+											{block name="layout_secondary_navigation_search_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_search_icon"}
+														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+															<g data-name="Ebene 2">
+																<g data-name="Ebene 1">
+																	<rect class="cls-1" width="40" height="40"/>
+																	<path d="M33.34,31.74,25.49,23.9a10.73,10.73,0,1,0-1.59,1.59l7.84,7.85a.59.59,0,0,0,.8,0l.8-.8A.59.59,0,0,0,33.34,31.74ZM17.19,25.63a8.44,8.44,0,1,1,8.44-8.44A8.45,8.45,0,0,1,17.19,25.63Z"/>
+																</g>
+															</g>
+														</svg>
+													{/block}
+												{/if}
+											{/block}
+										</a>
+
+										<ul class="level_2 dropdown-menu">
+											<li class="search-dropdown">
+												{$TOP_SEARCH}
+											</li>
+										</ul>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_admin_if"}
+							{if $customers_data.ID == 0}
+								{block name="layout_secondary_navigation_admin"}
+									<li class="navbar-topbar-item first gambio-admin">
+										<a href="#" data-link_crypter-url="{crypt_link link=$admin_url crypt='2'}" title="{$buttons.click_here}">
+											{block name="layout_secondary_navigation_admin_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_admin_icon"}
+														<span class="fa fa-cogs"></span>
+													{/block}
+												{/if}
+												<span class="topbar-label">{$buttons.click_here}</span>
+											{/block}
+										</a>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_edit_product_if"}
+							{if ""|detect_page == "ProductInfo" && $customers_data.ID == 0}
+								{block name="layout_secondary_navigation_edit_product"}
+									<li class="navbar-topbar-item gambio-admin">
+										<a href="#" data-link_crypter-url="{crypt_link link=$edit_product_url crypt='2'}" title="{$buttons.edit_product}">
+											{block name="layout_secondary_navigation_edit_product_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_edit_product_icon"}
+														<span class="fa fa-pencil"></span>
+													{/block}
+												{/if}
+											{/block}
+
+											<span class="topbar-label">{$buttons.edit_product}</span>
+										</a>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_edit_category_if"}
+							{if ""|detect_page == "Cat" && $customers_data.ID == 0}
+								{block name="layout_secondary_navigation_edit_category"}
+									<li class="navbar-topbar-item gambio-admin">
+										<a href="#" data-link_crypter-url="{crypt_link link=$edit_category_url crypt='2'}" title="{$buttons.edit_category}">
+											{block name="layout_secondary_navigation_edit_category_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_edit_category_icon"}
+														<span class="fa fa-pencil"></span>
+													{/block}
+												{/if}
+											{/block}
+
+											<span class="topbar-label">{$buttons.edit_category}</span>
+										</a>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_edit_content_if"}
+							{if (""|detect_page == "Content" || ""|detect_page == "CallbackService") && $edit_content_url && $customers_data.ID == 0}
+								{block name="layout_secondary_navigation_edit_content"}
+									<li class="navbar-topbar-item gambio-admin">
+										<a href="#" data-link_crypter-url="{crypt_link link=$edit_content_url crypt='2'}" title="{$buttons.edit_content}">
+											{block name="layout_secondary_navigation_edit_content_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_edit_content_icon"}
+														<span class="fa fa-pencil"></span>
+													{/block}
+												{/if}
+											{/block}
+
+											<span class="topbar-label">{$buttons.edit_content}</span>
+										</a>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						{if $hideTopbar && ($LANGUAGE_ICON || $SHOW_TOP_CURRENCY_SELECTION || $SHOW_TOP_COUNTRY_SELECTION)}
+							<li class="dropdown navbar-topbar-item{if $customers_data.GROUP|lower !== 'admin'} first{/if}">
+
+								{block name="layout_secondary_navigation_language_icon_if"}
+									{if $LANGUAGE_ICON}
+										{block name="layout_secondary_navigation_language_icon"}
+											<a href="#" class="dropdown-toggle" data-toggle-hover="dropdown">
+
+												{block name="layout_secondary_navigation_language_icon_desktop_code"}
+													<span class="language-code hidden-xs">
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_language_icon_desktop_image"}
+													{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><polygon points="27.01 11.12 27.04 11.36 26.68 11.43 26.63 11.94 27.06 11.94 27.63 11.88 27.92 11.53 27.61 11.41 27.44 11.21 27.18 10.8 27.06 10.21 26.58 10.31 26.44 10.52 26.44 10.75 26.68 10.91 27.01 11.12"/><polygon points="26.6 11.31 26.62 10.99 26.34 10.87 25.94 10.96 25.65 11.44 25.65 11.74 25.99 11.74 26.6 11.31"/><path d="M18.47,12.66l-.09.22H18v.22h.1l0,.11.25,0,.16-.1.05-.21h.21l.08-.17-.19,0Z"/><polygon points="17.38 13.05 17.37 13.27 17.67 13.24 17.7 13.03 17.52 12.88 17.38 13.05"/><path d="M35.68,19.83a12.94,12.94,0,0,0-.07-1.39,15.83,15.83,0,0,0-1.06-4.35l-.12-.31a16,16,0,0,0-3-4.63l-.25-.26c-.24-.25-.48-.49-.73-.72a16,16,0,0,0-21.59.07,15.08,15.08,0,0,0-1.83,2,16,16,0,1,0,28.21,13.5c.08-.31.14-.62.2-.94a16.2,16.2,0,0,0,.25-2.8C35.69,19.94,35.68,19.89,35.68,19.83Zm-3-6.39.1-.1c.12.23.23.47.34.72H33l-.29,0Zm-2.31-2.79V9.93c.25.27.5.54.73.83l-.29.43h-1L29.73,11ZM11.06,8.87v0h.32l0-.1h.52V9l-.15.21h-.72v-.3Zm.51.72.35-.06s0,.32,0,.32l-.72.05-.14-.17Zm22.12,6.35H32.52l-.71-.53-.75.07v.46h-.24l-.26-.19-1.3-.33v-.84l-1.65.13L27.1,15h-.65l-.32,0-.8.44v.83l-1.62,1.17.14.51h.33l-.09.47-.23.09,0,1.24,1.41,1.6h.61l0-.1H27l.32-.29h.62l.34.34.93.1-.12,1.23,1,1.82-.54,1,0,.48.43.43v1.17l.56.76v1h.49a14.67,14.67,0,0,1-24.9-15V13.8l.52-.64c.18-.35.38-.68.59-1l0,.27-.61.74c-.19.35-.36.72-.52,1.09v.84l.61.29v1.16l.58,1,.48.08.06-.35-.56-.86-.11-.84h.33l.14.86.81,1.19L8.31,18l.51.79,1.29.31v-.2l.51.07,0,.37.4.07.62.17.88,1,1.12.09.11.91-.76.54,0,.81-.11.5,1.11,1.4.09.47s.4.11.45.11.9.65.9.65v2.51l.31.09-.21,1.16.51.68-.09,1.15.67,1.19.87.76.88,0,.08-.29-.64-.54,0-.27.11-.32,0-.34h-.44l-.22-.28.36-.35,0-.26-.4-.11,0-.25.58-.08.87-.42.29-.54.92-1.17-.21-.92L20,27l.84,0,.57-.45.18-1.76.63-.8.11-.52-.57-.18-.38-.62H20.09l-1-.39,0-.74L18.67,21l-.93,0-.53-.84-.48-.23,0,.26-.87.05-.32-.44-.9-.19-.74.86-1.18-.2-.08-1.32-.86-.14.35-.65-.1-.37-1.12.75-.71-.09-.25-.55.15-.57.39-.72.9-.45H13.1v.53l.63.29L13.67,16l.45-.45L15,15l.06-.42L16,13.6l1-.53L16.86,13l.65-.61.24.06.11.14.25-.28.06,0-.27,0-.28-.09v-.27l.15-.12h.32l.15.07.12.25.16,0v0h0L19,12l.07-.22.25.07v.24l-.24.16h0l0,.26.82.25h.19v-.36l-.65-.29,0-.17.54-.18,0-.52-.56-.34,0-.86-.77.37h-.28l.07-.65-1-.25L17,9.83v1l-.78.25-.31.65-.34.06v-.84l-.73-.1-.36-.24-.15-.53,1.31-.77.64-.2.06.43h.36l0-.22.37-.05V9.17l-.16-.07,0-.22.46,0,.27-.29,0,0h0l.09-.09,1-.12.43.36L18,9.28l1.42.33.19-.47h.62l.22-.42L20,8.61V8.09l-1.38-.61-.95.11-.54.28,0,.68-.56-.08-.09-.38.54-.49-1,0-.28.09L15.68,8l.37.06L16,8.39l-.62,0-.1.24-.9,0a2.22,2.22,0,0,0-.06-.51l.71,0,.54-.52-.3-.15-.39.38-.65,0-.39-.53H13L12.12,8h.79l.07.24-.2.19.88,0,.13.32-1,0-.05-.24-.62-.14-.33-.18h-.74A14.66,14.66,0,0,1,29.38,9l-.17.32-.68.26-.29.31.07.36.35,0,.21.53.6-.24.1.7h-.18l-.49-.07-.55.09-.53.75-.76.12-.11.65.32.07-.1.42-.75-.15-.69.15-.15.39.12.8.41.19h.68l.46,0,.14-.37.72-.93.47.1.47-.42.08.32,1.15.78-.14.19-.52,0,.2.28.32.07.37-.16V14l.17-.09-.13-.14-.77-.42-.2-.57h.64l.2.2.55.47,0,.57.57.61.21-.83.39-.22.08.68.38.42h.76a12.23,12.23,0,0,1,.4,1.16ZM12.42,11.27l.38-.18.35.08-.12.47-.38.12Zm2,1.1v.3h-.87l-.33-.09.08-.21.42-.18h.58v.18Zm.41.42v.29l-.22.14-.27,0v-.48Zm-.25-.12v-.35l.3.28Zm.14.7v.29l-.21.21h-.47l.08-.32.22,0,0-.11Zm-1.16-.58h.48l-.62.87-.26-.14.06-.37Zm2,.48v.29h-.46L15,13.37v-.26h0Zm-.43-.39.13-.14.23.14-.18.15Zm18.79,3.8,0-.06c0,.09,0,.17.05.25Z"/><path d="M6.18,13.8v.45c.16-.37.33-.74.52-1.09Z"/></g></g></svg>{/literal}
+													{/block}
+												{/if}
+												<span class="topbar-label">{$language_code}</span>
+											</span>
+												{/block}
+
+												{block name="layout_secondary_navigation_language_icon_mobile"}
+													<span class="visible-xs-block">
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_language_icon_mobile_image"}
+														<span class="fa fa-globe"></span>
+													{/block}
+												{/if}
+														{block name="layout_secondary_navigation_language_icon_mobile_label"}<span class="topbar-label">&nbsp;{$general.MENU_TOP_LANGUAGE_LABEL}</span>{/block}
+											</span>
+												{/block}
+											</a>
+										{/block}
+									{elseif $SHOW_TOP_CURRENCY_SELECTION}
+										{block name="layout_secondary_navigation_currency"}
+											<a href="#" class="dropdown-toggle" data-toggle-hover="dropdown">
+												{block name="layout_secondary_navigation_currency_desktop"}
+													<span class="language-code hidden-xs">
+												{block name="layout_secondary_navigation_currency_icon_if"}
+													{if $showTopNavIcons}
+														{block name="layout_secondary_navigation_currency_icon"}
+														{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><polygon points="27.01 11.12 27.04 11.36 26.68 11.43 26.63 11.94 27.06 11.94 27.63 11.88 27.92 11.53 27.61 11.41 27.44 11.21 27.18 10.8 27.06 10.21 26.58 10.31 26.44 10.52 26.44 10.75 26.68 10.91 27.01 11.12"/><polygon points="26.6 11.31 26.62 10.99 26.34 10.87 25.94 10.96 25.65 11.44 25.65 11.74 25.99 11.74 26.6 11.31"/><path d="M18.47,12.66l-.09.22H18v.22h.1l0,.11.25,0,.16-.1.05-.21h.21l.08-.17-.19,0Z"/><polygon points="17.38 13.05 17.37 13.27 17.67 13.24 17.7 13.03 17.52 12.88 17.38 13.05"/><path d="M35.68,19.83a12.94,12.94,0,0,0-.07-1.39,15.83,15.83,0,0,0-1.06-4.35l-.12-.31a16,16,0,0,0-3-4.63l-.25-.26c-.24-.25-.48-.49-.73-.72a16,16,0,0,0-21.59.07,15.08,15.08,0,0,0-1.83,2,16,16,0,1,0,28.21,13.5c.08-.31.14-.62.2-.94a16.2,16.2,0,0,0,.25-2.8C35.69,19.94,35.68,19.89,35.68,19.83Zm-3-6.39.1-.1c.12.23.23.47.34.72H33l-.29,0Zm-2.31-2.79V9.93c.25.27.5.54.73.83l-.29.43h-1L29.73,11ZM11.06,8.87v0h.32l0-.1h.52V9l-.15.21h-.72v-.3Zm.51.72.35-.06s0,.32,0,.32l-.72.05-.14-.17Zm22.12,6.35H32.52l-.71-.53-.75.07v.46h-.24l-.26-.19-1.3-.33v-.84l-1.65.13L27.1,15h-.65l-.32,0-.8.44v.83l-1.62,1.17.14.51h.33l-.09.47-.23.09,0,1.24,1.41,1.6h.61l0-.1H27l.32-.29h.62l.34.34.93.1-.12,1.23,1,1.82-.54,1,0,.48.43.43v1.17l.56.76v1h.49a14.67,14.67,0,0,1-24.9-15V13.8l.52-.64c.18-.35.38-.68.59-1l0,.27-.61.74c-.19.35-.36.72-.52,1.09v.84l.61.29v1.16l.58,1,.48.08.06-.35-.56-.86-.11-.84h.33l.14.86.81,1.19L8.31,18l.51.79,1.29.31v-.2l.51.07,0,.37.4.07.62.17.88,1,1.12.09.11.91-.76.54,0,.81-.11.5,1.11,1.4.09.47s.4.11.45.11.9.65.9.65v2.51l.31.09-.21,1.16.51.68-.09,1.15.67,1.19.87.76.88,0,.08-.29-.64-.54,0-.27.11-.32,0-.34h-.44l-.22-.28.36-.35,0-.26-.4-.11,0-.25.58-.08.87-.42.29-.54.92-1.17-.21-.92L20,27l.84,0,.57-.45.18-1.76.63-.8.11-.52-.57-.18-.38-.62H20.09l-1-.39,0-.74L18.67,21l-.93,0-.53-.84-.48-.23,0,.26-.87.05-.32-.44-.9-.19-.74.86-1.18-.2-.08-1.32-.86-.14.35-.65-.1-.37-1.12.75-.71-.09-.25-.55.15-.57.39-.72.9-.45H13.1v.53l.63.29L13.67,16l.45-.45L15,15l.06-.42L16,13.6l1-.53L16.86,13l.65-.61.24.06.11.14.25-.28.06,0-.27,0-.28-.09v-.27l.15-.12h.32l.15.07.12.25.16,0v0h0L19,12l.07-.22.25.07v.24l-.24.16h0l0,.26.82.25h.19v-.36l-.65-.29,0-.17.54-.18,0-.52-.56-.34,0-.86-.77.37h-.28l.07-.65-1-.25L17,9.83v1l-.78.25-.31.65-.34.06v-.84l-.73-.1-.36-.24-.15-.53,1.31-.77.64-.2.06.43h.36l0-.22.37-.05V9.17l-.16-.07,0-.22.46,0,.27-.29,0,0h0l.09-.09,1-.12.43.36L18,9.28l1.42.33.19-.47h.62l.22-.42L20,8.61V8.09l-1.38-.61-.95.11-.54.28,0,.68-.56-.08-.09-.38.54-.49-1,0-.28.09L15.68,8l.37.06L16,8.39l-.62,0-.1.24-.9,0a2.22,2.22,0,0,0-.06-.51l.71,0,.54-.52-.3-.15-.39.38-.65,0-.39-.53H13L12.12,8h.79l.07.24-.2.19.88,0,.13.32-1,0-.05-.24-.62-.14-.33-.18h-.74A14.66,14.66,0,0,1,29.38,9l-.17.32-.68.26-.29.31.07.36.35,0,.21.53.6-.24.1.7h-.18l-.49-.07-.55.09-.53.75-.76.12-.11.65.32.07-.1.42-.75-.15-.69.15-.15.39.12.8.41.19h.68l.46,0,.14-.37.72-.93.47.1.47-.42.08.32,1.15.78-.14.19-.52,0,.2.28.32.07.37-.16V14l.17-.09-.13-.14-.77-.42-.2-.57h.64l.2.2.55.47,0,.57.57.61.21-.83.39-.22.08.68.38.42h.76a12.23,12.23,0,0,1,.4,1.16ZM12.42,11.27l.38-.18.35.08-.12.47-.38.12Zm2,1.1v.3h-.87l-.33-.09.08-.21.42-.18h.58v.18Zm.41.42v.29l-.22.14-.27,0v-.48Zm-.25-.12v-.35l.3.28Zm.14.7v.29l-.21.21h-.47l.08-.32.22,0,0-.11Zm-1.16-.58h.48l-.62.87-.26-.14.06-.37Zm2,.48v.29h-.46L15,13.37v-.26h0Zm-.43-.39.13-.14.23.14-.18.15Zm18.79,3.8,0-.06c0,.09,0,.17.05.25Z"/><path d="M6.18,13.8v.45c.16-.37.33-.74.52-1.09Z"/></g></g></svg>{/literal}
+														{/block}
+													{/if}
+												{/block}
+
+												<span class="topbar-label">{$content_data.CURRENT_CURRENCY}</span>
+											</span>
+												{/block}
+												{block name="layout_secondary_navigation_currency_mobile"}
+													<span class="visible-xs-block">
+												<span class="topbar-label">&nbsp;{$txt.title_currency}</span>
+											</span>
+												{/block}
+											</a>
+										{/block}
+									{elseif $SHOW_TOP_COUNTRY_SELECTION}
+										{block name="layout_secondary_navigation_country"}
+											<a href="#" class="dropdown-toggle" data-toggle-hover="dropdown">
+												{block name="layout_secondary_navigation_country_desktop"}
+													<span class="hidden-xs">
+												{block name="layout_secondary_navigation_country_desktop_icon_if"}
+													{if $showTopNavIcons}
+														{block name="layout_secondary_navigation_country_desktop_icon"}
+														{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><polygon points="27.01 11.12 27.04 11.36 26.68 11.43 26.63 11.94 27.06 11.94 27.63 11.88 27.92 11.53 27.61 11.41 27.44 11.21 27.18 10.8 27.06 10.21 26.58 10.31 26.44 10.52 26.44 10.75 26.68 10.91 27.01 11.12"/><polygon points="26.6 11.31 26.62 10.99 26.34 10.87 25.94 10.96 25.65 11.44 25.65 11.74 25.99 11.74 26.6 11.31"/><path d="M18.47,12.66l-.09.22H18v.22h.1l0,.11.25,0,.16-.1.05-.21h.21l.08-.17-.19,0Z"/><polygon points="17.38 13.05 17.37 13.27 17.67 13.24 17.7 13.03 17.52 12.88 17.38 13.05"/><path d="M35.68,19.83a12.94,12.94,0,0,0-.07-1.39,15.83,15.83,0,0,0-1.06-4.35l-.12-.31a16,16,0,0,0-3-4.63l-.25-.26c-.24-.25-.48-.49-.73-.72a16,16,0,0,0-21.59.07,15.08,15.08,0,0,0-1.83,2,16,16,0,1,0,28.21,13.5c.08-.31.14-.62.2-.94a16.2,16.2,0,0,0,.25-2.8C35.69,19.94,35.68,19.89,35.68,19.83Zm-3-6.39.1-.1c.12.23.23.47.34.72H33l-.29,0Zm-2.31-2.79V9.93c.25.27.5.54.73.83l-.29.43h-1L29.73,11ZM11.06,8.87v0h.32l0-.1h.52V9l-.15.21h-.72v-.3Zm.51.72.35-.06s0,.32,0,.32l-.72.05-.14-.17Zm22.12,6.35H32.52l-.71-.53-.75.07v.46h-.24l-.26-.19-1.3-.33v-.84l-1.65.13L27.1,15h-.65l-.32,0-.8.44v.83l-1.62,1.17.14.51h.33l-.09.47-.23.09,0,1.24,1.41,1.6h.61l0-.1H27l.32-.29h.62l.34.34.93.1-.12,1.23,1,1.82-.54,1,0,.48.43.43v1.17l.56.76v1h.49a14.67,14.67,0,0,1-24.9-15V13.8l.52-.64c.18-.35.38-.68.59-1l0,.27-.61.74c-.19.35-.36.72-.52,1.09v.84l.61.29v1.16l.58,1,.48.08.06-.35-.56-.86-.11-.84h.33l.14.86.81,1.19L8.31,18l.51.79,1.29.31v-.2l.51.07,0,.37.4.07.62.17.88,1,1.12.09.11.91-.76.54,0,.81-.11.5,1.11,1.4.09.47s.4.11.45.11.9.65.9.65v2.51l.31.09-.21,1.16.51.68-.09,1.15.67,1.19.87.76.88,0,.08-.29-.64-.54,0-.27.11-.32,0-.34h-.44l-.22-.28.36-.35,0-.26-.4-.11,0-.25.58-.08.87-.42.29-.54.92-1.17-.21-.92L20,27l.84,0,.57-.45.18-1.76.63-.8.11-.52-.57-.18-.38-.62H20.09l-1-.39,0-.74L18.67,21l-.93,0-.53-.84-.48-.23,0,.26-.87.05-.32-.44-.9-.19-.74.86-1.18-.2-.08-1.32-.86-.14.35-.65-.1-.37-1.12.75-.71-.09-.25-.55.15-.57.39-.72.9-.45H13.1v.53l.63.29L13.67,16l.45-.45L15,15l.06-.42L16,13.6l1-.53L16.86,13l.65-.61.24.06.11.14.25-.28.06,0-.27,0-.28-.09v-.27l.15-.12h.32l.15.07.12.25.16,0v0h0L19,12l.07-.22.25.07v.24l-.24.16h0l0,.26.82.25h.19v-.36l-.65-.29,0-.17.54-.18,0-.52-.56-.34,0-.86-.77.37h-.28l.07-.65-1-.25L17,9.83v1l-.78.25-.31.65-.34.06v-.84l-.73-.1-.36-.24-.15-.53,1.31-.77.64-.2.06.43h.36l0-.22.37-.05V9.17l-.16-.07,0-.22.46,0,.27-.29,0,0h0l.09-.09,1-.12.43.36L18,9.28l1.42.33.19-.47h.62l.22-.42L20,8.61V8.09l-1.38-.61-.95.11-.54.28,0,.68-.56-.08-.09-.38.54-.49-1,0-.28.09L15.68,8l.37.06L16,8.39l-.62,0-.1.24-.9,0a2.22,2.22,0,0,0-.06-.51l.71,0,.54-.52-.3-.15-.39.38-.65,0-.39-.53H13L12.12,8h.79l.07.24-.2.19.88,0,.13.32-1,0-.05-.24-.62-.14-.33-.18h-.74A14.66,14.66,0,0,1,29.38,9l-.17.32-.68.26-.29.31.07.36.35,0,.21.53.6-.24.1.7h-.18l-.49-.07-.55.09-.53.75-.76.12-.11.65.32.07-.1.42-.75-.15-.69.15-.15.39.12.8.41.19h.68l.46,0,.14-.37.72-.93.47.1.47-.42.08.32,1.15.78-.14.19-.52,0,.2.28.32.07.37-.16V14l.17-.09-.13-.14-.77-.42-.2-.57h.64l.2.2.55.47,0,.57.57.61.21-.83.39-.22.08.68.38.42h.76a12.23,12.23,0,0,1,.4,1.16ZM12.42,11.27l.38-.18.35.08-.12.47-.38.12Zm2,1.1v.3h-.87l-.33-.09.08-.21.42-.18h.58v.18Zm.41.42v.29l-.22.14-.27,0v-.48Zm-.25-.12v-.35l.3.28Zm.14.7v.29l-.21.21h-.47l.08-.32.22,0,0-.11Zm-1.16-.58h.48l-.62.87-.26-.14.06-.37Zm2,.48v.29h-.46L15,13.37v-.26h0Zm-.43-.39.13-.14.23.14-.18.15Zm18.79,3.8,0-.06c0,.09,0,.17.05.25Z"/><path d="M6.18,13.8v.45c.16-.37.33-.74.52-1.09Z"/></g></g></svg>{/literal}
+														{/block}
+													{/if}
+												{/block}
+
+												<span class="topbar-label">{$content_data.SELECTED_COUNTRY}</span>
+											</span>
+												{/block}
+												{block name="layout_secondary_navigation_country_mobile"}
+													<span class="visible-xs-block">
+												<span class="topbar-label">&nbsp;{$txt.title_country}</span>
+											</span>
+												{/block}
+											</a>
+										{/block}
+									{/if}
+								{/block}
+
+								<ul class="level_2 dropdown-menu">
+									<li>
+										{block name="layout_secondary_navigation_form"}
+											<form action="{page_url}" method="POST" class="form-horizontal">
+
+												{block name="layout_secondary_navigation_form_icon_if"}
+													{if $LANGUAGE_ICON}
+														{block name="layout_secondary_navigation_form_icon"}
+															<div class="form-group">
+																<label for="language-select">{$txt.title_language}</label>
+																{$LANGUAGES_DROPDOWN}
+															</div>
+														{/block}
+													{/if}
+												{/block}
+
+												{block name="layout_secondary_navigation_form_currency_if"}
+													{if $SHOW_TOP_CURRENCY_SELECTION}
+														{block name="layout_secondary_navigation_form_currency"}
+															<div class="form-group">
+																<label for="currencies-select">{$txt.title_currency}</label>
+																{$CURRENCIES_DROPDOWN}
+															</div>
+														{/block}
+													{/if}
+												{/block}
+
+												{block name="layout_secondary_navigation_form_country_if"}
+													{if $SHOW_TOP_COUNTRY_SELECTION}
+														{block name="layout_secondary_navigation_form_country"}
+															<div class="form-group">
+																<label for="countries-select">{$txt.title_country|escape:'html'}</label>
+																{$COUNTRIES_DROPDOWN}
+															</div>
+														{/block}
+													{/if}
+												{/block}
+
+												{block name="layout_secondary_navigation_form_submit"}
+													<div class="dropdown-footer row">
+														<input type="submit" class="btn btn-primary btn-block" value="{$buttons.save}" title="{$buttons.save}" />
+													</div>
+												{/block}
+
+												{url_param_to_hidden_fields}
+
+											</form>
+										{/block}
+									</li>
+								</ul>
+							</li>
+						{/if}
+
+						{block name="layout_secondary_navigation_account_if"}
+							{if $hideTopbar}
+								{if $ACCOUNT_URL}
+									{block name="layout_secondary_navigation_account"}
+										<li class="dropdown navbar-topbar-item{if $customers_data.GROUP|lower !== 'admin' && !$LANGUAGE_ICON && !$SHOW_TOP_CURRENCY_SELECTION && !$SHOW_TOP_COUNTRY_SELECTION} first{/if}">
+											{block name="layout_secondary_navigation_account_name"}
+												<a href="{$ACCOUNT_URL}" class="dropdown-toggle" data-toggle-hover="dropdown" title="{$customers_data.FIRST_NAME} {$customers_data.LAST_NAME}">
+												<!-- layout_secondary_navigation_account_name_icon outside "a" tag -->
+												{block name="layout_secondary_navigation_account_name_icon_if"}
+													<!-- layout_secondary_navigation_account_name_icon inside -->
+													{if $showTopNavIcons}
+														{block name="layout_secondary_navigation_account_name_icon"}
+															<span class="language-code hidden-xs">
+															{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M30.21,24.43a15,15,0,0,0-5.68-3.56,8.64,8.64,0,1,0-9.78,0,15,15,0,0,0-5.68,3.56A14.87,14.87,0,0,0,4.7,35H7a12.61,12.61,0,0,1,25.22,0h2.34A14.88,14.88,0,0,0,30.21,24.43ZM19.64,20.06A6.31,6.31,0,1,1,26,13.75,6.31,6.31,0,0,1,19.64,20.06Z"/></g></g></svg>{/literal}
+														</span>
+															<span class="visible-xs-inline">
+															<span class="fa fa-user-o"></span>
+														</span>
+														{/block}
+													{/if}
+												{/block}
+
+												<span class="topbar-label">{$customers_data.FIRST_NAME} {$customers_data.LAST_NAME}</span>
+												</a>
+											{/block}
+
+											{block name="layout_secondary_navigation_account_dropdown"}
+												<ul class="dropdown-menu">
+
+													{block name="layout_secondary_navigation_account_dropdown_group_if"}
+														{if $customers_data.PUBLIC == '1'}
+															{block name="layout_secondary_navigation_account_dropdown_group"}
+																<li>
+																	{if $customers_data.SHOW_ARROW}
+																		<a title="{$txt.title_customers_data}" href="{page_url}#">
+																			{$infobox.group}: {$customers_data.GROUP}
+																		</a>
+																	{else}
+																		<span class="disabled">
+																	{$infobox.group}: {$customers_data.GROUP}
+																</span>
+																	{/if}
+																</li>
+															{/block}
+														{/if}
+													{/block}
+
+													{block name="layout_secondary_navigation_account_dropdown_account"}
+														<li>
+															<a href="{$ACCOUNT_URL}" title="{$txt.button_account}">
+																{$txt.button_account}
+															</a>
+														</li>
+													{/block}
+
+													{block name="layout_secondary_navigation_account_dropdown_login_if"}
+														{if !$ACCOUNT_URL}
+															{block name="layout_secondary_navigation_account_dropdown_login"}
+																<li class="divider"></li>
+																<li class="login-off-item">
+																	<a title="{$txt.title_login}" href="{page_url}#">
+																		{$txt.button_login}
+																	</a>
+																</li>
+															{/block}
+														{else}
+															{block name="layout_secondary_navigation_account_dropdown_logout"}
+																<li class="login-off-item">
+																	<a title="{$txt.title_logoff}" href="{$LOGOFF_URL}">
+
+																		{$txt.button_logoff}
+																	</a>
+																</li>
+															{/block}
+														{/if}
+													{/block}
+												</ul>
+											{/block}
+
+										</li>
+									{/block}
+								{else}
+									{block name="layout_secondary_navigation_login_dropdown"}
+										<li class="dropdown navbar-topbar-item{if $customers_data.GROUP|lower !== 'admin' && !$LANGUAGE_ICON && !$SHOW_TOP_CURRENCY_SELECTION && !$SHOW_TOP_COUNTRY_SELECTION} first{/if}">
+											<a title="{$txt.title_login}" href="{page_url}#" class="dropdown-toggle" data-toggle-hover="dropdown">
+												{block name="layout_secondary_navigation_login_dropdown_icon_if"}
+													{if $showTopNavIcons}
+														{block name="layout_secondary_navigation_login_dropdown_icon"}
+															<span class="language-code hidden-xs">
+														{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M30.21,24.43a15,15,0,0,0-5.68-3.56,8.64,8.64,0,1,0-9.78,0,15,15,0,0,0-5.68,3.56A14.87,14.87,0,0,0,4.7,35H7a12.61,12.61,0,0,1,25.22,0h2.34A14.88,14.88,0,0,0,30.21,24.43ZM19.64,20.06A6.31,6.31,0,1,1,26,13.75,6.31,6.31,0,0,1,19.64,20.06Z"/></g></g></svg>{/literal}
+													</span>
+															<span class="visible-xs-inline">
+														<span class="fa fa-user-o"></span>
+													</span>
+														{/block}
+													{/if}
+												{/block}
+
+												<span class="topbar-label">{$txt.button_login}</span>
+											</a>
+											{$LOGIN_DROPDOWN}
+										</li>
+									{/block}
+								{/if}
+							{/if}
+						{/block}
+
+						{block name="layout_secondary_navigation_wishlist_if"}
+							{if $WISHLIST_URL}
+								{block name="layout_secondary_navigation_wishlist"}
+									<li class="navbar-topbar-item">
+										<a href="{$WISHLIST_URL}" class="dropdown-toggle" title="{$txt.title_wish_list}">
+											{block name="layout_secondary_navigation_wishlist_icon_if"}
+												{if $showTopNavIcons}
+													{block name="layout_secondary_navigation_wishlist_icon"}
+														<span class="language-code hidden-xs">
+													{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M19.19,36a1.16,1.16,0,0,0,1.62,0l12.7-12.61A10,10,0,0,0,20,8.7,10,10,0,0,0,6.5,23.42ZM8.12,10.91a7.6,7.6,0,0,1,5.49-2.26A7.46,7.46,0,0,1,19,10.88l0,0,.18.18a1.15,1.15,0,0,0,1.63,0l.18-.18A7.7,7.7,0,0,1,31.89,21.79L20,33.58,8.12,21.79A7.74,7.74,0,0,1,8.12,10.91Z"/></g></g></svg>{/literal}
+												</span>
+														<span class="visible-xs-inline">
+													<span class="fa fa-heart-o"></span>
+												</span>
+													{/block}
+												{/if}
+											{/block}
+
+											<span class="topbar-label">{$txt.button_wish_list}</span>
+										</a>
+									</li>
+								{/block}
+							{/if}
+						{/block}
+
+						<li class="dropdown navbar-topbar-item topbar-cart" data-gambio-widget="cart_dropdown">
+						<a
+								title="{$txt.button_cart}"
+								class="dropdown-toggle"
+								href="{page_url}#"
+	                            data-toggle="cart"
+						>
+						<span class="cart-info-wrapper">
+							{block name="index_outer_wrapper_header_inside_shopping_cart_if"}
+								<!-- layout_header_SECONDARY_NAVIGATION.html malibu -->
+								{if $showTopNavIcons}
+									{block name="index_outer_wrapper_header_inside_shopping_cart"}
+									{literal}<svg width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}</style></defs><title></title><g id="Ebene_2" data-name="Ebene 2"><g id="Ebene_1-2" data-name="Ebene 1"><path d="M31,13.66a1.08,1.08,0,0,0-1.07-1H26.08V11.28a6.31,6.31,0,0,0-12.62,0v1.36H9.27a1,1,0,0,0-1,1L5.21,32A3.8,3.8,0,0,0,9,35.8H30.19A3.8,3.8,0,0,0,34,31.94Zm-15.42-1V11.28a4.2,4.2,0,0,1,8.39,0v1.35Zm-1.06,5.59a1.05,1.05,0,0,0,1.06-1.06v-2.4H24v2.4a1.06,1.06,0,0,0,2.12,0v-2.4h2.84L31.86,32a1.68,1.68,0,0,1-1.67,1.68H9a1.67,1.67,0,0,1-1.68-1.61l2.94-17.31h3.19v2.4A1.06,1.06,0,0,0,14.51,18.22Z"/></g></g></svg>{/literal}
+									{/block}
+								{/if}
+							{/block}
+
+							<span class="topbar-label">
+								{$box_cart.heading_cart}<br />
+								<span class="products">
+									{block name="layout_header_cart_basket_total"}{$TOTAL}{/block}
+								</span>
+							</span>
+
+							{block name="layout_header_cart_products_count"}
+								{if $showProductsCount == 'true'}
+									<span class="cart-products-count edge{if $PRODUCTS == 0} hidden{/if}">
+										{$PRODUCTS}
+									</span>
+								{else}
+									<span class="cart-products-count edge{if $productsCount == 0} hidden{/if}">
+										{$productsCount}
+									</span>
+								{/if}
+							{/block}
+						</span>
+						</a>
+
+				</li>
+
+				{foreach name=cat_data item=content_item from=$CONTENT_LINKS_DATA}
+					{block name="layout_secondary_navigation_content_link"}
+						<li class="navbar-topbar-item visible-xs">
+							<a title="{$content_item.NAME|strip_tags}" href="{$content_item.URL}"
+									{if $content_item.URL_TARGET && $content_item.URL_TARGET != ''}
+								target="{$content_item.URL_TARGET}"
+									{/if}>
+								<span class="fa fa-arrow-circle-right"></span>
+								&nbsp;{$content_item.NAME}
+							</a>
+						</li>
+					{/block}
+				{/foreach}
+
+			</ul>
+		</nav>
+				{/block}
+			</div>
+		{/block}
+	</div>
+{/block}

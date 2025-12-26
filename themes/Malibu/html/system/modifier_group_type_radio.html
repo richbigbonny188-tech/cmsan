@@ -1,0 +1,23 @@
+{block name="modifier_group_type_radio"}
+    {assign "show_additional_price" $content_data.show_additional_price}
+    <div class="modifier-group modifier-{$content_data.modifier.type}-group modifier-type__radio"{if !$content_data.modifier.visible} style="display: none;"{/if}>
+        <label class="modifier-label">
+            {$content_data.modifier.label}:
+            {if $show_additional_price}<span class="selected-value-price" data-default-price="{$content_data.modifier.selected.additionalInfo.price}">{if $content_data.modifier.selected.id}{$content_data.modifier.selected.additionalInfo.price}{/if}</span>{/if}
+        </label>
+        <div class="modifier-content">
+            {foreach from=$content_data.modifier.items item=modifier}
+            <div class="radio modifier-item{if !$modifier.selectable} un-selectable{/if}" {if $show_additional_price}data-price="{$modifier.additionalInfo.price}"{/if}>
+                    <label class="radio-wrapper" title="{$modifier.info}">
+                        <span class="modifier-label-text">
+                            {$modifier.info}
+                            {if $modifier.additionalInfo.stock && $modifier.additionalInfo.stock} {$modifier.additionalInfo.stock}{/if}
+                        </span>
+                        <input type="radio" name="{$content_data.modifier.name}" value="{$modifier.value}" class="js-calculate"{if $content_data.modifier.selected.value eq $modifier.value} checked="checked"{/if}>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            {/foreach}
+        </div>
+    </div>
+{/block}

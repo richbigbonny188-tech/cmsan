@@ -1,0 +1,30 @@
+
+
+{*  ==========================================================================
+layout_secondary_navigation_search.html
+========================================================================== *}
+
+
+{block name="layout_secondary_navigation_search_heading"}
+{/block}
+
+{block name="layout_secondary_navigation_search_form_search_button"}
+{/block}
+
+{block name="layout_secondary_navigation_search_form_dropdown_if"}
+{/block}
+
+{block name="layout_secondary_navigation_search_form_categories_if"}
+{/block}
+
+{block name="layout_secondary_navigation_search_form_advanced"}
+{/block}
+
+
+{* remove formn-control-feedback class *}
+
+{block name="layout_secondary_navigation_search_form_submit"}
+    <button type="submit">
+        <img src="{$theme_path}images/svgs/search.svg" class="gx-search-input svg--inject" alt="">
+    </button>
+{/block}

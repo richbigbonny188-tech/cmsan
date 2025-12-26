@@ -1,0 +1,38 @@
+{block name="login"}
+	{$smarty.block.parent}
+	{load_language_text section="SingleSignon" name="sso"}
+
+	{if $ssoData|@count}
+		<div class="sso-logins"
+        {if $cookieConsentIsInstalled && $ssoCookieConsentPurposeIsActive}
+             type="as-oil"
+             data-purposes="{$ssoCookieConsentPurposeId}"
+             data-managed="as-oil"
+             style="display: none;"
+        {/if}
+        >
+			<h4>{$sso.login_heading}</h4>
+			<p class="sso-note">{$sso.note_sso}</p>
+			{if $ssoData.googleLoginUrl}
+				<a class="sso-link sso-link-google" title="{$sso.login_with_google}" href="{$ssoData.googleLoginUrl}">
+					<i class="ssoicon fa fa-google" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_google}</span>
+				</a>
+			{/if}
+			{if $ssoData.facebookLoginUrl}
+				<a class="sso-link sso-link-facebook" title="{$sso.login_with_facebook}" href="{$ssoData.facebookLoginUrl}">
+					<i class="ssoicon fa fa-facebook-official" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_facebook}</span>
+				</a>
+			{/if}
+			{if $ssoData.paypalLoginUrl}
+				<a class="sso-link sso-link-paypal" title="{$sso.login_with_paypal}" href="{$ssoData.paypalLoginUrl}">
+					<i class="ssoicon fa fa-paypal" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_paypal}</span>
+				</a>
+			{/if}
+			{if $ssoData.amazonLoginUrl}
+				<a class="sso-link sso-link-amazon" title="{$sso.login_with_amazon}" href="{$ssoData.amazonLoginUrl}">
+					<i class="ssoicon fa fa-amazon" aria-hidden="true"></i><span class="ssolabel">{$sso.login_with_amazon}</span>
+				</a>
+			{/if}
+		</div>
+	{/if}
+{/block}

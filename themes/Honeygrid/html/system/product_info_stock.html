@@ -1,0 +1,21 @@
+{block name="product_info_stock"}
+    <dt class="col-xs-4 text-left products-quantity" {if !$PRODUCTS_QUANTITY} style="display: none"{/if}>
+        {$txt.text_stock}
+    </dt>
+    <dd class="col-xs-8 products-quantity" {if !$PRODUCTS_QUANTITY} style="display: none"{/if}>
+        {block name="product_info_stock_quantity"}
+            <span class="products-quantity-value">
+                {$PRODUCTS_QUANTITY}
+            </span>
+        {/block}
+        {if $PRODUCTS_QUANTITY_UNIT}
+            {block name="product_info_stock_unit"}
+                {$PRODUCTS_QUANTITY_UNIT}
+            {/block}
+        {else}
+            {block name="product_info_stock_pieces"}
+                {$txt.text_pieces}
+            {/block}
+        {/if}
+    </dd>
+{/block}

@@ -1,0 +1,51 @@
+{block name="layout_menu_group_list"}
+	<ul class="menu-group-list">
+        {foreach $menu as $group}
+            {block name="layout_menu_group_item"}
+				<li class="menu-group-item
+						{if $group.brand != ''}brand-{$group.brand}{/if}
+						{if $group.type != ''}type-{$group.type}{/if}
+						{if $group.isActive}active{/if}
+						{if $group.id === 'BOX_HEADING_FAVORITES' && $alwaysOpenFavorites}active{/if}
+						{if $group.id === 'BOX_HEADING_FAVORITES'}favorites{/if}">
+                    {if empty($group.menuitems)}
+                        {block name="layout_menu_group_empty_item_link"}
+							<div class="menu-group-link">
+								<i class="{$group.class}"></i>
+								<span>{$group.title}</span>
+							</div>
+                        {/block}
+                    {else}
+                        {block name="layout_menu_group_item_link"}
+							<a class="menu-group-link" href="{$group.menuitems[0].link}">
+								<i class="{$group.class}"></i><span>{$group.title}</span>
+							</a>
+                        {/block}
+                        {block name="layout_menu_entry_list"}
+                            {if $group.type !== 'standalone'}
+								<ul class="menu-entry-list">
+                                    {foreach $group.menuitems as $entry}
+                                        {block name="layout_menu_entry_item"}
+											<li class="menu-entry-item {if $entry.isActive} active{/if}">
+                                                {block name="layout_menu_entry_item_link"}
+													<a id="{$entry.id}"
+													   draggable="true"
+													   href="{$entry.link}">{$entry.title}</a>
+                                                {/block}
+											</li>
+                                        {/block}
+                                    {/foreach}
+								</ul>
+                            {/if}
+                        {/block}
+                    {/if}
+				</li>
+            {/block}
+        {/foreach}
+	</ul>
+{/block}
+{block name="layout_menu_favorites_drop_zone"}
+	<div class="favorites-drop-zone">
+		<i class="fa fa-heart"></i>
+	</div>
+{/block}

@@ -1,0 +1,28 @@
+{load_language_text section="checkout_shipping_options" name="optionstxt"}
+<ul class="list-group">
+    {foreach $shipping_options as $option_id => $option}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-12 title radio">
+                    <label class="shipping-module-container" for="shipping_option_{$option_id}">
+                        <span class="shipping-module-selection">
+                            <input type="checkbox" name="shipping_options[{$option.value}]" value="{$option.value}"
+                                   id="shipping_option_{$option_id}" {if $option.selected}checked{/if}>
+                        </span>
+                        <span class="col-xs-12 col-sm-7 shipping-module-info">
+                            <span class="shipping-module-title">{$optionstxt[$option.label]}</span>
+                            {if $option.description}
+                                <span class="shipping-module-description">{$optionstxt[$option.description]}</span>
+                            {/if}
+                        </span>
+                        <span class="col-xs-12 col-sm-7 shipping-module-icon">
+                            {if $option.icon}
+                                <img class="img-responsive" alt="{$optionstxt[$option.label]}" src="{$option.icon}">
+                            {/if}
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </li>
+    {/foreach}
+</ul>

@@ -1,0 +1,442 @@
+{load_language_text section="checkout_shipping"}
+{load_language_text section="checkout_shipping_options" name="optionstxt"}
+
+{block name="checkout_shipping_modules"}
+	{block name="checkout_shipping_modules_title"}
+		<p class="space-1">{$txt.text_shipping}</p>
+	{/block}
+	{block name="checkout_shipping_modules_free_shipping_if"}
+		{if $FREE_SHIPPING && !$module_content}
+			{block name="checkout_shipping_modules_free_shipping_list"}
+				<ul class="list-group">
+					<li class="list-group-item free">
+						<div class="row">
+							<div class="col-xs-12 title">
+								{block name="checkout_shipping_modules_free_shipping_container"}
+									<div class="shipping-module-container">
+										{block name="checkout_shipping_modules_free_shipping_info"}
+											<span class="col-xs-12 col-sm-7 shipping-module-info">
+												{block name="checkout_shipping_modules_free_shipping_title"}
+													<span class="shipping-module-title">
+														{$FREE_SHIPPING_TITLE}
+													</span>
+												{/block}
+												
+												{block name="checkout_shipping_modules_free_shipping_description"}
+													<span class="shipping-module-description">
+														{if $module_data.module}
+															<span id="shipping_error">{$module_data.module}</span>
+															<br>
+														{/if}
+														
+														{$FREE_SHIPPING_DESCRIPTION}
+														<input type="hidden" name="shipping" value="free_free" />
+													</span>
+												{/block}
+											</span>
+										{/block}
+										
+										{block name="checkout_shipping_modules_free_shipping_icon"}
+											<span class="hidden-xs col-sm-5 shipping-module-icon">
+												<img src="images/icons/shipping/freeamount.png"
+												     alt="{$module_data.logo_alt|strip_tags}"
+												     class="img-responsive">
+											</span>
+										{/block}
+									</div>
+								{/block}
+							</div>
+						</div>
+                        {block name="shipping_modules_shipping_options"}
+                            {if $FREE_SHIPPING_OPTIONS}
+                                <div class="row shipping-options">
+                                    <div class="col-xs-12">
+                                        {foreach $FREE_SHIPPING_OPTIONS as $option}
+                                            <div class="shipping-module-container">
+                                                <span class="col-xs-12 shipping-module-info">
+                                                    {if $option.type === 'bool'}
+                                                        <input type="checkbox"
+                                                               name="shipping_options[free][{$option.key}]"
+                                                               value="{$option.value}"
+                                                               id="shipping_option_free_{$option.key}"
+                                                               {if $option.selected}checked{/if}>
+                                                        <label for="shipping_option_free_{$option.key}">
+                                                            {$optionstxt[$option.label]} ({$optionstxt[$option.description]})
+                                                        </label>
+                                                    {/if}
+                                                    {if $option.type === 'heading'}
+                                                        <div class="row shipping-options-row">
+                                                            <div class="col-xs-12 shipping-option-heading">{$optionstxt[$option.label]}</div>
+                                                            <div class="col-xs-12 shipping-option-description">{$optionstxt[$option.description]}</div>
+                                                        </div>
+                                                    {/if}
+                                                    {if $option.type === 'multi'}
+                                                        <div class="row shipping-options-row">
+                                                            <div class="col-xs-12 col-sm-3 shipping-option-title">{$optionstxt[$option.label]}</div>
+                                                            <div class="col-xs-12 col-sm-9 shipping-option-input">
+                                                                {foreach $option.values as $multientry}
+                                                                    <input type="radio"
+                                                                           name="shipping_options[free][{$option.key}]"
+                                                                           value="{$multientry.value}"
+                                                                           id="shipping_option_free_{$option.key}_{$multientry.value}"
+                                                                           class="shipping_option_multi_radio"
+                                                                           {if $option.selected === $multientry.value}checked{/if}>
+                                                                    <label for="shipping_option_free_{$option.key}_{$multientry.value}"
+                                                                           class="shipping_option_multi_label btn btn-primary">
+                                                                        {if $optionstxt[$multientry.label]}{$optionstxt[$multientry.label]}{else}{$multientry.label}{/if}
+                                                                    </label>
+                                                                {/foreach}
+                                                            </div>
+                                                        </div>
+                                                    {/if}
+                                                    {if $option.type === 'text'}
+                                                        <div class="row shipping-options-row">
+                                                            <div class="col-xs-12 col-sm-3 shipping-option-title">{$optionstxt[$option.label]}</div>
+                                                            <div class="col-xs-12 col-sm-9 shipping-option-input">
+                                                                <input type="text"
+                                                                       name="shipping_options[free][{$option.key}]"
+                                                                       id="shipping_option_free_{$option.key}"
+                                                                       class="shipping_option_{$option.key}"
+                                                                       value="{$option.value}"
+                                                                       placeholder="{$optionstxt[$option.placeholder]}"
+                                                                       maxlength="{$option.maxlength}"
+                                                                       {if $option.selected}checked{/if}>
+                                                            </div>
+                                                        </div>
+                                                    {/if}
+                                                </span>
+                                            </div>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                            {/if}
+                        {/block}
+                        
+					</li>
+				</ul>
+			{/block}
+		{else}
+			{block name="checkout_shipping_modules_list"}
+				<ul class="list-group">
+					{foreach name=aussen item=module_data from=$module_content}
+						{if $module_data.methods && $module_data.methods|@count > 0}
+							{block name="checkout_shipping_modules_item"}
+								<li class="list-group-item {if $module_data.error}error{/if}">
+									{foreach key=counter name=aussen item=method_data from=$module_data.methods}
+										<div class="row">
+											{block name="checkout_shipping_modules_item_if"}
+												{if $module_data.methods && $module_data.methods|@count == 1 && !$module_data.error}
+													{block name="checkout_shipping_modules_item_method"}
+														<div class="col-xs-12 title radio">
+															{block name="checkout_shipping_modules_item_method_label"}
+																<label class="shipping-module-container" for="{$method_data.id}">
+																	{block name="checkout_shipping_modules_item_method_selection"}
+																		<span class="shipping-module-selection">
+																			{if $has_multiple_options}
+																				<input type="radio" name="{$method_data.radio_field_data[0]}" value="{$method_data.radio_field_data[1]}"
+																					   {if $method_data.radio_field_data[2] === true} checked {else} unchecked {/if} />
+																			{else}
+																				<input type="hidden" name="shipping" value="{$selected_shipping_method}"/>
+																			{/if}
+																		</span>
+																	{/block}
+
+																	{block name="checkout_shipping_modules_item_method_module_info"}
+																		<span class="col-xs-12 col-sm-7 shipping-module-info">
+																			{block name="checkout_shipping_modules_item_method_module_info_title"}
+																				<span class="shipping-module-title">
+																					{$module_data.module}
+																				</span>
+																			{/block}
+
+																			{block name="checkout_shipping_modules_item_method_module_info_price_if"}
+																				{if $method_data.price}
+																					{block name="checkout_shipping_modules_item_method_module_info_price"}
+																						<span class="shipping-module-cost">
+																							({$method_data.price|ltrim})
+																						</span>
+																					{/block}
+																				{/if}
+																			{/block}
+
+																			{block name="checkout_shipping_modules_item_method_module_info_description"}
+																				<span class="shipping-module-description">
+																					{$method_data.title}
+																				</span>
+																			{/block}
+																		</span>
+																	{/block}
+
+																	{block name="checkout_shipping_modules_item_method_icon"}
+																		<span class="hidden-xs col-sm-5 shipping-module-icon">
+																			<img src="{$module_data.logo_url}" 
+																				 alt="{$module_data.logo_alt|strip_tags}" 
+																				 class="img-responsive">
+																		</span>
+																	{/block}
+																</label>
+															{/block}
+														</div>
+													{/block}
+												{elseif $module_data.error}
+													{block name="checkout_shipping_modules_item_error"}
+														<div class="col-xs-12 title">
+															{block name="checkout_shipping_modules_item_error_label"}
+																<label class="shipping-module-container">
+																	{block name="checkout_shipping_modules_item_error_selection"}
+																		<span class="shipping-module-selection">
+																			<input type="radio" disabled>
+																		</span>
+																	{/block}
+
+																	{block name="checkout_shipping_modules_item_error_module_info"}
+																		<span class="col-xs-12 col-sm-7 shipping-module-info">
+																			{block name="checkout_shipping_modules_item_error_module_info_title"}
+																				<span class="shipping-module-title">
+																					{$module_data.module}
+																				</span>
+																			{/block}
+
+																			{block name="checkout_shipping_modules_item_error_module_info_description"}
+																				<span id="shipping_error" class="shipping-module-description">
+																					{$module_data.error}
+																				</span>
+																			{/block}
+																		</span>
+																	{/block}
+
+																	{block name="checkout_shipping_modules_item_error_icon"}
+																		<span class="hidden-xs col-sm-5 shipping-module-icon">
+																			<img src="{$module_data.logo_url}" 
+																				 alt="{$module_data.logo_alt|strip_tags}" 
+																				 class="img-responsive">
+																		</span>
+																	{/block}
+																</label>
+															{/block}
+														</div>
+													{/block}
+												{else}
+													{block name="checkout_shipping_modules_item_group"}
+														{if $smarty.foreach.aussen.first}
+															<div class="col-xs-12 shipping-submodule-title title">
+																{block name="checkout_shipping_modules_item_group_first_label"}
+																	<label class="shipping-module-container" for="{$method_data.id}">
+																		{block name="checkout_shipping_modules_item_group_first_selection"}
+																			<span class="shipping-module-selection">
+																				<input type="radio" class="placeholder-radio">
+																			</span>
+																		{/block}
+
+																		{block name="checkout_shipping_modules_item_group_first_module_info"}
+																			<span class="col-xs-12 col-sm-7 shipping-module-info">
+																				{block name="checkout_shipping_modules_item_group_first_module_info_title"}
+																					<span class="shipping-module-title">
+																						{$module_data.module}
+																					</span>
+																				{/block}
+																			</span>
+																		{/block}
+																		
+																		{block name="checkout_shipping_modules_item_group_first_icon"}
+																			<span class="hidden-xs col-sm-5 shipping-module-icon">
+																				<img src="{$module_data.logo_url}" 
+																					 alt="{$module_data.logo_alt|strip_tags}"
+																					 class="img-responsive">
+																			</span>
+																		{/block}
+																	</label>
+																{/block}
+															</div>
+														{/if}
+														<div class="shipping-submodule shipping_item_box button_checkout_module">
+															<div class="col-xs-12 title radio">
+																{block name="checkout_shipping_modules_item_group_label"}
+
+																	{block name="checkout_shipping_modules_item_group_selection"}
+																		<span class="shipping-submodule-selection">
+																			<input type="radio" name="{$method_data.radio_field_data[0]}" value="{$method_data.radio_field_data[1]}"
+																			{if $method_data.radio_field_data[2] === true} checked {else} unchecked {/if} />
+																			</span>
+																	{/block}
+
+																	{block name="checkout_shipping_modules_item_group_module_container"}
+																		<label class="shipping-module-container" for="{$method_data.id}">
+																			{block name="checkout_shipping_modules_item_group_module_info"}
+																				<span class="col-xs-12 col-sm-7 shipping-module-info">
+																					{block name="checkout_shipping_modules_item_group_module_info_title"}
+																						<span class="shipping-module-title">
+																							{$method_data.title}
+																						</span>
+																					{/block}
+
+																					{block name="checkout_shipping_modules_item_group_module_info_price_if"}
+																						{if $method_data.price}
+																							{block name="checkout_shipping_modules_item_group_module_info_price"}
+																								<span class="shipping-module-cost">
+																									({$method_data.price|ltrim})
+																								</span>
+																							{/block}
+																						{/if}
+																					{/block}
+																				</span>
+																			{/block}
+																		</label>
+																	{/block}
+																{/block}
+															</div>
+														</div>
+													{/block}
+												{/if}
+											{/block}
+										</div>
+									{/foreach}
+                                    {block name="shipping_modules_shipping_options"}
+                                        {if $module_data.shipping_options && !$module_data.error}
+                                            <div class="shipping-options">
+                                                {foreach $module_data.shipping_options as $option}
+                                                    <div class="row shipping-module-container">
+                                                        <span class="shipping-module-selection">&nbsp;</span>
+                                                        <span class="col-xs-12 shipping-module-info">
+                                                            {if $option.type === 'heading'}
+                                                                <div class="row shipping-options-row">
+                                                                    <div class="col-xs-12 shipping-option-heading">{$optionstxt[$option.label]}</div>
+                                                                    <div class="col-xs-12 shipping-option-description">{$optionstxt[$option.description]}</div>
+                                                                </div>
+                                                            {/if}
+                                                            {if $option.type === 'multi'}
+                                                                <div class="row shipping-options-row">
+                                                                    <div class="col-xs-12 col-sm-3 shipping-option-title">{$optionstxt[$option.label]}</div>
+                                                                    <div class="col-xs-12 col-sm-9 shipping-option-input">
+                                                                        {foreach $option.values as $multientry}
+                                                                            <input type="radio"
+                                                                                   name="shipping_options[{$module_data.id}][{$option.key}]"
+                                                                                   value="{$multientry.value}"
+                                                                                   id="shipping_option_{$module_data.id}_{$option.key}_{$multientry.value}"
+                                                                                   class="shipping_option_multi_radio"
+                                                                                   {if $option.selected === $multientry.value}checked{/if}>
+                                                                            <label for="shipping_option_{$module_data.id}_{$option.key}_{$multientry.value}"
+                                                                                   class="shipping_option_multi_label btn btn-primary">
+                                                                                {if $optionstxt[$multientry.label]}{$optionstxt[$multientry.label]}{else}{$multientry.label}{/if}
+                                                                            </label>
+                                                                        {/foreach}
+                                                                    </div>
+                                                                </div>
+                                                            {/if}
+                                                            {if $option.type === 'text'}
+                                                                <div class="row shipping-options-row">
+                                                                    <div class="col-xs-12 col-sm-3 shipping-option-title">{$optionstxt[$option.label]}</div>
+                                                                    <div class="col-xs-12 col-sm-9 shipping-option-input">
+                                                                        <input type="text"
+                                                                               name="shipping_options[{$module_data.id}][{$option.key}]"
+                                                                               id="shipping_option_{$module_data.id}_{$option.key}"
+                                                                               class="shipping_option_{$option.key}"
+                                                                               value="{$option.value}"
+                                                                               placeholder="{$optionstxt[$option.placeholder]}"
+                                                                               maxlength="{$option.maxlength}"
+                                                                               {if $option.selected}checked{/if}>
+                                                                    </div>
+                                                                </div>
+                                                            {/if}
+                                                        </span>
+                                                    </div>
+                                                {/foreach}
+                                            </div>
+                                        {/if}
+                                    {/block}
+								</li>
+							{/block}
+						{else}
+							{block name="checkout_shipping_modules_no_method"}
+								<li class="list-group-item error">
+									<div class="row">
+										<div class="col-xs-12 title">
+											{block name="checkout_shipping_modules_no_method_label"}
+												<label class="shipping-module-container">
+													{block name="checkout_shipping_modules_no_method_selection"}
+														<span class="shipping-module-selection">
+															<input type="radio" disabled>
+														</span>
+													{/block}
+
+													{block name="checkout_shipping_modules_no_method_module_info"}
+														<span class="col-xs-12 col-sm-7 shipping-module-info">
+															{block name="checkout_shipping_modules_no_method_module_info_title"}
+																<span class="shipping-module-title">
+																	{$module_data.module}
+																</span>
+															{/block}
+
+															{block name="checkout_shipping_modules_no_method_module_info_description"}
+																<span id="shipping_error" class="shipping-module-description">
+																	{$module_data.error}
+																</span>
+															{/block}
+														</span>
+													{/block}
+
+													{block name="checkout_shipping_modules_no_method_icon"}
+														<span class="hidden-xs col-sm-5 shipping-module-icon">
+															<img src="{$module_data.logo_url}"
+																 alt="{$module_data.logo_alt|strip_tags}"
+																 class="img-responsive">
+														</span>
+													{/block}
+												</label>
+											{/block}
+										</div>
+									</div>
+								</li>
+							{/block}
+						{/if}
+					{/foreach}
+				</ul>
+			{/block}
+		{/if}
+	{/block}
+    {literal}
+        <script>
+            (function() {
+                let inputHandler = function() {
+                    let neighbours = document.querySelectorAll('input.shipping_option_dhl_preferred_neighbour');
+                    neighbours.forEach(function(n) {
+                        let location = n.closest('div.shipping-options').querySelector('input.shipping_option_dhl_preferred_location');
+                        if (n.value !== '') {
+                            location.setAttribute('disabled', 'disabled');
+                        } else {
+                            location.removeAttribute('disabled');
+                        }
+                    });
+                    let locations = document.querySelectorAll('input.shipping_option_dhl_preferred_location');
+                    locations.forEach(function(l) {
+                        let neighbour = l.closest('div.shipping-options').querySelector('input.shipping_option_dhl_preferred_neighbour');
+                        if (l.value !== '') {
+                            neighbour.setAttribute('disabled', 'disabled');
+                        } else {
+                            neighbour.removeAttribute('disabled');
+                        }
+                    });
+                };
+                let shippingOptionsCallback = function() {
+                    if (document.querySelector('input.shipping_option_dhl_preferred_neighbour') !== null) {
+                        let dhlInputs = document.querySelectorAll('input.shipping_option_dhl_preferred_neighbour, input.shipping_option_dhl_preferred_location');
+                        dhlInputs.forEach(function(el) {
+                            el.addEventListener('input', inputHandler);
+                        });
+                        inputHandler();
+                    }
+                };
+    
+                if (window.dhlShippingOptionsHandler) {
+                    return;
+                }
+                if(document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+                    shippingOptionsCallback();
+                } else {
+                    document.addEventListener('DOMContentLoaded', shippingOptionsCallback);
+                }
+                window.dhlShippingOptionsHandler = true;
+            }());
+        </script>
+    {/literal}
+{/block}

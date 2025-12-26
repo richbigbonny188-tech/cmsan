@@ -1,0 +1,176 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="product_condition_notice"}
+    {load_language_text section="buttons" name="buttons"}
+
+    <div class="breakpoint-small">
+        <form id="product_condition_notice_form" action="admin.php?do=ProductConditionNoticeModuleCenterModule/StoreConfiguration" class="product_condition_notice_configuration" method="POST">
+            <input type="hidden" name="pageToken" value="{$content.pageToken}">
+
+            <div class="form-horizontal">
+                <fieldset data-gx-widget="editor" data-editor-selector=".wysiwyg"
+                          data-editor-event-type="submit" data-editor-event-target="#gxmodule-configuration-form">
+                    <legend>{$txt.configuration_heading}</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-7 control-label" style="text-align: left">{$txt.configuration_show_condition_notice}:</label>
+                        <div class="col-sm-5" data-gx-widget="switcher">
+                            <input type="checkbox" id="show_condition_notice" value="true" name="show_condition_notice"
+                                   class="form-control" {($content.configuration.show_condition_notice) ? 'checked="checked"' : ''} />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-7 control-label"
+                               style="text-align: left">{$txt.configuration_condition_notice_is_mandatory}:</label>
+                        <div class="col-sm-5" data-gx-widget="switcher">
+                            <input type="checkbox" id="condition_notice_is_mandatory" value="true" name="condition_notice_is_mandatory"
+                                   class="form-control" {($content.configuration.condition_notice_is_mandatory) ? 'checked="checked"' : ''} />
+                        </div>
+                    </div>
+
+                    {if $adminLanguages}
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" style="text-align: left">{$txt.configuration_condition_notice_text}:</label>
+    
+                            <div class="col-sm-12">
+                                <ul class="lang-select" style="float: left" role="tablist">
+                                    {foreach item=language name=tabs from=$adminLanguages} {assign var=languageCode value=$language.code|lower}
+                                        <li role="presentation" {if $smarty.foreach.tabs.first} class="active"{/if}>
+                                            <a href="#tab-content-notice_text-{$languageCode}" data-language="{$languageCode}" aria-controls="home" role="tab" data-toggle="tab">
+                                                <span class="flag-icon flag-icon-{$languageCode}"></span>
+                                            </a>
+                                        </li>
+                                    {/foreach}
+                                </ul>
+    
+                                <div class="tab-content">
+                                    {foreach item=language name=panel from=$adminLanguages}
+                                    {assign var=languageCode value=$language.code|lower}
+                                    <div role="tabpanel" class="tab-pane fade {if $smarty.foreach.panel.first}active in{/if}"
+                                         id="tab-content-notice_text-{$languageCode}" data-language="{$languageCode}">
+                                            <textarea name="condition_notice_text[{$languageCode|upper}]"
+                                                      data-editor-identifier="editor-condition_notice_text-{$languageCode}"
+                                                      class="wysiwyg">{$content.configuration.condition_notice_text.{$languageCode|upper}}</textarea>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    {else}
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" style="text-align: left">{$txt.configuration_condition_notice_text}:</label>
+            
+                            <div class="col-sm-12">
+                                <ul class="lang-select" style="float: left" role="tablist">
+                                    {foreach item=language name=tabs from=$languages} {assign var=languageCode value=$language.code|lower}
+                                    <li role="presentation" {if $smarty.foreach.tabs.first} class="active"{/if}>
+                                    <a href="#tab-content-notice_text-{$languageCode}" data-language="{$languageCode}" aria-controls="home" role="tab" data-toggle="tab">
+                                        <span class="flag-icon flag-icon-{$languageCode}"></span>
+                                    </a>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                
+                                <div class="tab-content">
+                                    {foreach item=language name=panel from=$languages}
+                                    {assign var=languageCode value=$language.code|lower}
+                                    <div role="tabpanel" class="tab-pane fade {if $smarty.foreach.panel.first}active in{/if}"
+                                         id="tab-content-notice_text-{$languageCode}" data-language="{$languageCode}">
+                                                <textarea name="condition_notice_text[{$languageCode|upper}]"
+                                                          data-editor-identifier="editor-condition_notice_text-{$languageCode}"
+                                                          class="wysiwyg">{$content.configuration.condition_notice_text.{$languageCode|upper}}</textarea>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                    
+                    <legend>{$txt.configuration_warranty_heading}</legend>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-7 control-label" style="text-align: left">{$txt.configuration_show_warranty_notice}:</label>
+                        <div class="col-sm-5" data-gx-widget="switcher">
+                            <input type="checkbox" id="show_warranty_notice" value="true" name="show_warranty_notice"
+                                   class="form-control" {($content.configuration.show_warranty_notice) ? 'checked="checked"' : ''} />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-7 control-label"
+                               style="text-align: left">{$txt.configuration_warranty_notice_is_mandatory}:</label>
+                        <div class="col-sm-5" data-gx-widget="switcher">
+                            <input type="checkbox" id="warranty_notice_is_mandatory" value="true" name="warranty_notice_is_mandatory"
+                                   class="form-control" {($content.configuration.warranty_notice_is_mandatory) ? 'checked="checked"' : ''} />
+                        </div>
+                    </div>
+
+                    {if $adminLanguages}
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" style="text-align: left">{$txt.configuration_warranty_notice_text}:</label>
+    
+                            <div class="col-sm-12">
+                                <ul class="lang-select" style="float: left" role="tablist">
+                                    {foreach item=language name=tabs from=$adminLanguages} {assign var=languageCode value=$language.code|lower}
+                                        <li role="presentation" {if $smarty.foreach.tabs.first} class="active"{/if}>
+                                            <a href="#tab-content-warranty_notice_text-{$languageCode}" data-language="{$languageCode}" aria-controls="home" role="tab" data-toggle="tab">
+                                                <span class="flag-icon flag-icon-{$languageCode}"></span>
+                                            </a>
+                                        </li>
+                                    {/foreach}
+                                </ul>
+    
+                                <div class="tab-content">
+                                    {foreach item=language name=panel from=$adminLanguages}
+                                    {assign var=languageCode value=$language.code|lower}
+                                    <div role="tabpanel" class="tab-pane fade {if $smarty.foreach.panel.first}active in{/if}"
+                                         id="tab-content-warranty_notice_text-{$languageCode}" data-language="{$languageCode}">
+                                            <textarea name="warranty_notice_text[{$languageCode|upper}]"
+                                                      data-editor-identifier="editor-warranty_notice_text-{$languageCode}"
+                                                      class="wysiwyg">{$content.configuration.warranty_notice_text.{$languageCode|upper}}</textarea>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    {else}
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label" style="text-align: left">{$txt.configuration_warranty_notice_text}:</label>
+            
+                            <div class="col-sm-12">
+                                <ul class="lang-select" style="float: left" role="tablist">
+                                    {foreach item=language name=tabs from=$languages} {assign var=languageCode value=$language.code|lower}
+                                    <li role="presentation" {if $smarty.foreach.tabs.first} class="active"{/if}>
+                                    <a href="#tab-content-warranty_notice_text-{$languageCode}" data-language="{$languageCode}" aria-controls="home" role="tab" data-toggle="tab">
+                                        <span class="flag-icon flag-icon-{$languageCode}"></span>
+                                    </a>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                
+                                <div class="tab-content">
+                                    {foreach item=language name=panel from=$languages}
+                                    {assign var=languageCode value=$language.code|lower}
+                                    <div role="tabpanel" class="tab-pane fade {if $smarty.foreach.panel.first}active in{/if}"
+                                         id="tab-content-warranty_notice_text-{$languageCode}" data-language="{$languageCode}">
+                                                <textarea name="warranty_notice_text[{$languageCode|upper}]"
+                                                          data-editor-identifier="editor-warranty_notice_text-{$languageCode}"
+                                                          class="wysiwyg">{$content.configuration.warranty_notice_text.{$languageCode|upper}}</textarea>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                </fieldset>
+            </div>
+
+        </form>
+    </div>
+{/block}
+
+{block name="bottom_save_bar"}
+    <button form="product_condition_notice_form" type="submit" class="btn btn-primary pull-right">{$buttons.save}</button>
+{/block}

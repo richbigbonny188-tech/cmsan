@@ -1,0 +1,409 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+    {load_language_text section="afterbuy"}
+    {load_language_text section="module_center_module" name="mcm"}
+    <div class="breakpoint-small">
+        <form action="{$content.action_save_configuration}" method="POST" class="form-configuration"
+              id="afterbuy-configuration">
+            <input type="hidden" name="pageToken" value="{$content.pageToken}">
+            <div class="form-horizontal">
+                <fieldset class="import_mode">
+                    <legend>{$txt.product_data_import_mode}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.extent_of_import}</label>
+                        <div class="col-sm-8">
+                            <select name="configuration[import_mode]" class="form-control" id="import_mode">
+                                <option value="stocksync"
+                                        {if $content.configuration.import_mode === 'stocksync'}selected{/if}>
+                                    {$txt.import_mode_stocksync}
+                                </option>
+                                <option value="products_import"
+                                        {if $content.configuration.import_mode === 'products_import'}selected{/if}>
+                                    {$txt.import_mode_products_import}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="stocksync">
+                    <legend>{$txt.stocksync_configuration}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.last_sync_datetime}</label>
+                        <div class="col-sm-7">
+                            <input name="configuration[last_qty_sync]"
+                                   type="datetime-local"
+                                   class="form-control"
+                                   value="{$content.last_qty_sync_datetimelocal}"
+                                   step="1">
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.last_sync_datetime_tooltip}</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="products_import">
+                    <legend>{$txt.import_configuration}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_catalogs_parent_category}</label>
+                        <div class="col-sm-8">
+                            <select name="configuration[import_catalogs_parent_category]" class="form-control">
+                                <option value="0"
+                                        {if $content.configuration['import_catalogs_parent_category'] == 0}selected{/if}>
+                                    TOP
+                                </option>
+                                {foreach $content.categories as $category}
+                                    <option {if $content.configuration['import_catalogs_parent_category'] == $category.id}selected{/if}
+                                            value="{$category.id}">{$category.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_products_default_category}</label>
+                        <div class="col-sm-7">
+                            <select name="configuration[import_products_default_category]" class="form-control">
+                                <option value="0"
+                                        {if $content.configuration['import_products_default_category'] == 0}selected{/if}>
+                                    TOP
+                                </option>
+                                {foreach $content.categories as $category}
+                                    <option {if $content.configuration['import_products_default_category'] == $category.id}selected{/if}
+                                            value="{$category.id}">{$category.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.import_products_default_category_tooltip}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_products_level_threshold}</label>
+                        <div class="col-sm-7">
+                            <input name="configuration[import_products_level_threshold]" class="form-control"
+                                   type="number" min="0" max="10000"
+                                   value="{$content.configuration.import_products_level_threshold}">
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.import_products_level_threshold_tooltip}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_products_dealer_group}</label>
+                        <div class="col-sm-8">
+                            <select name="configuration[import_products_dealer_group]" class="form-control">
+                                <option {if $content.configuration['import_products_dealer_group'] == '-1'}selected{/if}
+                                        value="-1">{$txt.import_products_dont_import}</option>
+                                {foreach $content.customer_groups as $customerGroup}
+                                    <option {if $content.configuration['import_products_dealer_group'] == $customerGroup.id}selected{/if}
+                                            value="{$customerGroup.id}">{$customerGroup.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_tax_class_1}</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" type="number" min="0" max="100" step="0.1"
+                                       name="configuration[import_tax_rate_1]"
+                                       value="{$content.configuration.import_tax_rate_1}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <select name="configuration[import_tax_class_id_1]" class="form-control">
+                                {foreach $content.tax_classes as $taxClass}
+                                    <option value="{$taxClass.id}"
+                                            {if $content.configuration.import_tax_class_id_1 === $taxClass.id}selected{/if}
+                                    >{$taxClass.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_tax_class_2}</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" type="number" min="0" max="100" step="0.1"
+                                       name="configuration[import_tax_rate_2]"
+                                       value="{$content.configuration.import_tax_rate_2}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <select name="configuration[import_tax_class_id_2]" class="form-control">
+                                {foreach $content.tax_classes as $taxClass}
+                                    <option value="{$taxClass.id}"
+                                            {if $content.configuration.import_tax_class_id_2 === $taxClass.id}selected{/if}
+                                    >{$taxClass.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_tax_class_3}</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" type="number" min="0" max="100" step="0.1"
+                                       name="configuration[import_tax_rate_3]"
+                                       value="{$content.configuration.import_tax_rate_3}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <select name="configuration[import_tax_class_id_3]" class="form-control">
+                                {foreach $content.tax_classes as $taxClass}
+                                    <option value="{$taxClass.id}"
+                                            {if $content.configuration.import_tax_class_id_3 === $taxClass.id}selected{/if}
+                                    >{$taxClass.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_tax_class_4}</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" type="number" min="0" max="100" step="0.1"
+                                       name="configuration[import_tax_rate_4]"
+                                       value="{$content.configuration.import_tax_rate_4}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <select name="configuration[import_tax_class_id_4]" class="form-control">
+                                {foreach $content.tax_classes as $taxClass}
+                                    <option value="{$taxClass.id}"
+                                            {if $content.configuration.import_tax_class_id_4 === $taxClass.id}selected{/if}
+                                    >{$taxClass.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_tax_class_5}</label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" type="number" min="0" max="100" step="0.1"
+                                       name="configuration[import_tax_rate_5]"
+                                       value="{$content.configuration.import_tax_rate_5}">
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <select name="configuration[import_tax_class_id_5" class="form-control">
+                                {foreach $content.tax_classes as $taxClass}
+                                    <option value="{$taxClass.id}"
+                                            {if $content.configuration.import_tax_class_id_5 === $taxClass.id}selected{/if}
+                                    >{$taxClass.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_starting_from_timestamp}</label>
+                        <div class="col-sm-7 {if $content.last_product_id === 0}notrunning{else}running{/if}">
+                            <input class="form-control whennotrunning"
+                                   name="configuration[last_import_datetime]"
+                                   id="last_import_datetime"
+                                   value="{$content.last_import_datetime}"
+                                   step="1"
+                                   type="datetime-local">
+                            <span class="whenrunning">{$content.last_import_datetime} – {$txt.import_in_progress}</span>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.import_products_tooltip}</span>
+                        </div>
+
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary pull-right">{$txt.save_configuration}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+        <br>
+        <form action="{$content.action_import_operations}" method="POST" class="form-configuration add-margin-top-24"
+              id="afterbuy-import-operations">
+            <input type="hidden" name="pageToken" value="{$content.pageToken}">
+            <div class="form-horizontal">
+                <fieldset class="">
+                    <legend>{$txt.import_operations}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_catalogs}</label>
+                        <div class="col-sm-7">
+                            <button class="btn btn-secondary products_import" name="cmd"
+                                    value="catalogs">{$txt.import_catalogs_now}</button>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.import_catalogs_tooltip}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">{$txt.import_products}</label>
+                        <div class="col-sm-7">
+                            <button class="btn btn-secondary products_import"
+                                    id="btn_start_products_import">{$txt.import_products_now}</button>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.import_products_tooltip}</span>
+                        </div>
+                    </div>
+                    <div class="form-group stocksync">
+                        <label class="col-sm-4 control-label">{$txt.update_quantities}</label>
+                        <div class="col-sm-7">
+                            <button class="btn btn-secondary stocksync" name="cmd"
+                                    value="update_quantities">{$txt.update_quantities_now}</button>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="tooltip-icon" data-gx-widget="tooltip_icon"
+                                  data-tooltip_icon-type="info">{$txt.update_quantities_tooltip}</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+    </div>
+    <div id="ab_import_progress_backdrop">
+        <div id="ab_import_progress">
+            <div class="ab_import_head">{$txt.product_import_progress}</div>
+            <div class="ab_import_message" id="ab_import_message">{$txt.product_import_start}</div>
+            <div class="ab_import_progress_border">
+                <div class="ab_import_progress_bar" id="ab_import_progress_bar"></div>
+            </div>
+            <div class="ab_import_progress_buttons">
+                <button class="btn btn-secondary" id="btn_stop_products_import">
+                    <span class="stop_label">{$txt.product_import_stop}</span>
+                    <span class="stopping_label">{$txt.product_import_stopping}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+{literal}
+    <style>
+        #ab_import_progress_backdrop {
+            position:         fixed;
+            top:              0;
+            bottom:           0;
+            left:             0;
+            right:            0;
+            z-index:          9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            display:          none;
+            align-items:      center;
+            justify-content:  center;
+        }
+        
+        #ab_import_progress {
+            background-color: #ffffff;
+            padding:          2em;
+            width:            30em;
+        }
+        
+        .ab_import_head {
+            font-size:     1.3em;
+            font-weight:   bold;
+            border-bottom: 1px solid #000;
+            margin-bottom: 1ex;
+        }
+        
+        .ab_import_message {
+            text-align: center;
+        }
+        
+        .ab_import_progress_border {
+            border:   1px solid #000;
+            position: relative;
+            width:    100%;
+            height:   20px;
+        }
+        
+        .ab_import_progress_bar {
+            position:         absolute;
+            top:              0;
+            left:             0;
+            bottom:           0;
+            background-color: #002337;
+        }
+        
+        #ab_import_progress_bar {
+            width: 0;
+        }
+        
+        .ab_import_progress_buttons {
+            text-align: center;
+            margin-top: 2ex;
+        }
+        
+        #btn_stop_products_import .stop_label {
+            display: inline;
+        }
+        
+        #btn_stop_products_import .stopping_label {
+            display: none;
+        }
+        
+        #btn_stop_products_import[disabled] .stop_label {
+            display: none;
+        }
+        
+        #btn_stop_products_import[disabled] .stopping_label {
+            display: inline;
+        }
+        
+        .running .whenrunning {
+            display: inline;
+        }
+        
+        .running .whennotrunning {
+            display: none;
+        }
+        
+        .notrunning .whenrunning {
+            display: none;
+        }
+        
+        .notnunning .whennotrunning {
+            display: inline;
+        }
+    </style>
+{/literal}
+    <script type="application/json" id="product_import_config">{$content.product_import_config nofilter}</script>
+{literal}
+    <script>
+        (function() {
+            let readyCallback = function() {
+                let importMode = document.querySelector('#import_mode');
+                importMode.addEventListener('change', function() {
+                    if (this.value === 'stocksync') {
+                        document.querySelectorAll('.products_import')
+                            .forEach((el) => el.setAttribute('disabled', 'disabled'));
+                        //document.querySelectorAll('.stocksync').forEach((el) => el.removeAttribute('disabled'));
+                    } else {
+                        //document.querySelectorAll('.stocksync').forEach((el) => el.setAttribute('disabled', 'disabled'));
+                        document.querySelectorAll('.products_import').forEach((el) => el.removeAttribute('disabled'));
+                    }
+                });
+                importMode.dispatchEvent(new Event('change'));
+            }
+            
+            if (document.readyState === 'complete' || (document.readyState !== 'loading'
+                && !document.documentElement.doScroll)) {
+                readyCallback();
+            } else {
+                document.addEventListener('DOMContentLoaded', readyCallback);
+            }
+        }());
+    </script>
+{/literal}
+{/block}

@@ -1,0 +1,86 @@
+{literal}
+<script type="text/x-template" id="edit-modal">
+    <div class="edit-modal modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" :aria-label="lang.close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h4 class="modal-title">{{ lang.title }}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label style="padding-top: 2px;">{{ lang.labels.name }}:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input v-model="details.name"
+                                       :class="'form-control ' + (validFormData.name? '' : 'invalid')"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label style="padding-top: 2px;">{{ lang.labels.isDefault }}:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <gx-switcher v-model="details.isDefault"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label style="padding-top: 2px;">{{ lang.labels.shipmentType }}:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input v-model="details.shipmentType" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                        <li v-if="Array.isArray(languages)" v-for="language in languages"
+                            :class="language.code === selectedLanguage? 'active' : ''">
+                            <a href="#" v-on:click.prevent="changeLanguage(language.code)">
+                                <span :class="'flag-icon flag-icon-'+language.code.toLowerCase()"/>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="centered">{{ lang.labels.url }}:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" v-if="details.descriptions[selectedLanguage] !== undefined"
+                                       v-model="details.descriptions[selectedLanguage].url"/>
+                            </div>
+                            <div class="col-md-1">
+                                <span data-gx-widget="tooltip_icon"
+                                      data-tooltip_icon-type="info">{{ lang.labels.placeholder }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="centered">{{ lang.labels.comment }}:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input class="form-control" v-if="details.descriptions[selectedLanguage] !== undefined"
+                                       v-model="details.descriptions[selectedLanguage].comment"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang.close }}</button>
+                    <button type="button" class="btn btn-primary" @click="confirm">{{ lang.confirm }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+{/literal}

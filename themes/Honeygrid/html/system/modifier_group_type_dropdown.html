@@ -1,0 +1,25 @@
+{load_language_text section="properties_dropdown"}
+{block name="modifier_group_type_dropdown"}
+    {assign "show_additional_price" $content_data.show_additional_price}
+    <div class="modifier-group modifier-{$content_data.modifier.type}-group modifier-type__dropdown"{if !$content_data.modifier.visible} style="display: none;"{/if}>
+        <label class="modifier-label">
+            {$content_data.modifier.label}:
+        </label>
+        <div class="modifier-content">
+            <select name="{$content_data.modifier.name}" class="form-control js-calculate">
+                {if $content_data.modifier.type eq 'property'}
+                <option value="0" title="{$txt.PLEASE_SELECT}">
+                    {$txt.PLEASE_SELECT}
+                </option>
+                {/if}
+                {foreach from=$content_data.modifier.items item=modifier}
+                    <option value="{$modifier.value}"{if $content_data.modifier.selected.value eq $modifier.value} selected="selected"{/if} {if $show_additional_price && isset($modifier.additionalInfo.price) && $modifier.additionalInfo.price != ""}data-price="{$modifier.additionalInfo.price}"{/if} data-label="{$modifier.info}"{if !$modifier.selectable} disabled{/if}>
+                        {$modifier.info}
+                        {if $show_additional_price && isset($modifier.additionalInfo.price) && $modifier.additionalInfo.price != ""} ({$modifier.additionalInfo.price}){/if}
+                        {if $modifier.additionalInfo.stock} {$modifier.additionalInfo.stock}{/if}
+                    </option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+{/block}
